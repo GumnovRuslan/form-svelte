@@ -10,9 +10,12 @@ let pl = {
 		title: 'Rejestracja',
 		contacts: {
 			text_company: 'Firma/Nazwa główna',
-			text_address: 'Adres',
 			text_phone: 'Telefon',
-			text_email: 'Email'
+			text_email: 'Email',
+			input_address: {
+				title: 'Adres',
+				placeholder: ['Ulica', 'Dom'],
+			}
 		},
 		work: {
 			title: 'Pracujesz jako:',

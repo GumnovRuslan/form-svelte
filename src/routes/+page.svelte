@@ -30,14 +30,15 @@
 				let inputs = contacts.querySelectorAll('input');
 
 				items[0].textContent = i18next.t(`form:contacts.text`, { context: 'company' });
-				items[1].textContent = i18next.t(`form:contacts.text`, { context: 'address' });
+				items[1].textContent = i18next.t(`form:contacts.input_address.title`);
 				items[2].textContent = i18next.t(`form:contacts.text`, { context: 'phone' });
 				items[3].textContent = i18next.t(`form:contacts.text`, { context: 'email' });
 
 				inputs[0].placeholder = i18next.t(`form:contacts.text`, { context: 'company' });
-				inputs[1].placeholder = i18next.t(`form:contacts.text`, { context: 'address' });
-				inputs[2].placeholder = i18next.t(`form:contacts.text`, { context: 'phone' });
-				inputs[3].placeholder = i18next.t(`form:contacts.text`, { context: 'email' });
+				inputs[1].placeholder = i18next.t(`form:contacts.input_address.placeholder.0`);
+				inputs[2].placeholder = i18next.t(`form:contacts.input_address.placeholder.1`);
+				inputs[3].placeholder = i18next.t(`form:contacts.text`, { context: 'phone' });
+				inputs[4].placeholder = i18next.t(`form:contacts.text`, { context: 'email' });
 			}
 			function workLike() {
 				const container = document.getElementById('workLike');
@@ -213,13 +214,13 @@
 		function transformFormData(formData) {
 			const transformedData = {
 				name: formData.contents.name,
+				email: formData.contents.mail,
 				address: formData.contents.address,
 				phones: [formData.contents.tell],
-				email: formData.contents.mail,
 				images: [],
 				schedule: formData.workDays,
-				services: [],
-				affiliation: formData.workLike.nip,
+				services: '',
+				affiliation: formData.workLike,
 				socialMediaLinks: [formData.networkLinks],
 				specialTags: [],
 				languages: []
@@ -252,7 +253,7 @@
 			console.log(transformedData);
 			try {
 				const response = await fetch(
-					'https://servicesserver.onrender.com/api/company/createCompany/site/withoutCategory',
+					'https://yoohive-api.onrender.com/api/company/createCompany/site/withoutCategory',
 					{
 						method: 'POST',
 						headers: {
@@ -297,9 +298,9 @@
 
 					return {
 						name: inputs[0].value,
-						address: inputs[1].value,
-						tell: inputs[2].value,
-						mail: inputs[3].value
+						address: `${inputs[1].value} ${inputs[2].value}`,
+						tell: inputs[3].value,
+						mail: inputs[4].value
 					};
 				}
 
@@ -307,12 +308,13 @@
 					const container = form.querySelector(`#${id}`);
 					const inputs = container.querySelectorAll('input');
 
-					return {
-						workPhysical: inputs[0].checked,
-						workCompany: inputs[2].checked,
-						nip: inputs[2].checked ? inputs[3].value : '',
-						pesel: inputs[0].checked ? inputs[1].value : ''
-					};
+					return inputs[0].checked
+					? inputs[1].value
+						: inputs[2].checked
+					? inputs[3].value
+						: null
+
+
 				}
 
 				function getLinkForNetwork(id) {
@@ -530,13 +532,22 @@
 									<div class="form__contacts-item">
 										<div class="form__contacts-item-header">
 											<p class="form__contacts-item-text input-name">Адрес</p>
+											<span class="form__required">*</span>
 										</div>
-
-										<input
-											type="text"
-											class="form__contacts-item-input form__input"
-											placeholder="Address"
-										/>
+										<div class='form__contacts-item-main'>
+											<input
+												type="text"
+												class="form__contacts-item-input form__input"
+												placeholder="Address"
+												required
+											/>
+											<input
+												type="text"
+												class="form__contacts-item-input form__input"
+												placeholder="Address"
+												required
+											/>
+										</div>
 									</div>
 									<div class="form__contacts-item">
 										<div class="form__contacts-item-header input-name">
@@ -573,7 +584,6 @@
 									<p class="form__work-like-text section-name">You work like:</p>
 									<span class="form__required">*</span>
 								</div>
-
 								<div class="form__work-like-content">
 									<div class="form__work-like-items">
 										<div class="form__work-like-item">
@@ -594,6 +604,8 @@
 													type="number"
 													placeholder="Enter 11 numbers"
 													disabled
+													min="10000000000"
+													max="99999999999"
 												/>
 											</div>
 										</div>
@@ -614,6 +626,8 @@
 													type="number"
 													placeholder="Enter 10 numbers"
 													disabled
+													min="1000000000"
+													max="9999999999"
 												/>
 											</div>
 										</div>
@@ -1115,6 +1129,12 @@
 	}
 	.form__contacts-item-text {
 		color: var(--color-text-primary);
+	}
+
+	.form__contacts-item-main {
+		display: flex;
+		flex-direction: column;
+		gap: 10px;
 	}
 
 	/* work-like */

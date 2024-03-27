@@ -9,9 +9,12 @@ let by = {
 		title: 'Рэгістрацыя',
 		contacts: {
 			text_company: 'Назва кампаніі/майстры',
-			text_address: 'Адрас',
 			text_phone: 'Тэлефон',
-			text_email: 'Email'
+			text_email: 'Email',
+			input_address: {
+				title: 'Адрас',
+				placeholder: ['Вуліца', 'Дом'],
+			}
 		},
 		work: {
 			title: 'Вы працуеце як:',

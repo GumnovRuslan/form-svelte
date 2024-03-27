@@ -9,9 +9,13 @@ let ru = {
 		title: 'Регистрация',
 		contacts: {
 			text_company: 'Название компании/мастера',
-			text_address: 'Адрес',
 			text_phone: 'Телефон',
-			text_email: 'Email'
+			text_email: 'Email',
+			input_address: {
+				title: 'Адрес',
+				placeholder: ['Улица', 'Дом'],
+			}
+
 		},
 		work: {
 			title: 'Вы работаете как:',

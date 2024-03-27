@@ -9,9 +9,12 @@ let en = {
 		title: 'Registration',
 		contacts: {
 			text_company: 'Company/Master Name',
-			text_address: 'Address',
 			text_phone: 'Phone',
-			text_email: 'Email'
+			text_email: 'Email',
+			input_address: {
+				title: 'Address',
+				placeholder: ['Street', 'House'],
+			}
 		},
 		work: {
 			title: 'You work as:',

@@ -9,9 +9,12 @@ let ua = {
 		title: 'Реєстрація',
 		contacts: {
 			text_company: 'Назва компанії/майстра',
-			text_address: 'Адреса',
 			text_phone: 'Телефон',
-			text_email: 'Email'
+			text_email: 'Email',
+			input_address: {
+				title: 'Адреса',
+				placeholder: ['Вулиця', 'Хата'],
+			}
 		},
 		work: {
 			title: 'Ви працюєте як:',
