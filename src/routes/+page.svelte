@@ -220,6 +220,7 @@
 				images: [],
 				schedule: formData.workDays,
 				services: '',
+				googleSchedule: formData.calendar,
 				affiliation: formData.workLike,
 				socialMediaLinks: [formData.networkLinks],
 				specialTags: [],
