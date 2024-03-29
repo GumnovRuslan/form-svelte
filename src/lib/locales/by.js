@@ -18,7 +18,7 @@ let by = {
 		},
 		work: {
 			title: 'Вы працуеце як:',
-			text_physical: 'Фіз. твар',
+			text_physical: 'Фіз. асоба',
 			input_physical: 'Увядзіце 11 лічбаў',
 			text_company: 'Кампанія',
 			input_company: 'Увядзіце 10 лічбаў'
