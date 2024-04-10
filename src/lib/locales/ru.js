@@ -68,7 +68,10 @@ let ru = {
 			text_description: '(бот, сайт, соцсети)'
 		},
 		button: {
-			text: 'Регистрация'
+			text: 'Регистрация',
+			message_error: 'Произошла ошибка: ',
+			message_error_server: 'Ошибка при отправке данных: ',
+			message_completed: 'Данные успешно отправлены',
 		}
 	}
 };

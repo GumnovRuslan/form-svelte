@@ -67,7 +67,10 @@ let en = {
 			text_description: '(bot, website, social network)'
 		},
 		button: {
-			text: 'Registration'
+			text: 'Registration',
+			message_error: 'An error has occurred: ',
+			message_error_server: 'Error sending data: ',
+			message_completed: 'Data sent successfully',
 		}
 	}
 };

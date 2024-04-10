@@ -67,7 +67,10 @@ let by = {
 			text_description: '(бот, сайт, сацсеткі)'
 		},
 		button: {
-			text: 'Рэгістрацыя'
+			text: 'Рэгістрацыя',
+			message_error: 'Адбылася памылка: ',
+			message_error_server: 'Памылка пры адпраўцы дадзеных: ',
+			message_completed: 'Дадзеныя паспяхова адпраўлены',
 		}
 	}
 };

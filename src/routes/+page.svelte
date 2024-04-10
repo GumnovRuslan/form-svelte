@@ -7,6 +7,10 @@
 	import by from '$lib/locales/by.js';
 	import { onMount } from 'svelte';
 
+	let formMessage = ''
+	let formMessageIsError = false
+	let buttonIsDisabled = false
+
 	onMount(() => {
 		i18next.on('languageChanged', changeContent);
 		function changeContent() {
@@ -244,14 +248,13 @@
 
 		async function sendForm(e) {
 			console.log('success');
+			buttonIsDisabled = true
 
 			e.preventDefault();
 
 			let formData = getFormData();
 			let transformedData = transformFormData(formData);
 
-			console.log(formData);
-			console.log(transformedData);
 			try {
 				const response = await fetch(
 					'https://yoohive-api.onrender.com/api/company/createCompany/site/withoutCategory',
@@ -265,13 +268,22 @@
 				);
 
 				if (response.ok) {
-					console.log('Данные успешно отправлены на сервер');
+					formMessageIsError = false
+					formMessage = i18next.t(`form:button.message`, { context: 'completed' });
+					// console.log('Данные успешно отправлены на сервер');
 				} else {
-					console.error('Ошибка при отправке данных на сервер:', response.status);
+					formMessageIsError = true
+					formMessage = i18next.t(`form:button.message`, { context: 'error_server' }) + response.status
+					// console.error('Ошибка при отправке данных на сервер:', response.status);
 				}
 			} catch (error) {
-				console.error('Произошла ошибка:', error);
+				formMessageIsError = true
+				formMessage = i18next.t(`form:button.message`, { context: 'error' }) + error
+				// console.error('Произошла ошибка:', error);
 			}
+
+			buttonIsDisabled = false
+
 			function getFormData() {
 				const contents = getDataFromContents('formContacts');
 				const workLike = getWorkLike('workLike');
@@ -968,7 +980,8 @@
 								</div>
 							</label>
 
-							<button class="button" type="submit" id="buttonSend">Registration</button>
+							<button class="button" type="submit" id="buttonSend" class:button__disabled={buttonIsDisabled}>Registration</button>
+							<p class='form__message' class:message-error={formMessageIsError}>{formMessage}</p>
 						</div>
 					</div>
 				</form>
@@ -1073,6 +1086,20 @@
 		gap: 15px;
 		max-width: 800px;
 		transition: all 0.5s;
+	}
+
+	.form__message {
+		text-align: center;
+		font-size: 18px;
+		color: rgb(29, 177, 29);
+	}
+	.message-error {
+		color: red;
+	}
+
+	.button__disabled {
+		pointer-events: none;
+		opacity: 0.4;
 	}
 	.form__inner {
 	}

@@ -68,7 +68,10 @@ let pl = {
 			text_description: '(bot, strona internetowa, sieci społecznościowe)'
 		},
 		button: {
-			text: 'Rejestracja'
+			text: 'Rejestracja',
+			message_error: 'Wystąpił błąd: ',
+			message_error_server: 'Błąd podczas wysyłania danych: ',
+			message_completed: 'Dane przesłane pomyślnie',
 		}
 	}
 };

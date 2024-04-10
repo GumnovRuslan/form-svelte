@@ -67,7 +67,10 @@ let ua = {
 			text_description: '(бот, сайт, соцмережі)'
 		},
 		button: {
-			text: 'Реєстрація'
+			text: 'Реєстрація',
+			message_error: 'Виникла помилка: ',
+			message_error_server: 'Помилка при надсиланні даних: ',
+			message_completed: 'Дані успішно надіслані:',
 		}
 	}
 };
