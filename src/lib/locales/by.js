@@ -49,7 +49,7 @@ let by = {
 			day_sunday: 'Нядзеля'
 		},
 		calendar: {
-			text: 'Спасылка на Google каляндар',
+			text: 'Спасылка на каляндар (Google, Yandex, Outlook)',
 			placeholder: 'Спасылка'
 		},
 		communication: {

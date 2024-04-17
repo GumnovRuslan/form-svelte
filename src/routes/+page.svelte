@@ -6,16 +6,46 @@
 	import ua from '$lib/locales/ua.js';
 	import by from '$lib/locales/by.js';
 	import { onMount } from 'svelte';
+	import WorkMoreItem from '$lib/components/WorkMoreItem.svelte'
+	import Categories from '$lib/components/Categories.svelte';
 
 	let formMessage = ''
 	let formMessageIsError = false
 	let buttonIsDisabled = false
+	let timesData = {
+					title: i18next.t('form:workMode.title'),
+					days: [
+						i18next.t(`form:workMode.day`, { context: 'monday' }),
+						i18next.t(`form:workMode.day`, { context: 'tuesday' }),
+						i18next.t(`form:workMode.day`, { context: 'wednesday' }),
+						i18next.t(`form:workMode.day`, { context: 'thursday' }),
+						i18next.t(`form:workMode.day`, { context: 'friday' }),
+						i18next.t(`form:workMode.day`, { context: 'saturday' }),
+						i18next.t(`form:workMode.day`, { context: 'sunday' }),
+					],
+					timeText: [
+						i18next.t(`form:workMode.time`, { context: 'open' }),
+						i18next.t(`form:workMode.time`, { context: 'close' })
+					]
+				}
 
 	onMount(() => {
 		i18next.on('languageChanged', changeContent);
 		function changeContent() {
-			document.getElementById('title').textContent = i18next.t('message:title');
-			document.getElementById('description').textContent = i18next.t('message:description');
+			let messageTitle = document.getElementById('title')
+			let messageDescription = document.getElementById('description')
+			const titleVariation = [
+				i18next.t('message:title'),
+				i18next.t('message:title', {context: 'alternative'}),
+			]
+			const descriptionVariation = [
+				i18next.t('message:description'),
+				'',
+			]
+
+			messageTitle.textContent = titleVariation[messageTitle.dataset.variation ?? 0]
+			messageDescription.textContent = descriptionVariation[messageDescription.dataset.variation ?? 0]
+
 			document.getElementById('message-button').textContent = i18next.t('message:button');
 			document.querySelector('.form__header-title').textContent = i18next.t('form:title');
 			contacts();
@@ -29,20 +59,25 @@
 			document.getElementById('buttonSend').textContent = i18next.t('form:button.text');
 
 			function contacts() {
-				const contacts = document.getElementById('formContacts');
-				let items = contacts.querySelectorAll('.form__contacts-item-text');
-				let inputs = contacts.querySelectorAll('input');
+				const changeTextInLine = (line_id, textName, textPlaceholder) => {
+					line_id.querySelector('.form__contacts-item-text').textContent = textName
+					line_id.querySelector('input').placeholder = textPlaceholder
+				}
+				changeTextInLine(window.contactCompany, i18next.t(`form:contacts.text`, { context: 'company' }), i18next.t(`form:contacts.text`, { context: 'company' }))
+				changeTextInLine(window.contactPhone, i18next.t(`form:contacts.text`, { context: 'phone' }), i18next.t(`form:contacts.text`, { context: 'phone' }))
+				changeTextInLine(window.contactEmail, i18next.t(`form:contacts.text`, { context: 'email' }), i18next.t(`form:contacts.text`, { context: 'email' }))
 
-				items[0].textContent = i18next.t(`form:contacts.text`, { context: 'company' });
-				items[1].textContent = i18next.t(`form:contacts.input_address.title`);
-				items[2].textContent = i18next.t(`form:contacts.text`, { context: 'phone' });
-				items[3].textContent = i18next.t(`form:contacts.text`, { context: 'email' });
+				let itemDescription = window.contactDescription
+				itemDescription.querySelector('.form__contacts-item-text').textContent = i18next.t(`form:contacts.text`, { context: 'description' })
+				itemDescription.querySelector('textarea').placeholder = i18next.t(`form:contacts.text`, { context: 'description' })
 
-				inputs[0].placeholder = i18next.t(`form:contacts.text`, { context: 'company' });
-				inputs[1].placeholder = i18next.t(`form:contacts.input_address.placeholder.0`);
-				inputs[2].placeholder = i18next.t(`form:contacts.input_address.placeholder.1`);
-				inputs[3].placeholder = i18next.t(`form:contacts.text`, { context: 'phone' });
-				inputs[4].placeholder = i18next.t(`form:contacts.text`, { context: 'email' });
+				let itemAddress = window.contactAddress
+				itemAddress.querySelector('.form__contacts-item-text').textContent = i18next.t(`form:contacts.input_address.title`)
+				itemAddress.querySelectorAll('input').forEach((input, i) => {
+					input.placeholder = !i
+					? i18next.t(`form:contacts.input_address.placeholder.0`)
+					: i18next.t(`form:contacts.input_address.placeholder.1`)
+				})
 			}
 			function workLike() {
 				const container = document.getElementById('workLike');
@@ -78,26 +113,22 @@
 				inputs[4].placeholder = i18next.t(`form:network.placeholder`, { context: 'linkedin' });
 			}
 			function workMode() {
-				const container = document.getElementById('formWorkMode');
-				let items = container.querySelectorAll('.form__work-mode-item');
-				let days = container.querySelectorAll('.form__work-mode-item-text');
-
-				container.querySelector('.form__work-mode-header-text').textContent =
-					i18next.t('form:workMode.title');
-
-				days[0].textContent = i18next.t(`form:workMode.day`, { context: 'monday' });
-				days[1].textContent = i18next.t(`form:workMode.day`, { context: 'tuesday' });
-				days[2].textContent = i18next.t(`form:workMode.day`, { context: 'wednesday' });
-				days[3].textContent = i18next.t(`form:workMode.day`, { context: 'thursday' });
-				days[4].textContent = i18next.t(`form:workMode.day`, { context: 'friday' });
-				days[5].textContent = i18next.t(`form:workMode.day`, { context: 'saturday' });
-				days[6].textContent = i18next.t(`form:workMode.day`, { context: 'sunday' });
-
-				items.forEach((el) => {
-					let times = el.querySelectorAll('.form__work-mode-item-content-line-text');
-					times[0].textContent = i18next.t(`form:workMode.time`, { context: 'open' });
-					times[1].textContent = i18next.t(`form:workMode.time`, { context: 'close' });
-				});
+				timesData = {
+					title: i18next.t('form:workMode.title'),
+					days: [
+						i18next.t(`form:workMode.day`, { context: 'monday' }),
+						i18next.t(`form:workMode.day`, { context: 'tuesday' }),
+						i18next.t(`form:workMode.day`, { context: 'wednesday' }),
+						i18next.t(`form:workMode.day`, { context: 'thursday' }),
+						i18next.t(`form:workMode.day`, { context: 'friday' }),
+						i18next.t(`form:workMode.day`, { context: 'saturday' }),
+						i18next.t(`form:workMode.day`, { context: 'sunday' }),
+					],
+					timeText: [
+						i18next.t(`form:workMode.time`, { context: 'open' }),
+						i18next.t(`form:workMode.time`, { context: 'close' })
+					]
+				}
 			}
 			function calendar() {
 				const container = document.getElementById('formLinkCalendar');
@@ -153,7 +184,7 @@
 		btnSend.addEventListener('click', checkForm);
 		workPageLanguage();
 		formShow();
-		workSectionNetwor();
+		workSectionNetwork();
 		workSectionCommunication();
 		workSectionWorkLike();
 		workSectionOperatingMode();
@@ -168,6 +199,13 @@
 				const formHeight = form.scrollHeight;
 				if (e.target.checked) {
 					form.style.height = `${formHeight}px`;
+					let messageTitle = document.getElementById('title')
+					let messageDescription = document.getElementById('description')
+					messageTitle.textContent = i18next.t('message:title', {context: 'alternative'});
+					messageTitle.dataset.variation = 1
+					messageDescription.textContent = ''
+					messageDescription.dataset.variation = 1
+
 				} else {
 					form.style.height = '0';
 				}
@@ -398,7 +436,7 @@
 			}
 		}
 
-		function workSectionNetwor() {
+		function workSectionNetwork() {
 			let networkContainer = form.querySelector('#formNetwork');
 			let networkItems = networkContainer.querySelectorAll('.form__network-item-checkbox');
 			networkItems.forEach((item) =>
@@ -487,6 +525,26 @@
 			}
 		}
 	});
+
+	function changeTime(obj) {
+		let {value, time} = obj
+		const container = window.formWorkMode
+		let items = container.querySelectorAll('.item')
+		const change = (item) => {
+			const checkbox = item.querySelector('input.item__checkbox')
+			const inputsTime = item.querySelectorAll('input[type="time"]')
+			checkbox.checked = true
+			inputsTime[0].value = time[0]
+			inputsTime[1].value = time[1]
+		}
+
+		if(value == 'all day') items.forEach(item => change(item))
+		else if(value == 'weekdays') {
+			items.forEach((item, i) => {
+				if(i < 5) change(item)
+			})
+		}
+	}
 </script>
 
 <div class="main-background">
@@ -506,7 +564,7 @@
 			</div>
 		</div>
 	</header>
-	<main class="page">
+	<main class="page" id='page'>
 		<div class="page__content">
 			<div class="message">
 				<input type="checkbox" id="showForm" />
@@ -527,7 +585,7 @@
 						</div>
 						<div class="form__content">
 							<div class="form__contacts" id="formContacts">
-								<div class="form__contacts-item">
+								<div class="form__contacts-item" id="contactCompany">
 									<div class="form__contacts-item-header input-name">
 										<p class="form__contacts-item-text">Название компании/мастера</p>
 										<span class="form__required">*</span>
@@ -541,8 +599,15 @@
 									/>
 								</div>
 
+								<div class="form__contacts-item" id="contactDescription">
+									<div class="form__contacts-item-header input-name">
+										<p class="form__contacts-item-text">Название компании/мастера</p>
+									</div>
+									<textarea class="form__contacts-item-textarea form__input" name='contactDescription' maxlength="221"></textarea>
+								</div>
+
 								<div class="form__contacts-items">
-									<div class="form__contacts-item">
+									<div class="form__contacts-item" id="contactAddress">
 										<div class="form__contacts-item-header">
 											<p class="form__contacts-item-text input-name">Адрес</p>
 											<span class="form__required">*</span>
@@ -562,27 +627,24 @@
 											/>
 										</div>
 									</div>
-									<div class="form__contacts-item">
+									<div class="form__contacts-item" id="contactPhone">
 										<div class="form__contacts-item-header input-name">
 											<p class="form__contacts-item-text">Телефон</p>
 											<span class="form__required">*</span>
 										</div>
-
 										<input
 											type="tel"
 											class="form__contacts-item-input form__input"
-											placeholder="Phone number"
 											required
 										/>
 									</div>
 								</div>
 
-								<div class="form__contacts-item">
+								<div class="form__contacts-item" id="contactEmail">
 									<div class="form__contacts-item-header input-name">
 										<p class="form__contacts-item-text input-name">Email</p>
 										<span class="form__required">*</span>
 									</div>
-
 									<input
 										type="email"
 										class="form__contacts-item-input form__input"
@@ -591,6 +653,8 @@
 									/>
 								</div>
 							</div>
+
+							<Categories />
 
 							<div class="form__work-like" id="workLike">
 								<div class="form__work-like-header">
@@ -721,137 +785,24 @@
 							<div class="form__work-mode" id="formWorkMode">
 								<input type="checkbox" class="form__checkbox" id="workModeShow" />
 								<label for="workModeShow" class="form__work-mode-header">
-									<span class="form__work-mode-header-text"> Оperating mode </span>
+									<span class="form__work-mode-header-text">{timesData.title}</span>
 									<span class="form__work-mode-header-icon">
 										<svg viewBox="0 0 24 24" fill="none">
 											<path
 												fill-rule="evenodd"
 												clip-rule="evenodd"
 												d="M16.5303 14.0303C16.2374 14.3232 15.7626 14.3232 15.4697 14.0303L12 10.5607L8.53033 14.0303C8.23744 14.3232 7.76256 14.3232 7.46967 14.0303C7.17678 13.7374 7.17678 13.2626 7.46967 12.9697L11.4697 8.96967C11.7626 8.67678 12.2374 8.67678 12.5303 8.96967L16.5303 12.9697C16.8232 13.2626 16.8232 13.7374 16.5303 14.0303Z"
-												fill="black"
-											/>
+												fill="black"/>
 										</svg>
 									</span>
 								</label>
 								<div class="form__work-mode-items">
-									<div class="form__work-mode-item">
-										<input type="checkbox" class="form__work-mode-item-checkbox" />
-										<div class="form__work-mode-item-info">
-											<span class="form__work-mode-item-text"> Monday </span>
-										</div>
-										<div class="form__work-mode-item-content">
-											<div class="form__work-mode-item-content-line">
-												<span class="form__work-mode-item-content-line-text"> Open Time </span>
-												<input class="form__work-mode-item-content-line-input" type="time" />
-											</div>
-											<div class="form__work-mode-item-content-line">
-												<span class="form__work-mode-item-content-line-text"> Close Time </span>
-												<input class="form__work-mode-item-content-line-input" type="time" />
-											</div>
-										</div>
-									</div>
-
-									<div class="form__work-mode-item">
-										<input type="checkbox" class="form__work-mode-item-checkbox" />
-										<div for="workModeMonday" class="form__work-mode-item-info">
-											<span class="form__work-mode-item-text"> Tuesday </span>
-										</div>
-										<div class="form__work-mode-item-content">
-											<div class="form__work-mode-item-content-line">
-												<span class="form__work-mode-item-content-line-text"> Open Time </span>
-												<input class="form__work-mode-item-content-line-input" type="time" />
-											</div>
-											<div class="form__work-mode-item-content-line">
-												<span class="form__work-mode-item-content-line-text"> Close Time </span>
-												<input class="form__work-mode-item-content-line-input" type="time" />
-											</div>
-										</div>
-									</div>
-
-									<div class="form__work-mode-item">
-										<input type="checkbox" class="form__work-mode-item-checkbox" />
-										<div class="form__work-mode-item-info">
-											<span class="form__work-mode-item-text"> Wednesday </span>
-										</div>
-										<div class="form__work-mode-item-content">
-											<div class="form__work-mode-item-content-line">
-												<span class="form__work-mode-item-content-line-text"> Open Time </span>
-												<input class="form__work-mode-item-content-line-input" type="time" />
-											</div>
-											<div class="form__work-mode-item-content-line">
-												<span class="form__work-mode-item-content-line-text"> Close Time </span>
-												<input class="form__work-mode-item-content-line-input" type="time" />
-											</div>
-										</div>
-									</div>
-
-									<div class="form__work-mode-item">
-										<input type="checkbox" class="form__work-mode-item-checkbox" />
-										<div class="form__work-mode-item-info">
-											<span class="form__work-mode-item-text"> Thursday </span>
-										</div>
-										<div class="form__work-mode-item-content">
-											<div class="form__work-mode-item-content-line">
-												<span class="form__work-mode-item-content-line-text"> Open Time </span>
-												<input class="form__work-mode-item-content-line-input" type="time" />
-											</div>
-											<div class="form__work-mode-item-content-line">
-												<span class="form__work-mode-item-content-line-text"> Close Time </span>
-												<input class="form__work-mode-item-content-line-input" type="time" />
-											</div>
-										</div>
-									</div>
-
-									<div class="form__work-mode-item">
-										<input type="checkbox" class="form__work-mode-item-checkbox" />
-										<div class="form__work-mode-item-info">
-											<span class="form__work-mode-item-text"> Friday </span>
-										</div>
-										<div class="form__work-mode-item-content">
-											<div class="form__work-mode-item-content-line">
-												<span class="form__work-mode-item-content-line-text"> Open Time </span>
-												<input class="form__work-mode-item-content-line-input" type="time" />
-											</div>
-											<div class="form__work-mode-item-content-line">
-												<span class="form__work-mode-item-content-line-text"> Close Time </span>
-												<input class="form__work-mode-item-content-line-input" type="time" />
-											</div>
-										</div>
-									</div>
-
-									<div class="form__work-mode-item">
-										<input type="checkbox" class="form__work-mode-item-checkbox" />
-										<div class="form__work-mode-item-info">
-											<span class="form__work-mode-item-text"> Saturday </span>
-										</div>
-										<div class="form__work-mode-item-content">
-											<div class="form__work-mode-item-content-line">
-												<span class="form__work-mode-item-content-line-text"> Open Time </span>
-												<input class="form__work-mode-item-content-line-input" type="time" />
-											</div>
-											<div class="form__work-mode-item-content-line">
-												<span class="form__work-mode-item-content-line-text"> Close Time </span>
-												<input class="form__work-mode-item-content-line-input" type="time" />
-											</div>
-										</div>
-									</div>
-
-									<div class="form__work-mode-item">
-										<input type="checkbox" class="form__work-mode-item-checkbox" />
-										<div class="form__work-mode-item-info">
-											<span class="form__work-mode-item-text"> Sunday </span>
-										</div>
-										<div class="form__work-mode-item-content">
-											<div class="form__work-mode-item-content-line">
-												<span class="form__work-mode-item-content-line-text"> Open Time </span>
-												<input class="form__work-mode-item-content-line-input" type="time" />
-											</div>
-											<div class="form__work-mode-item-content-line">
-												<span class="form__work-mode-item-content-line-text"> Close Time </span>
-												<input class="form__work-mode-item-content-line-input" type="time" />
-											</div>
-										</div>
-									</div>
+									{#each timesData.days as day}
+										<WorkMoreItem
+										on:select={(e) => changeTime(e.detail)}
+										day={day}
+										text={timesData.timeText}/>
+									{/each}
 								</div>
 							</div>
 
@@ -862,6 +813,7 @@
 									type="url"
 									class="form__calendar-input form__input"
 									placeholder="link to Google calendar"
+									on:input={(e) => e.target.required = !!e.target.value}
 								/>
 							</div>
 
@@ -980,8 +932,10 @@
 								</div>
 							</label>
 
-							<button class="button" type="submit" id="buttonSend" class:button__disabled={buttonIsDisabled}>Registration</button>
-							<p class='form__message' class:message-error={formMessageIsError}>{formMessage}</p>
+							<div class='form__button-container'>
+								<button class="button" type="submit" id="buttonSend" class:button__disabled={buttonIsDisabled}>Registration</button>
+								<p class='form__message' class:message-error={formMessageIsError}>{formMessage}</p>
+							</div>
 						</div>
 					</div>
 				</form>
@@ -995,7 +949,7 @@
 	</footer>
 </div>
 
-<style>
+<style lang="scss">
 	.main-background {
 		width: 100%;
 		display: flex;
@@ -1007,7 +961,6 @@
 		flex-direction: column;
 		align-items: center;
 		justify-content: center;
-		padding: 10vw 0;
 	}
 
 	.page__content {
@@ -1110,6 +1063,14 @@
 		gap: 40px;
 	}
 
+	.form__button-container {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		gap: 15px;
+	}
+
 	/* header */
 
 	.form__header {
@@ -1164,6 +1125,9 @@
 		flex-direction: column;
 		gap: 10px;
 	}
+	.form__contacts-item-textarea {
+		resize: none;
+	}
 
 	/* work-like */
 
@@ -1210,13 +1174,12 @@
 		align-items: center;
 		gap: 8px;
 		cursor: pointer;
-	}
-	@media (max-width: 600px) {
-		.form__work-like-label {
+		@media (max-width: 600px) {
 			flex: 1 0 auto;
 			width: 80%;
 		}
 	}
+
 
 	.form__work-like-radio {
 	}
@@ -1236,17 +1199,13 @@
 		flex: content;
 		display: flex;
 		gap: 15px;
-	}
 
-	@media (min-width: 600px) {
-		.form__work-like-input-container {
+		@media (min-width: 600px) {
 			align-items: center;
 			justify-content: end;
 		}
-	}
 
-	@media (max-width: 600px) {
-		.form__work-like-input-container {
+		@media (max-width: 600px) {
 			flex-direction: column;
 		}
 	}
@@ -1303,6 +1262,9 @@
 	}
 
 	.form__network-item-input {
+		@media (min-width: 500px) {
+			max-width: 65%;
+		}
 	}
 	@media (min-width: 500px) {
 		.form__network-item-input {
@@ -1347,55 +1309,6 @@
 		margin: 0 15px 0 0;
 	}
 
-	.form__languages-item-image {
-		position: relative;
-		display: inline-block;
-		max-width: 30px;
-		height: 30px;
-		border-radius: 50%;
-		overflow: hidden;
-		margin-right: 10px;
-	}
-
-	.form__languages-item-image-shadow {
-		position: absolute;
-		top: 0;
-		left: 0;
-		width: 100%;
-		height: 100%;
-		border-radius: 50%;
-		box-shadow: inset 0 0 3px 0.5px #000000b6;
-	}
-
-	.form__languages-item-image-shadow::before,
-	.form__languages-item-image-shadow::after {
-		content: '';
-		position: absolute;
-		top: 0;
-		left: 0;
-		width: 100%;
-		height: 100%;
-		border-radius: 50%;
-		transform: scale(60%);
-		overflow: hidden;
-	}
-
-	.form__languages-item-image-shadow::before {
-		box-shadow: inset 0 7px 3px -5px #ffffffad;
-	}
-
-	.form__languages-item-image-shadow::after {
-		box-shadow: inset 0 -6px 5px -4px #ffffff86;
-	}
-
-	.form__languages-item-image img {
-		width: 100%;
-		height: 100%;
-		object-fit: cover;
-		display: block;
-		border-radius: 50%;
-	}
-
 	.form__languages-item-text {
 		color: var(--color-text-primary);
 	}
@@ -1436,9 +1349,6 @@
 		align-items: center;
 		gap: 10px;
 		cursor: pointer;
-	}
-
-	.form__preferences-item-checkbox {
 	}
 
 	.form__preferences-item-text {
@@ -1497,92 +1407,6 @@
 		max-height: 0;
 		transition: all 0.5s;
 	}
-
-	.form__work-mode-item {
-		display: flex;
-		align-items: center;
-		justify-content: space-between;
-		padding: 20px 10px;
-		border-radius: 20px;
-		background: var(--color-bg-secondary);
-	}
-	@media (max-width: 500px) {
-		.form__work-mode-item {
-			flex-wrap: wrap;
-			row-gap: 10px;
-		}
-	}
-
-	.form__work-mode-item-checkbox:checked ~ .form__work-mode-item-content,
-	.form__work-mode-item-checkbox:checked ~ .form__work-mode-item-info {
-		opacity: 1;
-		pointer-events: auto;
-	}
-
-	.form__work-mode-item-checkbox {
-		width: 20px;
-		height: 20px;
-		margin: 0 10px 0 0;
-		cursor: pointer;
-	}
-
-	.form__work-mode-item-info {
-		flex: content;
-		display: inline-flex;
-		align-items: center;
-		margin-right: 15px;
-		opacity: 0.3;
-		pointer-events: none;
-	}
-	@media (min-width: 500px) {
-		.form__work-mode-item-info {
-			margin-right: 15px;
-		}
-	}
-
-	.form__work-mode-item-info {
-		color: var(--color-text-primary);
-	}
-
-	.form__work-mode-item-content {
-		display: flex;
-		column-gap: 15px;
-		row-gap: 10px;
-		flex-wrap: wrap;
-		opacity: 0.3;
-		pointer-events: none;
-	}
-	@media (min-width: 500px) {
-		.form__work-mode-item-content {
-			justify-content: end;
-		}
-	}
-	@media (max-width: 500px) {
-		.form__work-mode-item-content {
-			justify-content: center;
-		}
-	}
-
-	.form__work-mode-item-content-line {
-		display: flex;
-		gap: 10px;
-		align-items: center;
-	}
-
-	.form__work-mode-item-content-line-text {
-		text-align: end;
-		color: var(--color-text-primary);
-	}
-
-	.form__work-mode-item-content-line-input {
-		text-align: center;
-		width: min-content;
-		font-size: 18px;
-		border: none;
-		padding: 5px 10px;
-		cursor: pointer;
-	}
-
 	/* confirmation */
 
 	.form__confirmation {
@@ -1590,12 +1414,6 @@
 		align-items: center;
 		gap: 10px;
 		cursor: pointer;
-	}
-
-	.form__confirmation-checkbox {
-	}
-
-	.form__confirmation-text-container {
 	}
 
 	.form__confirmation-text {

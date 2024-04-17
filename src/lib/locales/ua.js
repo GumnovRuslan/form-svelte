@@ -49,7 +49,7 @@ let ua = {
 			day_sunday: 'Неділя'
 		},
 		calendar: {
-			text: 'Посилання на Google календар',
+			text: 'Посилання на календар (Google, Яндекс, Outlook)',
 			placeholder: 'Посилання'
 		},
 		communication: {

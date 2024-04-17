@@ -2,6 +2,7 @@ let en = {
 	message: {
 		title:
 			'YOOHIVE, a platform for entrepreneurs and their customers, will be launching here soon.',
+		title_alternative: 'Become a part of YOOHIVE',
 		description: `We're like bees still working on the launch of our hive, buh buh buh buh buh. But already now you can register on our website to be among the first to maximize the impact for your business.`,
 		button: 'Registration'
 	},
@@ -49,7 +50,7 @@ let en = {
 			day_sunday: 'Sunday'
 		},
 		calendar: {
-			text: 'Google calendar link',
+			text: 'Link to calendar (Google, Yandex, Outlook)',
 			placeholder: 'Link'
 		},
 		communication: {

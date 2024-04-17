@@ -50,7 +50,7 @@ let pl = {
 			day_sunday: 'Niedziela'
 		},
 		calendar: {
-			text: 'Link do kalendarza Google',
+			text: 'Link do kalendarza (Google, Yandex, Outlook)',
 			placeholder: 'Połączyć'
 		},
 		communication: {
