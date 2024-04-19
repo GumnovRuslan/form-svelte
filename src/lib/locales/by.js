@@ -9,12 +9,54 @@ let by = {
 		title: 'Рэгістрацыя',
 		contacts: {
 			text_company: 'Назва кампаніі/майстры',
+			text_description: 'Апісанне кампаніі',
 			text_phone: 'Тэлефон',
 			text_email: 'Email',
 			input_address: {
 				title: 'Адрас',
 				placeholder: ['Вуліца', 'Дом'],
 			}
+		},
+		category: {
+			title: 'Катэгорыі',
+			categories: [
+				{
+					name: 'Прыгажосць',
+					subcategories: {
+						default : 'Абярыце падкатэгорыю',
+						value: [
+							{
+								name:'Валасы',
+								value: 'hair'
+							},
+							{
+								name:'Цырульнік',
+								value: 'barber'
+							},
+							{
+								name:'Пазногці',
+								value: 'nail'
+							},
+							{
+								name:'Бровы',
+								value: 'Brows'
+							},
+							{
+								name:'Масаж',
+								value: 'massage'
+							},
+							{
+								name:'Макіяж',
+								value: 'makeup'
+							},
+							{
+								name:'Спа',
+								value: 'Spa'
+							}
+						]
+					}
+				}
+			],
 		},
 		work: {
 			title: 'Вы працуеце як:',
@@ -71,6 +113,8 @@ let by = {
 			message_error: 'Адбылася памылка: ',
 			message_error_server: 'Памылка пры адпраўцы дадзеных: ',
 			message_completed: 'Дадзеныя паспяхова адпраўлены',
+			button_prev: 'Назад',
+			button_next: 'Наперад'
 		}
 	}
 };

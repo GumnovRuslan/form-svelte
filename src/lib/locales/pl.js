@@ -10,12 +10,54 @@ let pl = {
 		title: 'Rejestracja',
 		contacts: {
 			text_company: 'Firma/Nazwa główna',
+			text_description: 'Opis Firmy',
 			text_phone: 'Telefon',
 			text_email: 'Email',
 			input_address: {
 				title: 'Adres',
 				placeholder: ['Ulica', 'Dom'],
 			}
+		},
+		category: {
+			title: 'Kategorie',
+			categories: [
+				{
+					name: 'Uroda',
+					subcategories: {
+						default : 'Wybierz podkategorię',
+						value: [
+							{
+								name:'Włosy',
+								value: 'hair'
+							},
+							{
+								name:'Fryzjer',
+								value: 'barber'
+							},
+							{
+								name:'Paznokcie',
+								value: 'nail'
+							},
+							{
+								name:'Brwi',
+								value: 'Brows'
+							},
+							{
+								name:'Masaż',
+								value: 'massage'
+							},
+							{
+								name:'Makijaż',
+								value: 'makeup'
+							},
+							{
+								name:'Spa',
+								value: 'Spa'
+							}
+						]
+					}
+				}
+			],
 		},
 		work: {
 			title: 'Pracujesz jako:',
@@ -72,6 +114,8 @@ let pl = {
 			message_error: 'Wystąpił błąd: ',
 			message_error_server: 'Błąd podczas wysyłania danych: ',
 			message_completed: 'Dane przesłane pomyślnie',
+			button_prev: 'Z powrotem',
+			button_next: 'Do przodu'
 		}
 	}
 };

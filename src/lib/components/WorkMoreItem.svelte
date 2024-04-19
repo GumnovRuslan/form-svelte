@@ -34,7 +34,7 @@
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
-		padding: 20px 10px;
+		padding: 10px;
 		border-radius: 20px;
 		background: var(--color-bg-secondary);
 
@@ -70,6 +70,10 @@
             @media (min-width: 500px) {
                 margin-right: 15px;
             }
+        }
+
+        &__text {
+            margin-bottom: 5px;
         }
 
         &__buttons {

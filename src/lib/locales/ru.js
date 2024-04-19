@@ -19,6 +19,47 @@ let ru = {
 			}
 
 		},
+		category: {
+			title: 'Категории',
+			categories: [
+				{
+					name: 'Красота',
+					subcategories: {
+						default : 'Выберите подкатегорию',
+						value: [
+							{
+								name:'Волосы',
+								value: 'hair'
+							},
+							{
+								name:'Парикмахер',
+								value: 'barber'
+							},
+							{
+								name:'Ногти',
+								value: 'nail'
+							},
+							{
+								name:'Брови',
+								value: 'Brows'
+							},
+							{
+								name:'Массаж',
+								value: 'massage'
+							},
+							{
+								name:'Макияж',
+								value: 'makeup'
+							},
+							{
+								name:'Спа',
+								value: 'Spa'
+							}
+						]
+					}
+				}
+			],
+		},
 		work: {
 			title: 'Вы работаете как:',
 			text_physical: 'Физ. лицо',
@@ -74,6 +115,8 @@ let ru = {
 			message_error: 'Произошла ошибка: ',
 			message_error_server: 'Ошибка при отправке данных: ',
 			message_completed: 'Данные успешно отправлены',
+			button_prev: 'Назад',
+			button_next: 'Вперед'
 		}
 	}
 };
