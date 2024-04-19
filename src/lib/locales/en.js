@@ -2,6 +2,7 @@ let en = {
 	message: {
 		title:
 			'YOOHIVE, a platform for entrepreneurs and their customers, will be launching here soon.',
+		title_alternative: 'Become a part of YOOHIVE',
 		description: `We're like bees still working on the launch of our hive, buh buh buh buh buh. But already now you can register on our website to be among the first to maximize the impact for your business.`,
 		button: 'Registration'
 	},
@@ -9,12 +10,54 @@ let en = {
 		title: 'Registration',
 		contacts: {
 			text_company: 'Company/Master Name',
+			text_description: 'Company Description',
 			text_phone: 'Phone',
 			text_email: 'Email',
 			input_address: {
 				title: 'Address',
 				placeholder: ['Street', 'House'],
 			}
+		},
+		category: {
+			title: 'Categories',
+			categories: [
+				{
+					name: 'Beauty',
+					subcategories: {
+						default : 'Select subcategory',
+						value: [
+							{
+								name:'Hair',
+								value: 'hair'
+							},
+							{
+								name:'Barber',
+								value: 'barber'
+							},
+							{
+								name:'Nail',
+								value: 'nail'
+							},
+							{
+								name:'Brows',
+								value: 'brows'
+							},
+							{
+								name:'Massage',
+								value: 'massage'
+							},
+							{
+								name:'Makeup',
+								value: 'makeup'
+							},
+							{
+								name:'Spa',
+								value: 'spa'
+							}
+						]
+					}
+				}
+			],
 		},
 		work: {
 			title: 'You work as:',
@@ -49,7 +92,7 @@ let en = {
 			day_sunday: 'Sunday'
 		},
 		calendar: {
-			text: 'Google calendar link',
+			text: 'Link to calendar (Google, Yandex, Outlook)',
 			placeholder: 'Link'
 		},
 		communication: {
@@ -71,6 +114,8 @@ let en = {
 			message_error: 'An error has occurred: ',
 			message_error_server: 'Error sending data: ',
 			message_completed: 'Data sent successfully',
+			button_prev: 'Back',
+			button_next: 'Forward'
 		}
 	}
 };

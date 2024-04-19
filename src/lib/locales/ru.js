@@ -1,6 +1,7 @@
 let ru = {
 	message: {
 		title: 'Скоро здесь начнёт работать платформа для предпринимателей и их клиентов - YOOHIVE.',
+		title_alternative: 'Стать частью YOOHIVE',
 		description:
 			'Мы как пчелки ещё работаем над запуском нашего улья, жу-жу-жу. Но уже сейчас вы можете зарегистрироваться на нашем сайте, чтобы одними из первых получить максимальный эффект для вашего бизнеса.',
 		button: 'Зарегистрироваться'
@@ -11,11 +12,53 @@ let ru = {
 			text_company: 'Название компании/мастера',
 			text_phone: 'Телефон',
 			text_email: 'Email',
+			text_description: 'Описание компании',
 			input_address: {
 				title: 'Адрес',
 				placeholder: ['Улица', 'Дом'],
 			}
 
+		},
+		category: {
+			title: 'Категории',
+			categories: [
+				{
+					name: 'Красота',
+					subcategories: {
+						default : 'Выберите подкатегорию',
+						value: [
+							{
+								name:'Волосы',
+								value: 'hair'
+							},
+							{
+								name:'Парикмахер',
+								value: 'barber'
+							},
+							{
+								name:'Ногти',
+								value: 'nail'
+							},
+							{
+								name:'Брови',
+								value: 'Brows'
+							},
+							{
+								name:'Массаж',
+								value: 'massage'
+							},
+							{
+								name:'Макияж',
+								value: 'makeup'
+							},
+							{
+								name:'Спа',
+								value: 'Spa'
+							}
+						]
+					}
+				}
+			],
 		},
 		work: {
 			title: 'Вы работаете как:',
@@ -50,7 +93,7 @@ let ru = {
 			day_sunday: 'Воскресенье'
 		},
 		calendar: {
-			text: 'Ссылка на Гугл календарь',
+			text: 'Ссылка на календарь (Google, Yandex, Outlook)',
 			placeholder: 'Ссылка'
 		},
 		communication: {
@@ -72,6 +115,8 @@ let ru = {
 			message_error: 'Произошла ошибка: ',
 			message_error_server: 'Ошибка при отправке данных: ',
 			message_completed: 'Данные успешно отправлены',
+			button_prev: 'Назад',
+			button_next: 'Вперед'
 		}
 	}
 };

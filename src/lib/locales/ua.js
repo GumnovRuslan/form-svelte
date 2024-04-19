@@ -10,11 +10,53 @@ let ua = {
 		contacts: {
 			text_company: 'Назва компанії/майстра',
 			text_phone: 'Телефон',
+			text_description: 'Опис компанії',
 			text_email: 'Email',
 			input_address: {
 				title: 'Адреса',
 				placeholder: ['Вулиця', 'Хата'],
 			}
+		},
+		category: {
+			title: 'Категорії',
+			categories: [
+				{
+					name: 'Краса',
+					subcategories: {
+						default : 'Виберіть підкатегорію',
+						value: [
+							{
+								name:'Волосся',
+								value: 'hair'
+							},
+							{
+								name:'Перукар',
+								value: 'barber'
+							},
+							{
+								name:'Нігті',
+								value: 'nail'
+							},
+							{
+								name:'Брові',
+								value: 'Brows'
+							},
+							{
+								name:'Масаж',
+								value: 'massage'
+							},
+							{
+								name:'Макіяж',
+								value: 'makeup'
+							},
+							{
+								name:'Спа',
+								value: 'Spa'
+							}
+						]
+					}
+				}
+			],
 		},
 		work: {
 			title: 'Ви працюєте як:',
@@ -49,7 +91,7 @@ let ua = {
 			day_sunday: 'Неділя'
 		},
 		calendar: {
-			text: 'Посилання на Google календар',
+			text: 'Посилання на календар (Google, Яндекс, Outlook)',
 			placeholder: 'Посилання'
 		},
 		communication: {
@@ -71,6 +113,8 @@ let ua = {
 			message_error: 'Виникла помилка: ',
 			message_error_server: 'Помилка при надсиланні даних: ',
 			message_completed: 'Дані успішно надіслані:',
+			button_prev: 'Назад',
+			button_next: 'Вперед'
 		}
 	}
 };
