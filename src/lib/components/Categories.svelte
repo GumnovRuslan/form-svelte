@@ -1,26 +1,18 @@
 <script>
     import CategoriesItem from "./CategoriesItem.svelte";
-
-    export let category
-
-    // let categories = [
-    //     {
-    //         name: 'Beauty',
-    //         subcategories: ['Hair', 'Barber', 'Nail', 'Brows', 'Massage', 'Makeup', 'Spa']
-    //     },
-    // ]
+    export let categories
 </script>
 
 <div class='categories' id="formCategories">
     <div class='categories__inner'>
         <div class='categories__header'>
-            <p class='categories__title section-name'>{category.title}</p>
+            <p class='categories__title section-name'>{categories.title}</p>
             <span class='categories__required'>*</span>
         </div>
         <div class='categories__content'>
             <div class='categories__items'>
-                {#each category.categories as categoryItem}
-                <CategoriesItem category={categoryItem}/>
+                {#each categories.categories as category}
+                    <CategoriesItem category={category} subcategoryDefault={categories.subcategory_default}/>
                 {/each}
             </div>
         </div>

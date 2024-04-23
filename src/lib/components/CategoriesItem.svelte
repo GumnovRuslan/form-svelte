@@ -1,18 +1,32 @@
 <script>
     export let category = {}
+    export let subcategoryDefault = ''
 
-    let isDisabled = true
+
+    function changeRadio() {
+        const categories = window.formCategories.querySelectorAll('input[type="radio"][name="category"]')
+        categories.forEach(category => {
+            const select = category.closest('.item').querySelector('select')
+            if(category.checked) {
+                select.disabled = false
+                select.required = true
+            } else {
+                select.disabled = true
+                select.required = false
+            }
+        });
+    }
 </script>
 
 <div class='item'>
-    <label class="item__container">
-        <input type='checkbox' class="item__checkbox custom-checkbox" required on:input={(e) => isDisabled = !e.target.checked}>
+    <label class="item__category-container">
+        <input type='radio' name="category" class="item__category custom-checkbox" required on:change={changeRadio}>
         <p class="form__text">{category.name}</p>
     </label>
     <div class='item__subcategories' >
-        <select class="item__subcategories-select" name='{category.name}' disabled={isDisabled} required>
-            <option class="item__subcategories-option" value="" selected disabled hidden>{category.subcategories.default}</option>
-            {#each category.subcategories.value as subcategory}
+        <select class="item__subcategories-select" name='{category.name}' disabled>
+            <option class="item__subcategories-option" value="" selected disabled hidden>{subcategoryDefault}</option>
+            {#each category.subcategories as subcategory}
                 <option class="item__subcategories-option" value='{subcategory.value}'>{subcategory.name}</option>
             {/each}
         </select>
@@ -22,15 +36,25 @@
 <style lang="scss">
     .item {
         display: flex;
-        align-items: center;
-        gap: 20px;
+        column-gap: 20px;
+        row-gap: 10px;
+
+        @media (min-width: 600px) {
+            align-items: center;
+        }
+        @media (max-width: 600px) {
+            flex-direction: column;
+            align-items: start;
+        }
 
         .disabled {
             opacity: 0.5;
             pointer-events: none;
         }
 
-        &__container {
+        &__category-container {
+            max-width: 250px;
+            width: 100%;
             display: inline-flex;
             align-items: center;
             gap: 15px;

@@ -20,43 +20,135 @@ let pl = {
 		},
 		category: {
 			title: 'Kategorie',
+			default : 'Wybierz podkategorię',
 			categories: [
 				{
 					name: 'Uroda',
-					subcategories: {
-						default : 'Wybierz podkategorię',
-						value: [
-							{
-								name:'Włosy',
-								value: 'hair'
-							},
-							{
-								name:'Fryzjer',
-								value: 'barber'
-							},
-							{
-								name:'Paznokcie',
-								value: 'nail'
-							},
-							{
-								name:'Brwi',
-								value: 'Brows'
-							},
-							{
-								name:'Masaż',
-								value: 'massage'
-							},
-							{
-								name:'Makijaż',
-								value: 'makeup'
-							},
-							{
-								name:'Spa',
-								value: 'Spa'
-							}
-						]
-					}
-				}
+					subcategories: [
+						'Włosy',
+						'Fryzjer',
+						'Paznokcie',
+						'Brwi',
+						'Masaż',
+						'Makijaż',
+						'Spa',
+					]
+				},
+				{
+					name: 'Zdrowie',
+					subcategories: [
+						'Stomatologia',
+						'Okulistyka',
+						'Lekarz rodzinny',
+						'NFZ',
+						'Specjaliści',
+						'Fizjoterapia',
+						'Medycyna alternatywna',
+					]
+				},
+				{
+					name: 'Sport',
+					subcategories: [
+						'SIŁOWNIE',
+						'Baseny',
+						'Zdatność',
+						'Taniec',
+						'Joga',
+						'Pilates',
+						'Siatkówka',
+						'Piłka nożna',
+						'Tenis',
+						'Zdusić',
+						'Boks',
+						'Sztuki walki',
+						'Kolarstwo',
+						'Sporty zimowe',
+					]
+				},
+				{
+					name: 'Edukacja',
+					subcategories: [
+						'Szkoły',
+						'Szkoła Policealna',
+						'Uczelnie',
+						'Uniwersytety',
+						'Kursy',
+						'Korepetytorzy',
+					]
+				},
+				{
+					name: 'Rozrywka',
+					subcategories: [
+						'Wystawy',
+						'Muzea',
+						'Teatry',
+						'Sale koncertowe',
+						'Kawiarnia',
+						'Kluby',
+						'Restauracje',
+					]
+				},
+				{
+					name: 'Dzieci',
+					subcategories: [
+						'Przedszkola',
+						'Szkoły',
+						'Nianie',
+						'Centra rozrywki dla dzieci',
+						'Cyrk',
+						'Park wodny',
+						'Zainteresowane grupy',
+					]
+				},
+				{
+					name: 'Dom',
+					subcategories: [
+						'Czyszczenie',
+						'Instalacja wodociągowa',
+						'Elektryczne',
+						'System grzewczy',
+						'Naprawa',
+						'Montaż mebli',
+					]
+				},
+				{
+					name: 'Zwierzęta',
+					subcategories: [
+						'Kliniki weterynaryjne',
+						'Salony piękności dla zwierząt',
+						'Hotele dla zwierząt',
+						'Spacer z psem',
+					]
+				},
+				{
+					name: 'Transport',
+					subcategories: [
+						'Stacja serwisowa',
+						'Transport Pasażerski',
+						'Transport towarowy',
+						'Wynajem samochodu',
+					]
+				},
+				{
+					name: 'Usługi biznesowe',
+					subcategories: [
+						'Rejestracji działalności gospodarczej',
+						'Inkubatory przedsiębiorczości',
+						'Usługi księgowe',
+						'Obsługa prawna biznesu',
+						'Rekrutacja',
+					]
+				},
+				{
+					name: 'Usługi prawne',
+					subcategories: [
+						'Legalizacja',
+						'Notariusze',
+						'Tłumacze przysięgli',
+						'Obsługa prawna biznesu',
+						'Prawnicy',
+					]
+				},
 			],
 		},
 		work: {

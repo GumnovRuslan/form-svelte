@@ -20,43 +20,135 @@ let en = {
 		},
 		category: {
 			title: 'Categories',
+			default : 'Select subcategory',
 			categories: [
 				{
 					name: 'Beauty',
-					subcategories: {
-						default : 'Select subcategory',
-						value: [
-							{
-								name:'Hair',
-								value: 'hair'
-							},
-							{
-								name:'Barber',
-								value: 'barber'
-							},
-							{
-								name:'Nail',
-								value: 'nail'
-							},
-							{
-								name:'Brows',
-								value: 'brows'
-							},
-							{
-								name:'Massage',
-								value: 'massage'
-							},
-							{
-								name:'Makeup',
-								value: 'makeup'
-							},
-							{
-								name:'Spa',
-								value: 'spa'
-							}
-						]
-					}
-				}
+					subcategories: [
+						'Hair',
+						'Hairdresser',
+						'Nails',
+						'Brows',
+						'Massage',
+						'Makeup',
+						'Spa',
+					]
+				},
+				{
+					name: 'Health',
+					subcategories: [
+						'Dentistry',
+						'Ophthalmology',
+						'Family doctor',
+						'NFZ',
+						'Specialists',
+						'Physiotherapy',
+						'Alternative medicine',
+					]
+				},
+				{
+					name: 'Sport',
+					subcategories: [
+						"GYM's",
+						'Swimming pools',
+						'Fitness',
+						'Dancing',
+						'yoga',
+						'Pilates',
+						'Volleyball',
+						'Football',
+						'Tennis',
+						'Squash',
+						'Boxing',
+						'Martial arts',
+						'Cycling',
+						'Winter sports',
+					]
+				},
+				{
+					name: 'Education',
+					subcategories: [
+						'Schools',
+						'Post-secondary school',
+						'Colleges',
+						'Universities',
+						'Courses',
+						'Tutors',
+					]
+				},
+				{
+					name: 'Entertainment',
+					subcategories: [
+						'Exhibitions',
+						'Museums',
+						'Theaters',
+						'Concert halls',
+						'Cafe',
+						'Clubs',
+						'Restaurants',
+					]
+				},
+				{
+					name: 'Children',
+					subcategories: [
+						'Kindergartens',
+						'Schools',
+						'Nannies',
+						"Children's entertainment centers",
+						'Circus',
+						'Aquapark',
+						'Groups',
+					]
+				},
+				{
+					name: 'House',
+					subcategories: [
+						'Cleaning',
+						'Plumbing',
+						'Electrics',
+						'Heating system',
+						'Repair',
+						'Furniture assembly',
+					]
+				},
+				{
+					name: 'Pets',
+					subcategories: [
+						'Veterinary clinics',
+						'Beauty salons for pets',
+						'Hotels for animals',
+						'Dog walking',
+					]
+				},
+				{
+					name: 'Transport',
+					subcategories: [
+						'Service station',
+						'Passenger Transportation',
+						'Freight transportation',
+						'Car rent',
+					]
+				},
+				{
+					name: 'Business services',
+					subcategories: [
+						'Business registration',
+						'Business incubators',
+						'Accounting services',
+						'Legal services for business',
+						'Recruitment',
+					]
+				},
+				{
+					name: 'Legal services',
+					subcategories: [
+						'Legalization',
+						'Notaries',
+						'Sworn translators',
+						'Legal services for business',
+						'Lawyers',
+					]
+				},
 			],
 		},
 		work: {

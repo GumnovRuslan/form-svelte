@@ -25,7 +25,7 @@
 
     function prevStep(e) {
         let formTarget = e.target.closest('form')
-        let forms = document.querySelectorAll('form.form__stage')
+        let forms = document.querySelectorAll('form.form-stage')
 		let progress = document.querySelectorAll('.progress__bar')
         let index = 0
         forms.forEach((form, i)=> {if(form == formTarget) index = i})
