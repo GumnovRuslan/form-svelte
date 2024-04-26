@@ -44,7 +44,7 @@
         </span>
         <span class='controls__button-text'>{buttonsControls.prev}</span>
     </button>
-    <button class='controls__button' class:hidden={!next} id='buttonControlsNext' on:click={checkForm}>
+    <button class='controls__button' class:hidden={!next} id='buttonControlsNext' >
         <span class='controls__button-text'>{buttonsControls.next}</span>
         <span class='controls__button-icon'>
             <svg fill="currentColor" viewBox="0 0 16 16">
