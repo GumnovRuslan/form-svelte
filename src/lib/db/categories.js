@@ -4,6 +4,7 @@ let categories = {
     categories: [
         {
             name: 'Красота',
+            value: 'beauty',
             subcategories: [
                     {
                         name:'Волосы',
@@ -37,6 +38,7 @@ let categories = {
         },
         {
             name: 'Здоровье',
+            value: 'health',
             subcategories: [
                     {
                         name:'Стоматология',
@@ -70,6 +72,7 @@ let categories = {
         },
         {
             name: 'Спорт',
+            value: 'sport',
             subcategories: [
                     {
                         name:'тренажерные залы',
@@ -131,6 +134,7 @@ let categories = {
         },
         {
             name: 'Образование',
+            value: 'education',
             subcategories: [
                     {
                         name:'школы',
@@ -160,6 +164,7 @@ let categories = {
         },
         {
             name: 'Развлечение',
+            value: 'entertainment',
             subcategories: [
                     {
                         name:'выставки',
@@ -193,6 +198,7 @@ let categories = {
         },
         {
             name: 'Дети',
+            value: 'children',
             subcategories: [
                     {
                         name:'детские сады',
@@ -226,6 +232,7 @@ let categories = {
         },
         {
             name: 'Дом',
+            value: 'house',
             subcategories: [
                     {
                         name:'клининг',
@@ -255,6 +262,7 @@ let categories = {
         },
         {
             name: 'Питомцы',
+            value: 'pets',
             subcategories: [
                     {
                         name:'ветеринарные клиники',
@@ -276,6 +284,7 @@ let categories = {
         },
         {
             name: 'Транспорт',
+            value: 'transport',
             subcategories: [
                     {
                         name:'СТО',
@@ -297,6 +306,7 @@ let categories = {
         },
         {
             name: 'Услуги для бизнеса',
+            value: 'business',
             subcategories: [
                     {
                         name:'регистрация бизнеса',
@@ -322,6 +332,7 @@ let categories = {
         },
         {
             name: 'Юридические услуги',
+            value: 'legal services',
             subcategories: [
                     {
                         name:'легализация',

@@ -436,7 +436,7 @@
 			// console.log(transformedData)
 
 			try {
-				const response = await fetch(PUBLIC_URL + formData.subcategory.toUpperCase(),
+				const response = await fetch(PUBLIC_URL + formData.category.name.toUpperCase(),
 					{
 						method: 'POST',
 						headers: {
@@ -476,7 +476,7 @@
 				const languages = getCommunicationLanguages('communicationLanguages');
 				const survey = getPollResponse('formSurvey');
 				const confirmation = window.formConfirmation.checked;
-				const subcategory = getSubcategories('formCategories')
+				const category = getCategory('formCategories')
 
 				return {
 					contents,
@@ -487,7 +487,7 @@
 					languages,
 					survey,
 					confirmation,
-					subcategory
+					category
 				};
 
 				function getDataFromContents(id) {
@@ -583,17 +583,14 @@
 					};
 				}
 
-				function getSubcategories(id) {
+				function getCategory(id) {
 					const container = document.querySelector(`#${id}`);
 					const categories = container.querySelectorAll('input[type="radio"][name="category"]')
 					let categoryChecked
-					categories.forEach(category => {
-						if(category.checked) categoryChecked = category
-					})
-					const subcategories = categoryChecked.closest('.item').querySelector('select.item__subcategories-select')
-					let subcategoryValue = subcategories.options[subcategories.options.selectedIndex].value.replace(/ /g, '')
-					// console.log(subcategoryValue)
-					return subcategoryValue
+					categories.forEach(category => {if(category.checked) categoryChecked = category})
+					return {
+						name: categoryChecked.dataset.name,
+						subcategories: categoryChecked.dataset.select.split(',')}
 				}
 			}
 		}
@@ -613,7 +610,8 @@
 				affiliation: formData.workLike,
 				socialMediaLinks: [formData.networkLinks],
 				specialTags: [],
-				languages: []
+				languages: [],
+				subcategories: [...formData.category.subcategories]
 			};
 
 			for (const key in formData.survey) {
