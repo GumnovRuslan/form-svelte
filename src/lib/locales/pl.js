@@ -15,7 +15,7 @@ let pl = {
 			text_email: 'Email',
 			input_address: {
 				title: 'Adres',
-				placeholder: ['Ulica', 'Dom'],
+				placeholder: ['Uliczny Dom', 'Region Miejski'],
 			}
 		},
 		category: {

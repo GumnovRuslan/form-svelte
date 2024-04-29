@@ -14,7 +14,7 @@ let ua = {
 			text_email: 'Email',
 			input_address: {
 				title: 'Адреса',
-				placeholder: ['Вулиця', 'Хата'],
+				placeholder: ['Вулиця Будинок', 'Місто Регіон'],
 			}
 		},
 		category: {

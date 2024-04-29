@@ -14,7 +14,7 @@ let by = {
 			text_email: 'Email',
 			input_address: {
 				title: 'Адрас',
-				placeholder: ['Вуліца', 'Дом'],
+				placeholder: ['Улица Дом', 'Горад Рэгіён'],
 			}
 		},
 		category: {

@@ -15,7 +15,7 @@ let ru = {
 			text_description: 'Описание компании',
 			input_address: {
 				title: 'Адрес',
-				placeholder: ['Улица', 'Дом'],
+				placeholder: ['Улица Дом', 'Город Регион'],
 			}
 
 		},
