@@ -1,0 +1,12 @@
+.button {
+    border-radius: 100px;
+    transition: 0.2s;
+	cursor: pointer;
+	color: var(--color-btn-secondary);
+	background: var(--color-btn-primary);
+}
+
+.button:hover {
+    color: var(--color-btn-primary);
+    background: var(--color-btn-secondary);
+}

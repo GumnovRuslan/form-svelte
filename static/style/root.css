@@ -1,20 +1,42 @@
 :root {
-	--color-text-primary: #331e09;
-	--color-text-secondary: #ffffff;
+	--color-black: #444444;
+	--color-white: #ffffff;
+	--color-blue: #9AB3D5;
+	--color-blue-light: #D6E5F4;
+	--color-orange: #EF743E;
+	--color-yellow: #FDD949;
+
+	--color-text-primary: var(--color-black);
+	--color-text-secondary: var(--color-white);
+	--color-text-third: var(--color-blue);
 
 	--color-border-primary: #000000;
 	--color-border-secondary: #ffd883;
 	--color-invalid: red;
 
-	--color-bg-primary: #fff7d284;
-	--color-bg-secondary: #ffffff;
-	--color-bg-third: #fefbed84;
+	--color-bg-primary: var(--color-blue);
+	--color-bg-secondary: var(--color-white);
+	--color-bg-third: var(--color-yellow);
+	--color-bg-fourth: var(--color-blue-light);
+	--color-bg-fifth: var(--color-orange);
 	--color-bg-button: #2f487e;
+
+	--color-btn-primary: var(--color-orange);
+	--color-btn-secondary: var(--color-white);
+
+	--color-hover-primary: var(--color-blue-light);
 
 	--input-border: none;
 	--input-bg: var(--color-bg-secondary);
 
 	--border-primary: 1px solid var(--color-border-secondary);
+}
+
+.wrapper {
+	flex: content;
+	display: flex;
+	flex-direction: column;
+	background: var(--color-bg-secondary);
 }
 
 .main-background {
@@ -32,7 +54,7 @@
 }
 
 .form__input {
-	font-family: 'Mukta', sans-serif;
+	/* font-family: 'Mukta', sans-serif; */
 	display: block;
 	width: 100%;
 	padding: 10px 20px;
@@ -41,7 +63,7 @@
 	border-radius: 30px;
 }
 
-.button {
+/* .button {
 	padding: 20px 40px;
 	font-size: 22px;
 	max-width: 400px;
@@ -52,11 +74,11 @@
 	cursor: pointer;
 	color: var(--color-text-secondary);
 	transition: 0.2s;
-}
+} */
 
-.button:hover {
+/* .button:hover {
 	opacity: 0.9;
-}
+} */
 
 .input-name {
 	font-weight: 500;

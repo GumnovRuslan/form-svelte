@@ -11,6 +11,12 @@
 	import FormControls from '../lib/components/FormControls.svelte';
 	import { PUBLIC_URL } from '$env/static/public'
 	import categoriesFull from '../lib/db/categories'
+	import Header from '../lib/components/Header.svelte';
+	import ProgressBar from '../lib/components/ProgressBar.svelte';
+
+	const langs = ["ru", "en", "pl", "by", "ua"]
+	let selectLangId
+	i18next.on('languageChanged', changeContent);
 
 	let formMessage = ''
 	let formMessageIsError = false
@@ -39,29 +45,26 @@
 	}
 
 	onMount(() => {
-		i18next.on('languageChanged', changeContent);
 		const form = window.myForm;
-		const formCheckbox = window.showForm;
-		const switchLanguages = window.formLanguages;
 
-		workPageLanguage();
+		langInit();
 		formShow();
 		workSectionNetwork();
 		workSectionCommunication();
 		workSectionWorkLike();
 
 		function formShow() {
-			formCheckbox.addEventListener('input', (e) => {
-				const formHeight = form.scrollHeight;
-				const message = document.querySelector('.message')
-				if (e.target.checked) {
-					form.style.height = `${formHeight}px`;
-					setTimeout(() => form.style.height = 'max-content', 500);
-					message.style.paddingTop = '10px'
-					message.style.paddingBottom = '10px'
-					document.getElementById('messageInner').style.display = 'none'
-				}
-			});
+			// showForm.addEventListener('input', (e) => {
+			// 	const formHeight = form.scrollHeight;
+			// 	const message = document.querySelector('.message')
+			// 	if (e.target.checked) {
+			// 		form.style.height = `${formHeight}px`;
+			// 		setTimeout(() => form.style.height = 'max-content', 500);
+			// 		message.style.paddingTop = '10px'
+			// 		message.style.paddingBottom = '10px'
+			// 		document.getElementById('messageInner').style.display = 'none'
+			// 	}
+			// });
 		}
 
 		function workSectionWorkLike() {
@@ -113,53 +116,30 @@
 			});
 		}
 
-		function workPageLanguage() {
-			const language = startPageLanguage();
-			switchLanguages.addEventListener('input', changeSelectLanguages);
 
-			i18next.init({
-				lng: language,
-				resources: {
-					en: en,
-					ru: ru,
-					pl: pl,
-					ua: ua,
-					by: by
-				}
-			});
-
-			function changeSelectLanguages(e) {
-				const select = e.target;
-				const language = select.options[select.selectedIndex].value;
-				i18next.changeLanguage(language);
-			}
-
-			function startPageLanguage() {
-				let language = getPageLanguage();
-				switchLanguages.value = language;
-
-				function getPageLanguage() {
-					const browserLanguage = window.navigator.language;
-					const availableLanguages = getLanguages();
-					const language = availableLanguages.find((el) => el == browserLanguage) ?? 'en';
-
-					function getLanguages() {
-						const options = switchLanguages.querySelectorAll('option');
-						let optionsValue = [];
-						options.forEach((el) => optionsValue.push(el.value));
-						return optionsValue;
-					}
-
-					return language;
-				}
-				return language;
-			}
-		}
 	});
 
+	function langInit() {
+		const browserLanguage = window.navigator.language;
+		const langIndex = langs.indexOf(browserLanguage)
+		selectLangId = (langIndex >= 0) ? langIndex : 1
+		langs[selectLangId];
+
+		i18next.init({
+			lng: langs[selectLangId],
+			resources: {
+				en: en,
+				ru: ru,
+				pl: pl,
+				ua: ua,
+				by: by
+			}
+		});
+	}
+
 	function changeContent() {
-			let messageTitle = document.getElementById('title')
-			let messageDescription = document.getElementById('description')
+			// let messageTitle = document.getElementById('title')
+			// let messageDescription = document.getElementById('description')
 			const titleVariation = [
 				i18next.t('message:title'),
 				i18next.t('message:title', {context: 'alternative'}),
@@ -169,8 +149,8 @@
 				'',
 			]
 
-			messageTitle.textContent = titleVariation[messageTitle.dataset.variation ?? 0]
-			messageDescription.textContent = descriptionVariation[messageDescription.dataset.variation ?? 0]
+			// messageTitle.textContent = titleVariation[messageTitle.dataset.variation ?? 0]
+			// messageDescription.textContent = descriptionVariation[messageDescription.dataset.variation ?? 0]
 
 			document.getElementById('message-button').textContent = i18next.t('message:button');
 			document.querySelector('.form__header-title').textContent = i18next.t('form:title');
@@ -642,428 +622,422 @@
 	}
 </script>
 
-<div class="main-background">
-	<header class="header">
-		<div class="header__inner">
-			<div class="header__content">
-				<a href="/" class="header__logo" on:click={() => location.reload()}>YOOHIVE</a>
-				<div class="header__language">
-					<select class="header__language-select" name="" id="formLanguages">
-						<option class="header__language-option" value="ru"> ru </option>
-						<option class="header__language-option" value="en"> en </option>
-						<option class="header__language-option" value="pl"> pl </option>
-						<option class="header__language-option" value="by"> by </option>
-						<option class="header__language-option" value="ua"> ua </option>
-					</select>
-				</div>
-			</div>
-		</div>
-	</header>
-	<main class="page" id='page'>
-		<div class="page__content">
+<Header {langs} active={selectLangId} on:selectLang={(e) => i18next.changeLanguage(e.detail.value)}/>
+<main class="main">
 			<div class="message">
 				<input type="checkbox" id="showForm" />
 				<div class="message__inner" id='messageInner'>
-					<h2 id="title" class="message__title">The service is not working right now</h2>
-					<p id="description" class="message__description">
-						We are like bees working to start our hive ju-ju-ju. For now you can register on our
-						website to get maximum effect for your business.
-					</p>
-					<label id="message-button" for="showForm" class="message__button button">
-						Registration
-					</label>
+					<h2 class="message__title">A platform for entrepreneurs and their customers, will be launching here soon.</h2>
+					<div class="message__description">
+						<span class='message__description-text'>We're like bees</span>
+						<span class='message__description-text'>still working on the launch of our hive.</span>
+						<span class='message__description-text'>buh-buh-buh</span>
+					</div>
+					<div class='message__icon'>
+						<svg  viewBox="0 0 1296 295" fill="none" xmlns="http://www.w3.org/2000/svg">
+							<path d="M1304.5 122C1229 36.4999 1050.5 -30.5001 941 26.9999C908.322 46.7574 883.252 70.2568 865.928 94.9999C840.146 131.823 831.52 171.401 840.5 205.5C845.02 222.661 851.989 237.145 860.599 249C917.708 327.642 1046.95 290.605 1011.5 152C959.446 -51.5361 660.127 84.1699 401.5 189C214 265 73.8333 174.167 -50.5 43.9999" stroke="#C5D5E5" stroke-width="10" stroke-linejoin="round" stroke-dasharray="18 18"/>
+							<g clip-path="url(#clip0_2001_205)">
+							<path d="M228.008 238.898C224.358 238.304 213.404 236.527 213.404 236.527C198.672 234.134 188.666 220.25 191.058 205.518C193.451 190.786 207.335 180.779 222.067 183.171L236.671 185.543C253.737 188.314 267.916 200.002 273.972 216.015C274.714 217.979 274.345 220.189 272.99 221.79C267.715 228.022 252.331 242.847 228.006 238.896L228.008 238.898Z" fill="#FDD949"/>
+							<path d="M254.721 192.394L247.296 238.106C253.404 236.59 259.076 233.992 264.101 230.372C267.932 227.611 271.167 224.03 273.102 221.665C274.36 220.128 274.707 218.041 274.018 216.178C272.996 213.412 271.256 209.274 269.075 206.248C265.165 200.821 260.484 196.049 254.716 192.395L254.721 192.394Z" fill="#3F3F3F"/>
+							<path d="M213.405 236.527L226.352 238.63L235.017 185.272L222.069 183.169C218.859 182.647 215.69 182.715 212.673 183.291L204.532 233.436C207.213 234.938 210.199 236.004 213.407 236.524L213.405 236.527Z" fill="#3F3F3F"/>
+							<path d="M247.781 223.543C240.046 214.196 225.427 211.729 218.706 211.084C216.693 210.891 214.915 212.373 214.734 214.386C214.15 220.882 213.855 234.909 220.698 244.232C226.713 252.423 238.495 253.873 246.052 247.077C252.813 241 253.627 230.613 247.781 223.543Z" fill="white"/>
+							<path d="M250.817 204.835C240.526 211.254 225.877 208.968 219.294 207.455C217.324 207.003 216.104 205.031 216.571 203.063C218.071 196.715 222.232 183.316 231.673 176.641C239.969 170.774 251.606 173.127 256.625 181.964C261.114 189.869 258.603 199.979 250.82 204.837L250.817 204.835Z" fill="white"/>
+							</g>
+							<defs>
+							<clipPath id="clip0_2001_205">
+							<rect width="79.3987" height="73.9231" fill="white" transform="translate(223.206 156) rotate(35.766)"/>
+							</clipPath>
+							</defs>
+							</svg>
+					</div>
+					<div class='message__bottom'>
+						<p class='message__bottom-text'>
+							Register now to be among the first to maximize the impact for your business.
+						</p>
+						<label for="showForm" class="message__bottom-button button" id="message-button">Registration</label>
+					</div>
 				</div>
-				<div class="form" name="myForm" id="myForm" enctype="application/json">
+				<div class="form" name="myForm" id="myForm">
 					<div class="form__inner">
-						<div class="form__header">
-							<h2 class="form__header-title">Регистрация</h2>
+						<div class='form__inner-image'>
+							<img src='/img/image.webp' alt=''>
 						</div>
-						<div class='progress'>
-							<div class='progress__bar progress__bar--completed'></div>
-							<div class='progress__bar'></div>
-							<div class='progress__bar'></div>
-							<div class='progress__bar'></div>
-						</div>
-						<div class="form__content">
-
-							<form class='form-stage' id="formStep1" on:submit={nextStep}>
-								<div class="form__contacts" id="formContacts">
-									<div class="form__contacts-item" id="contactCompany">
-										<div class="form__contacts-item-header input-name">
-											<p class="form__contacts-item-text">Название компании/мастера</p>
-											<span class="form__required">*</span>
-										</div>
-										<input
-											type="text"
-											class="form__contacts-item-input form__input"
-											placeholder="Company name"
-											required
-										/>
-									</div>
-
-									<div class="form__contacts-item" id="contactDescription">
-										<div class="form__contacts-item-header input-name">
-											<p class="form__contacts-item-text">Название компании/мастера</p>
-										</div>
-										<textarea class="form__contacts-item-textarea form__input" name='contactDescription' maxlength="221"></textarea>
-									</div>
-
-									<div class="form__contacts-items">
-										<div class="form__contacts-item" id="contactAddress">
-											<div class="form__contacts-item-header">
-												<p class="form__contacts-item-text input-name">Адрес</p>
-												<span class="form__required">*</span>
-											</div>
-											<div class='form__contacts-item-main'>
-												<input
-													type="text"
-													class="form__contacts-item-input form__input"
-													placeholder="Address"
-													required
-												/>
-												<input
-													type="text"
-													class="form__contacts-item-input form__input"
-													placeholder="Address"
-													required
-												/>
-											</div>
-										</div>
-										<div class="form__contacts-item" id="contactPhone">
+						<div class='form__content'>
+							<div class="form__header">
+								<h2 class="form__header-title">Регистрация</h2>
+								<ProgressBar />
+							</div>
+								<form class='form-stage' id="formStep1" on:submit={nextStep}>
+									<div class="form__contacts" id="formContacts">
+										<div class="form__contacts-item" id="contactCompany">
 											<div class="form__contacts-item-header input-name">
-												<p class="form__contacts-item-text">Телефон</p>
+												<p class="form__contacts-item-text">Название компании/мастера</p>
 												<span class="form__required">*</span>
 											</div>
 											<input
-												type="tel"
+												type="text"
 												class="form__contacts-item-input form__input"
+												placeholder="Company name"
+												required
+											/>
+										</div>
+
+										<div class="form__contacts-item" id="contactDescription">
+											<div class="form__contacts-item-header input-name">
+												<p class="form__contacts-item-text">Название компании/мастера</p>
+											</div>
+											<textarea class="form__contacts-item-textarea form__input" name='contactDescription' maxlength="221"></textarea>
+										</div>
+
+										<div class="form__contacts-items">
+											<div class="form__contacts-item" id="contactAddress">
+												<div class="form__contacts-item-header">
+													<p class="form__contacts-item-text input-name">Адрес</p>
+													<span class="form__required">*</span>
+												</div>
+												<div class='form__contacts-item-main'>
+													<input
+														type="text"
+														class="form__contacts-item-input form__input"
+														placeholder="Address"
+														required
+													/>
+													<input
+														type="text"
+														class="form__contacts-item-input form__input"
+														placeholder="Address"
+														required
+													/>
+												</div>
+											</div>
+											<div class="form__contacts-item" id="contactPhone">
+												<div class="form__contacts-item-header input-name">
+													<p class="form__contacts-item-text">Телефон</p>
+													<span class="form__required">*</span>
+												</div>
+												<input
+													type="tel"
+													class="form__contacts-item-input form__input"
+													required
+												/>
+											</div>
+										</div>
+
+										<div class="form__contacts-item" id="contactEmail">
+											<div class="form__contacts-item-header input-name">
+												<p class="form__contacts-item-text input-name">Email</p>
+												<span class="form__required">*</span>
+											</div>
+											<input
+												type="email"
+												class="form__contacts-item-input form__input"
+												placeholder="Email"
 												required
 											/>
 										</div>
 									</div>
+									<FormControls prev={false} {buttonsControls}/>
+								</form>
 
-									<div class="form__contacts-item" id="contactEmail">
-										<div class="form__contacts-item-header input-name">
-											<p class="form__contacts-item-text input-name">Email</p>
-											<span class="form__required">*</span>
-										</div>
-										<input
-											type="email"
-											class="form__contacts-item-input form__input"
-											placeholder="Email"
-											required
-										/>
-									</div>
-								</div>
-								<FormControls prev={false} {buttonsControls}/>
-							</form>
-
-							<form class='form-stage' id="formStep2" on:submit={nextStep}>
-								<div class='form-stage__inner'>
-									<Categories categories={categoriesFull}/>
-									<div class="form__work-like" id="workLike">
-										<div class="form__work-like-header">
-											<p class="form__work-like-text section-name">You work like:</p>
-											<span class="form__required">*</span>
-										</div>
-										<div class="form__work-like-content">
-											<div class="form__work-like-items">
-												<div class="form__work-like-item">
-													<input
-														class="form__work-like-radio custom-radio"
-														type="radio"
-														name="workLike"
-														id="workLikePhysical"
-														required
-													/>
-													<label for="workLikePhysical" class="form__work-like-label">
-														<span class="form__work-like-content-text form__text"> Физ. лицо </span>
-													</label>
-													<div class="form__work-like-input-container" id="data">
-														<p class="form__work-like-input-text">PESEL</p>
+								<form class='form-stage' id="formStep2" on:submit={nextStep}>
+									<div class='form-stage__inner'>
+										<Categories categories={categoriesFull}/>
+										<div class="form__work-like" id="workLike">
+											<div class="form__work-like-header">
+												<p class="form__work-like-text section-name">You work like:</p>
+												<span class="form__required">*</span>
+											</div>
+											<div class="form__work-like-content">
+												<div class="form__work-like-items">
+													<div class="form__work-like-item">
 														<input
-															class="form__work-like-input form__input"
-															type="number"
-															placeholder="Enter 11 numbers"
-															disabled
-															min="10000000000"
-															max="99999999999"
+															class="form__work-like-radio custom-radio"
+															type="radio"
+															name="workLike"
+															id="workLikePhysical"
+															required
 														/>
+														<label for="workLikePhysical" class="form__work-like-label">
+															<span class="form__work-like-content-text form__text"> Физ. лицо </span>
+														</label>
+														<div class="form__work-like-input-container" id="data">
+															<p class="form__work-like-input-text">PESEL</p>
+															<input
+																class="form__work-like-input form__input"
+																type="number"
+																placeholder="Enter 11 numbers"
+																disabled
+																min="10000000000"
+																max="99999999999"
+															/>
+														</div>
 													</div>
-												</div>
-												<div class="form__work-like-item">
-													<input
-														class="form__work-like-radio custom-radio"
-														type="radio"
-														name="workLike"
-														id="workLikeCompany"
-													/>
-													<label for="workLikeCompany" class="form__work-like-label">
-														<span class="form__work-like-content-text form__text"> Компания </span>
-													</label>
-													<div class="form__work-like-input-container" id="data">
-														<p class="form__work-like-input-text">NIP</p>
+													<div class="form__work-like-item">
 														<input
-															class="form__work-like-input form__input"
-															type="number"
-															placeholder="Enter 10 numbers"
-															disabled
-															min="1000000000"
-															max="9999999999"
+															class="form__work-like-radio custom-radio"
+															type="radio"
+															name="workLike"
+															id="workLikeCompany"
 														/>
+														<label for="workLikeCompany" class="form__work-like-label">
+															<span class="form__work-like-content-text form__text"> Компания </span>
+														</label>
+														<div class="form__work-like-input-container" id="data">
+															<p class="form__work-like-input-text">NIP</p>
+															<input
+																class="form__work-like-input form__input"
+																type="number"
+																placeholder="Enter 10 numbers"
+																disabled
+																min="1000000000"
+																max="9999999999"
+															/>
+														</div>
 													</div>
 												</div>
 											</div>
 										</div>
-									</div>
-									<div class="form__network" id="formNetwork">
-										<p class="form__network-text section-name">Соц. сети</p>
-										<div class="form__network-items" id="networkContainer">
-											<div class="form__network-item">
-												<label class="form__network-item-container">
-													<input class="form__network-item-checkbox custom-checkbox" type="checkbox" />
-													<span class="form__network-item-text form__text">Instagram</span>
-												</label>
-												<input
-													type="text"
-													class="form__network-item-input form__input"
-													disabled
-													placeholder="ссылка"
-												/>
-											</div>
+										<div class="form__network" id="formNetwork">
+											<p class="form__network-text section-name">Соц. сети</p>
+											<div class="form__network-items" id="networkContainer">
+												<div class="form__network-item">
+													<label class="form__network-item-container">
+														<input class="form__network-item-checkbox custom-checkbox" type="checkbox" />
+														<span class="form__network-item-text form__text">Instagram</span>
+													</label>
+													<input
+														type="text"
+														class="form__network-item-input form__input"
+														disabled
+														placeholder="ссылка"
+													/>
+												</div>
 
-											<div class="form__network-item">
-												<label class="form__network-item-container">
-													<input class="form__network-item-checkbox custom-checkbox" type="checkbox" />
-													<span class="form__network-item-text form__text">Facebook</span>
-												</label>
-												<input
-													type="text"
-													class="form__network-item-input form__input"
-													disabled
-													placeholder="ссылка"
-												/>
-											</div>
+												<div class="form__network-item">
+													<label class="form__network-item-container">
+														<input class="form__network-item-checkbox custom-checkbox" type="checkbox" />
+														<span class="form__network-item-text form__text">Facebook</span>
+													</label>
+													<input
+														type="text"
+														class="form__network-item-input form__input"
+														disabled
+														placeholder="ссылка"
+													/>
+												</div>
 
-											<div class="form__network-item">
-												<label class="form__network-item-container">
-													<input class="form__network-item-checkbox custom-checkbox" type="checkbox" />
-													<span class="form__network-item-text form__text">Telegram</span>
-												</label>
-												<input
-													type="text"
-													class="form__network-item-input form__input"
-													disabled
-													placeholder="ссылка"
-												/>
-											</div>
+												<div class="form__network-item">
+													<label class="form__network-item-container">
+														<input class="form__network-item-checkbox custom-checkbox" type="checkbox" />
+														<span class="form__network-item-text form__text">Telegram</span>
+													</label>
+													<input
+														type="text"
+														class="form__network-item-input form__input"
+														disabled
+														placeholder="ссылка"
+													/>
+												</div>
 
-											<div class="form__network-item">
-												<label class="form__network-item-container">
-													<input class="form__network-item-checkbox custom-checkbox" type="checkbox" />
-													<span class="form__network-item-text form__text">Tiktok</span>
-												</label>
-												<input
-													type="text"
-													class="form__network-item-input form__input"
-													disabled
-													placeholder="ссылка"
-												/>
-											</div>
+												<div class="form__network-item">
+													<label class="form__network-item-container">
+														<input class="form__network-item-checkbox custom-checkbox" type="checkbox" />
+														<span class="form__network-item-text form__text">Tiktok</span>
+													</label>
+													<input
+														type="text"
+														class="form__network-item-input form__input"
+														disabled
+														placeholder="ссылка"
+													/>
+												</div>
 
-											<div class="form__network-item">
-												<label class="form__network-item-container">
-													<input class="form__network-item-checkbox custom-checkbox" type="checkbox" />
-													<span class="form__network-item-text form__text">Linkedin</span>
-												</label>
-												<input
-													type="text"
-													class="form__network-item-input form__input"
-													disabled
-													placeholder="ссылка"
-												/>
+												<div class="form__network-item">
+													<label class="form__network-item-container">
+														<input class="form__network-item-checkbox custom-checkbox" type="checkbox" />
+														<span class="form__network-item-text form__text">Linkedin</span>
+													</label>
+													<input
+														type="text"
+														class="form__network-item-input form__input"
+														disabled
+														placeholder="ссылка"
+													/>
+												</div>
 											</div>
 										</div>
 									</div>
-								</div>
-								<FormControls {buttonsControls}/>
-							</form>
+									<FormControls {buttonsControls}/>
+								</form>
 
-							<form class='form-stage' id='formStep3' on:submit={nextStep}>
-								<div class="form__work-mode work-mode" id="formWorkMode">
-									<div class='work-mode__header'>
-										<p class='work-mode__header-name section name'>{timesData.title}</p>
+								<form class='form-stage' id='formStep3' on:submit={nextStep}>
+									<div class="form__work-mode work-mode" id="formWorkMode">
+										<div class='work-mode__header'>
+											<p class='work-mode__header-name section name'>{timesData.title}</p>
+										</div>
+										<div class="form__work-mode-items">
+											{#each timesData.days as day}
+												<WorkMoreItem
+												on:select={(e) => changeTime(e.detail)}
+												day={day}
+												text={timesData.timeText}/>
+											{/each}
+										</div>
 									</div>
-									<div class="form__work-mode-items">
-										{#each timesData.days as day}
-											<WorkMoreItem
-											on:select={(e) => changeTime(e.detail)}
-											day={day}
-											text={timesData.timeText}/>
-										{/each}
-									</div>
-								</div>
-								<FormControls {buttonsControls}/>
-							</form>
+									<FormControls {buttonsControls}/>
+								</form>
 
-							<form class='form-stage' id='formStep4' on:submit={sendForm}>
-								<div class='form-stage__inner'>
-									<div class="form__calendar" id="formLinkCalendar">
-										<p class="form__calendar-text section-name">Link to Google calendar</p>
-										<input
-											id="inputLinkCalendar"
-											type="url"
-											class="form__calendar-input form__input"
-											placeholder="link to Google calendar"
-											on:input={(e) => e.target.required = !!e.target.value}
-										/>
-									</div>
-									<div class="form__languages-container" id="communicationLanguages">
-										<p class="form__languages-text section-name">Языки комуникациии</p>
-										<div class="form__languages-items">
-											<label class="form__languages-item">
-												<input type="checkbox" class="form__languages-item-checkbox custom-checkbox" />
-												<span class="form__languages-item-text form__text">Polski</span>
-											</label>
+								<form class='form-stage' id='formStep4' on:submit={sendForm}>
+									<div class='form-stage__inner'>
+										<div class="form__calendar" id="formLinkCalendar">
+											<p class="form__calendar-text section-name">Link to Google calendar</p>
+											<input
+												id="inputLinkCalendar"
+												type="url"
+												class="form__calendar-input form__input"
+												placeholder="link to Google calendar"
+												on:input={(e) => e.target.required = !!e.target.value}
+											/>
+										</div>
+										<div class="form__languages-container" id="communicationLanguages">
+											<p class="form__languages-text section-name">Языки комуникациии</p>
+											<div class="form__languages-items">
+												<label class="form__languages-item">
+													<input type="checkbox" class="form__languages-item-checkbox custom-checkbox" />
+													<span class="form__languages-item-text form__text">Polski</span>
+												</label>
 
-											<label class="form__languages-item">
-												<input type="checkbox" class="form__languages-item-checkbox custom-checkbox" />
-												<span class="form__languages-item-text form__text">Беларуская</span>
-											</label>
+												<label class="form__languages-item">
+													<input type="checkbox" class="form__languages-item-checkbox custom-checkbox" />
+													<span class="form__languages-item-text form__text">Беларуская</span>
+												</label>
 
-											<label class="form__languages-item">
-												<input type="checkbox" class="form__languages-item-checkbox custom-checkbox" />
-												<span class="form__languages-item-text form__text">Українська</span>
-											</label>
+												<label class="form__languages-item">
+													<input type="checkbox" class="form__languages-item-checkbox custom-checkbox" />
+													<span class="form__languages-item-text form__text">Українська</span>
+												</label>
 
-											<label class="form__languages-item">
-												<input type="checkbox" class="form__languages-item-checkbox custom-checkbox" />
-												<span class="form__languages-item-text form__text">Русский</span>
-											</label>
+												<label class="form__languages-item">
+													<input type="checkbox" class="form__languages-item-checkbox custom-checkbox" />
+													<span class="form__languages-item-text form__text">Русский</span>
+												</label>
 
-											<label class="form__languages-item">
-												<input type="checkbox" class="form__languages-item-checkbox custom-checkbox" />
-												<span class="form__languages-item-text form__text">English</span>
-											</label>
+												<label class="form__languages-item">
+													<input type="checkbox" class="form__languages-item-checkbox custom-checkbox" />
+													<span class="form__languages-item-text form__text">English</span>
+												</label>
 
-											<div class="form__languages-another">
-												<label class="form__languages-item-another">
+												<div class="form__languages-another">
+													<label class="form__languages-item-another">
+														<input
+															type="checkbox"
+															class="form__languages-item-another-checkbox form__languages-item-checkbox custom-checkbox"
+														/>
+														<span
+															class="form__languages-item-text form__text form__languages-item-another-text"
+															>Another</span
+														>
+													</label>
 													<input
+														class="form__languages-item-another-input form__input"
+														type="text"
+														disabled
+														placeholder="Enter other languages"
+													/>
+												</div>
+											</div>
+
+										</div>
+										<div class="form__preferences" id="formSurvey">
+											<div class="form__preferences-header">
+												<p class="form__preferences-text form__text">
+													Select which category matches your company
+												</p>
+												<p class="form__preferences-text form__text"></p>
+											</div>
+
+											<div class="form__preferences-items">
+												<label class="form__preferences-item">
+													<input
+														class="form__preferences-item-checkbox custom-checkbox"
 														type="checkbox"
-														class="form__languages-item-another-checkbox form__languages-item-checkbox custom-checkbox"
+														name="preferences"
+														value="ecofriendly"
 													/>
-													<span
-														class="form__languages-item-text form__text form__languages-item-another-text"
-														>Another</span
-													>
+													<span class="form__preferences-item-text form__text">ecofriendly</span>
 												</label>
-												<input
-													class="form__languages-item-another-input form__input"
-													type="text"
-													disabled
-													placeholder="Enter other languages"
-												/>
+
+												<label class="form__preferences-item">
+													<input
+														class="form__preferences-item-checkbox custom-checkbox"
+														type="checkbox"
+														name="preferences"
+														value="ecofriendly"
+													/>
+													<span class="form__preferences-item-text form__text">petfriendly</span>
+												</label>
+
+												<label class="form__preferences-item">
+													<input
+														class="form__preferences-item-checkbox custom-checkbox"
+														type="checkbox"
+														name="preferences"
+														value="ecofriendly"
+													/>
+													<span class="form__preferences-item-text form__text">childefriendly</span>
+												</label>
+
+												<label class="form__preferences-item">
+													<input
+														class="form__preferences-item-checkbox custom-checkbox"
+														type="checkbox"
+														name="preferences"
+														value="ecofriendly"
+													/>
+													<span class="form__preferences-item-text form__text">inclusive</span>
+												</label>
 											</div>
 										</div>
-
+										<label class="form__confirmation" id="formConfirmation">
+											<input
+												class="form__confirmation-checkbox custom-checkbox"
+												type="checkbox"
+												required
+											/>
+											<div class="form__confirmation-text-container">
+												<span class="form__confirmation-text">
+													I agree to the publication of the provided data on YOOHIVE.COM resources
+												</span>
+												<span class="form__required">*</span>
+												<p class="form__confirmation-text"></p>
+											</div>
+										</label>
 									</div>
-									<div class="form__preferences" id="formSurvey">
-										<div class="form__preferences-header">
-											<p class="form__preferences-text form__text">
-												Select which category matches your company
-											</p>
-											<p class="form__preferences-text form__text"></p>
-										</div>
-
-										<div class="form__preferences-items">
-											<label class="form__preferences-item">
-												<input
-													class="form__preferences-item-checkbox custom-checkbox"
-													type="checkbox"
-													name="preferences"
-													value="ecofriendly"
-												/>
-												<span class="form__preferences-item-text form__text">ecofriendly</span>
-											</label>
-
-											<label class="form__preferences-item">
-												<input
-													class="form__preferences-item-checkbox custom-checkbox"
-													type="checkbox"
-													name="preferences"
-													value="ecofriendly"
-												/>
-												<span class="form__preferences-item-text form__text">petfriendly</span>
-											</label>
-
-											<label class="form__preferences-item">
-												<input
-													class="form__preferences-item-checkbox custom-checkbox"
-													type="checkbox"
-													name="preferences"
-													value="ecofriendly"
-												/>
-												<span class="form__preferences-item-text form__text">childefriendly</span>
-											</label>
-
-											<label class="form__preferences-item">
-												<input
-													class="form__preferences-item-checkbox custom-checkbox"
-													type="checkbox"
-													name="preferences"
-													value="ecofriendly"
-												/>
-												<span class="form__preferences-item-text form__text">inclusive</span>
-											</label>
+									<div class='message-send' id='formCompleted'>
+										<div class='message-send__inner'>
+											<div class='message-send__image'>
+												<img src='/img/mark.webp' alt=''>
+											</div>
+											<p class='message-send__text'>{formMessage}</p>
 										</div>
 									</div>
-									<label class="form__confirmation" id="formConfirmation">
-										<input
-											class="form__confirmation-checkbox custom-checkbox"
-											type="checkbox"
-											required
-										/>
-										<div class="form__confirmation-text-container">
-											<span class="form__confirmation-text">
-												I agree to the publication of the provided data on YOOHIVE.COM resources
-											</span>
-											<span class="form__required">*</span>
-											<p class="form__confirmation-text"></p>
-										</div>
-									</label>
-								</div>
-								<div class='message-send' id='formCompleted'>
-									<div class='message-send__inner'>
-										<div class='message-send__image'>
-											<img src='/img/mark.webp' alt=''>
-										</div>
-										<p class='message-send__text'>{formMessage}</p>
+									<div class='form__button-container'>
+										<button class="button" type="submit" id="buttonSend" class:button__disabled={buttonIsDisabled}>Registration</button>
+										<p class='form__message' class:message-error={formMessageIsError}>{formMessage}</p>
 									</div>
-								</div>
-								<div class='form__button-container'>
-									<button class="button" type="submit" id="buttonSend" class:button__disabled={buttonIsDisabled}>Registration</button>
-									<p class='form__message' class:message-error={formMessageIsError}>{formMessage}</p>
-								</div>
-								<FormControls prev={controlsButton} next={false} {buttonsControls}/>
-							</form>
+									<FormControls prev={controlsButton} next={false} {buttonsControls}/>
+								</form>
 						</div>
+
 					</div>
 				</div>
 			</div>
-		</div>
-	</main>
-	<footer class="footer">
-		<div class="footer__inner">
-			<p class="footer__text">© 2024 YOOHIVE All Rights Reserved</p>
-		</div>
-	</footer>
-</div>
+</main>
 
 <style lang="scss">
 
 	.message-send {
 		display: none;
-
 		&__inner {
 			display: flex;
 			flex-direction: column;
@@ -1071,7 +1045,6 @@
 			align-items: center;
 			gap: 30px;
 		}
-
 		&__text {
 			font-size: 20px;
 			color: #24c924;
@@ -1079,27 +1052,8 @@
 		&__image {
 			max-width: 300px;
 			max-height: 300px;
-
 			img {
 				object-fit: cover;
-				width: 100%;
-				height: 100%;
-			}
-		}
-	}
-	.progress {
-		display: flex;
-		gap: 10px;
-		justify-content: center;
-		margin-bottom: 10px;
-		&__bar {
-			width: 100px;
-			height: 3px;
-			border-radius: 50px;
-			background: #969696;
-
-			&--completed {
-				background: #00c900;
 			}
 		}
 	}
@@ -1123,96 +1077,149 @@
 		display: flex;
 		flex-direction: column;
 	}
-	.page {
+
+	.main {
 		flex: content;
 		display: flex;
 		flex-direction: column;
-		align-items: center;
 		justify-content: center;
-	}
-
-	.page__content {
-		position: relative;
-		z-index: 2;
-		width: 100%;
-		max-width: 800px;
+		padding: 0 72px;
 	}
 
 	.message {
-		display: flex;
-		flex-direction: column;
-		gap: 50px;
-		width: 100%;
-		border-radius: 20px;
-		overflow: hidden;
-		background: var(--color-bg-primary);
-		border: var(--border-primary);
-		transition: .5s;
-
-		@media (min-width: 600px) {
-			padding: 50px 20px;
+		&__inner {
+			position: relative;
+			display: flex;
+			flex-direction: column;
+			padding: 48px 48px 48px 72px;
+			border-radius: 60px;
+			background: var(--color-bg-primary);
+			height: 686px;
 		}
-		@media (max-width: 600px) {
-			padding: 40px 10px;
+		&__title {
+			font-size: 64px;
+			line-height: 80px;
+			font-weight: 400;
+			color: var(--color-text-secondary);
 		}
-	}
+		&__description {
+			position: relative;
+			height: 200px;
+		}
+		&__description-text {
+			position: absolute;
+			z-index: 2;
+			padding: 20px 40px;
+			background: var(--color-bg-secondary);
+			border-radius: 100px;
+			font-size: 32px;
+			line-height: 40px;
 
-	.message__inner {
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		gap: 20px;
-		overflow: hidden;
-	}
-
-	.message__title {
-		font-size: 30px;
-		font-weight: 700;
-		text-align: center;
-		color: var(--color-text-primary);
-	}
-	.message__description {
-		display: block;
-		font-size: 20px;
-		font-weight: 500;
-		text-align: center;
-		color: var(--color-text-primary);
-	}
-
-	.message__button {
+			&:last-child {
+				background: var(--color-bg-third);
+			}
+			&:nth-child(1) {
+				right: 527px;
+				top: 0;
+			}
+			&:nth-child(2) {
+				right: 127px;
+				top: 60px;
+			}
+			&:nth-child(3) {
+				right: 71px;
+				top: 125px;
+				transform: rotate(-5.91deg);
+			}
+		}
+		&__icon {
+			position: absolute;
+			left: 0;
+			top: 50%;
+			transform: translate(0, -47%);
+			width: 100%;
+		}
+		&__bottom {
+			flex: content;
+			display: flex;
+			gap: 20px;
+			justify-content: space-between;
+			align-items: end;
+		}
+		&__bottom-text {
+			max-width: 613px;
+			font-size: 32px;
+			line-height: 40px;
+			color: var(--color-text-secondary);
+		}
+		&__bottom-button {
+			height: max-content;
+			padding: 20px 40px;
+			font-size: 36px;
+			line-height: 45px;
+		}
 	}
 
 	#showForm {
 		display: none;
-	}
-	#showForm:checked ~ .form {
-		display: flex;
-		max-height: 100%;
-	}
-
-	#showForm:checked ~ .message__inner > .message__button {
-		display: none;
+		&:checked ~ .message__inner {
+			display: none;
+		}
+		&:checked ~ .form {
+			display: flex;
+		}
 	}
 
 	.form__required {
 		font-size: inherit;
-		color: red;
+		color: var(--color-text-primary);
 	}
 
 	.form {
-		height: 0;
-		max-height: 0;
 		display: none;
-		flex-direction: column;
-		gap: 15px;
-		transition: all 0.5s;
+		justify-content: center;
+
+		&__inner {
+			width: max-content;
+			display: flex;
+			gap: 34px;
+			padding: 24px;
+			border-radius: 40px;
+			background: var(--color-bg-fourth);
+		}
+
+		&__header {
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			justify-content: center;
+			margin-bottom: 32px;
+		}
+
+		&__header-title {
+			font-weight: 400;
+			font-size: 32px;
+			line-height: 40px;
+			color: var(--color-text-primary);
+			margin-bottom: 12px;
+		}
+		&__message {
+			text-align: center;
+			font-size: 18px;
+			color: #1db11d;
+		}
+
+		&__image {
+			max-width: 471px;
+			img {
+				object-fit: cover;
+			}
+		}
+
+		&__content {
+		}
 	}
 
-	.form__message {
-		text-align: center;
-		font-size: 18px;
-		color: rgb(29, 177, 29);
-	}
 	.message-error {
 		color: red;
 	}
@@ -1224,35 +1231,12 @@
 	.form__inner {
 	}
 
-	.form__content {
-		display: flex;
-		flex-direction: column;
-		gap: 40px;
-	}
-
 	.form__button-container {
 		display: flex;
 		flex-direction: column;
 		align-items: center;
 		justify-content: center;
 		gap: 15px;
-	}
-
-	/* header */
-
-	.form__header {
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		justify-content: center;
-		margin-bottom: 15px;
-	}
-
-	.form__header-title {
-		font-weight: 700;
-		font-size: 34px;
-		text-align: center;
-		color: var(--color-text-primary);
 	}
 
 	/* contacts */
