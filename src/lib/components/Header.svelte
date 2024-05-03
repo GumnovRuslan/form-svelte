@@ -21,7 +21,7 @@
         <a href="/" class='header__logo'>
             <img src='/img/logo.webp' alt='' class='header__logo-img'>
         </a>
-        <div class='header__lang'>
+        <div class='header__lang' >
             <div class='header__lang-inner'>
                 <input type='checkbox' id="lang-select" bind:checked={visible}>
                 <label for="lang-select" class='header__lang-header'>
@@ -59,9 +59,9 @@
             align-items: center;
             justify-content: space-between;
             gap: 20px;
-            background: var(--color-bg-primary);
             padding: 12px 48px;
             border-radius: 100px;
+            background: var(--color-bg-primary);
         }
 
         &__logo {
@@ -83,8 +83,9 @@
             width: 100%;
             flex-direction: column;
             display: flex;
-            background: var(--color-bg-secondary);
             border-radius: 20px;
+            background: var(--color-bg-secondary);
+            outline: 2px solid var(--color-bg-primary);
         }
 
         &__lang-header {

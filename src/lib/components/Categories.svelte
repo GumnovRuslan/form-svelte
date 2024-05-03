@@ -34,8 +34,10 @@
         }
 
         &__items {
-            display: flex;
-            flex-direction: column;
+            // display: flex;
+            // flex-direction: column;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
             gap: 10px;
         }
 

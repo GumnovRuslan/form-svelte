@@ -1,4 +1,5 @@
 <script>
+    import { arrowSelect } from "../icons"
     export let category = {}
     export let subcategoryDefault = ''
 
@@ -56,25 +57,25 @@
 <div class='item'>
     <label class="item__category-inner">
         <input type='radio' name='category' class="item__category custom-checkbox" data-name={category.value} data-select="{group}" required on:change={changeCategory}>
-        <p class="form__text">{category.name}</p>
+        <p class="item__category-text">{category.name}</p>
     </label>
     <div class='item__subcategories disabled'>
-        <button type="button" class="item__subcategories-header" name='{category.name}' on:click={subcategoriesList}>
-            <span class='item__subcategories-header-text'>{subcategoryDefault}</span>
-            <span class='item__subcategories-header-icon'>
-                <svg fill="currentColor" viewBox="0 0 16 16">
-                    <path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708"/>
-                  </svg>
-            </span>
-        </button>
-        <div class='item__subcategories-list'>
-            <div class='item__subcategories-list-inner'>
-            {#each category.subcategories as subcategory}
-                <label class="item__subcategories-item">
-                    <input class="item__subcategories-item-checkbox" type="checkbox" bind:group={group} value={subcategory.value} name="{subcategory.name}" on:input={subcategoriesChecked}/>
-                    <span class="item__subcategories-item-text">{subcategory.name}</span>
-                </label>
-            {/each}
+        <div class='item__subcategories-inner'>
+            <button type="button" class="item__subcategories-header" name='{category.name}' on:click={subcategoriesList}>
+                <span class='item__subcategories-header-text'>{subcategoryDefault}</span>
+                <span class='item__subcategories-header-icon'>
+                    {@html arrowSelect}
+                </span>
+            </button>
+            <div class='item__subcategories-list'>
+                <div class='item__subcategories-list-inner'>
+                {#each category.subcategories as subcategory}
+                    <label class="item__subcategories-item">
+                        <input class="item__subcategories-item-checkbox" type="checkbox" bind:group={group} value={subcategory.value} name="{subcategory.name}" on:input={subcategoriesChecked}/>
+                        <span class="item__subcategories-item-text">{subcategory.name}</span>
+                    </label>
+                {/each}
+                </div>
             </div>
         </div>
     </div>
@@ -82,9 +83,9 @@
 
 <style lang="scss">
     .item {
-        display: flex;
+        display: grid;
+        grid-template-columns: 1fr 250px;
         column-gap: 20px;
-        row-gap: 10px;
 
         @media (min-width: 600px) {
             align-items: center;
@@ -98,70 +99,77 @@
             pointer-events: none;
         }
         &__category-inner {
-            max-width: 250px;
-            width: 100%;
             display: inline-flex;
             align-items: center;
-            gap: 15px;
+            gap: 16px;
             cursor: pointer;
         }
+        &__category-text {
+            font-size: 16px;
+            line-height: 20px;
+            color: var(--color-text-primary);
+        }
         &__subcategories {
+            position: relative;
             display:  inline-block;
             position: relative;
+            height: 30px;
+            width: 100%;
+        }
+        &__subcategories-inner {
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 1;
+            color: var(--color-text-third);
+            background: var(--color-bg-secondary);
+            border-radius: 20px;
+            width: 100%;
+            padding: 6px 12px;
+            &:hover {
+                outline: 2px solid var(--color-text-third);
+            }
         }
         &__subcategories-header {
             display: flex;
             gap: 15px;
             align-items: center;
             justify-content: space-between;
-            padding: 5px 10px;
-            border-radius: 10px;
-            border: 1px solid black;
-            background: #ffffff77;
-            backdrop-filter: blur(5px);
+            border: none;
+            background: transparent;
             cursor: pointer;
-            &:hover {
-                outline: 1px solid black;
-            }
+            color: inherit;
+            width: 100%;
+            padding: 0;
         }
         &__subcategories-header-text {
+            text-wrap: nowrap;
             font-size: 16px;
+            color: inherit;
         }
         &__subcategories-header-icon {
-            max-width: 15px;
-            max-height: 15px;
+            flex: 1 0 auto;
+            max-width: 16px;
+            max-height: 17px;
             transition: 0.1s;
+            color: inherit;
         }
         &__subcategories-list {
-            position: absolute;
-            z-index: 1;
-            top: 0;
-            left: 0;
-            width: 100%;
-            overflow: hidden;
             height: 0;
+            overflow: hidden;
         }
         &__subcategories-list-inner {
             display: flex;
             flex-direction: column;
             justify-content: center;
-            border-radius: 10px;
-            border: 1px solid black;
-            background: #fffad1ce;
-            backdrop-filter: blur(3px);
+            padding: 16px 0 10px 0;
+            gap: 12px;
         }
         &__subcategories-item {
             display: flex;
             align-items: center;
             gap: 10px;
             cursor: pointer;
-            padding: 5px;
-            &:not(:last-child) {
-                border-bottom: 1px solid #000;
-            }
-            &:hover {
-                background: #ffbb001f;
-            }
         }
         &__subcategories-item-checkbox {
             flex: 1 0 auto;
@@ -172,7 +180,8 @@
             cursor: pointer;
         }
         &__subcategories-item-text {
-            font-size: 14px;
+            font-size: 16px;
+            line-height: 20px;
         }
     }
 

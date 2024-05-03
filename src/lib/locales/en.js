@@ -207,7 +207,7 @@ let en = {
 			message_error_server: 'Error sending data: ',
 			message_completed: 'Data sent successfully',
 			button_prev: 'Back',
-			button_next: 'Forward'
+			button_next: 'Next'
 		}
 	}
 };

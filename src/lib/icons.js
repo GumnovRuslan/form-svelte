@@ -11,3 +11,25 @@ export let planet = `
     </defs>
     </svg>
 `
+export let cross = `
+    <svg viewBox="0 0 24 24" fill="none">
+        <path d="M7 7L17 17M7 17L17 7" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+    </svg>
+`
+export let error = `
+    <svg viewBox="0 0 24 24" fill="none">
+        <circle cx="12" cy="12" r="12" fill="#EF3E3E"/>
+        <circle cx="12" cy="18" r="1" fill="white"/>
+        <path d="M11 6C11 5.44772 11.4477 5 12 5C12.5523 5 13 5.44772 13 6V14C13 14.5523 12.5523 15 12 15C11.4477 15 11 14.5523 11 14V6Z" fill="white"/>
+    </svg>
+`
+export let arrow = `
+    <svg viewBox="0 0 20 20" fill="none">
+        <path d="M20 10C20 9.30964 19.4404 8.75 18.75 8.75H4.7875L10.8875 2.65001C11.3771 2.16036 11.3757 1.36605 10.8844 0.878136C10.3954 0.392654 9.60595 0.394049 9.11874 0.881256L0.875913 9.12409C0.39216 9.60784 0.392159 10.3922 0.875912 10.8759L9.11835 19.1184C9.60527 19.6053 10.3947 19.6053 10.8816 19.1184C11.3683 18.6317 11.3686 17.8429 10.8824 17.3559L4.7875 11.25H18.75C19.4404 11.25 20 10.6904 20 10Z" fill="currentColor"/>
+    </svg>
+`
+export let arrowSelect = `
+    <svg viewBox="0 0 17 17" fill="none">
+        <path d="M1 7.07104L8.07107 14.1421L15.1421 7.07104" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+`

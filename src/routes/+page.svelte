@@ -11,8 +11,12 @@
 	import FormControls from '../lib/components/FormControls.svelte';
 	import { PUBLIC_URL } from '$env/static/public'
 	import categoriesFull from '../lib/db/categories'
+	import { contactsData } from '../lib/db/contacts'
 	import Header from '../lib/components/Header.svelte';
 	import ProgressBar from '../lib/components/ProgressBar.svelte';
+	import Contacts from '../lib/components/Contacts.svelte';
+	import { arrow } from '../lib/icons';
+	import Home from '../lib/components/Home.svelte';
 
 	const langs = ["ru", "en", "pl", "by", "ua"]
 	let selectLangId
@@ -48,23 +52,23 @@
 		const form = window.myForm;
 
 		langInit();
-		formShow();
+		// formShow();
 		workSectionNetwork();
 		workSectionCommunication();
 		workSectionWorkLike();
 
 		function formShow() {
-			// showForm.addEventListener('input', (e) => {
-			// 	const formHeight = form.scrollHeight;
-			// 	const message = document.querySelector('.message')
-			// 	if (e.target.checked) {
-			// 		form.style.height = `${formHeight}px`;
-			// 		setTimeout(() => form.style.height = 'max-content', 500);
-			// 		message.style.paddingTop = '10px'
-			// 		message.style.paddingBottom = '10px'
-			// 		document.getElementById('messageInner').style.display = 'none'
-			// 	}
-			// });
+			showForm.addEventListener('input', (e) => {
+				const formHeight = form.scrollHeight;
+				const message = document.querySelector('.message')
+				if (e.target.checked) {
+					form.style.height = `${formHeight}px`;
+					setTimeout(() => form.style.height = 'max-content', 500);
+					message.style.paddingTop = '10px'
+					message.style.paddingBottom = '10px'
+					document.getElementById('messageInner').style.display = 'none'
+				}
+			});
 		}
 
 		function workSectionWorkLike() {
@@ -140,14 +144,14 @@
 	function changeContent() {
 			// let messageTitle = document.getElementById('title')
 			// let messageDescription = document.getElementById('description')
-			const titleVariation = [
-				i18next.t('message:title'),
-				i18next.t('message:title', {context: 'alternative'}),
-			]
-			const descriptionVariation = [
-				i18next.t('message:description'),
-				'',
-			]
+			// const titleVariation = [
+			// 	i18next.t('message:title'),
+			// 	i18next.t('message:title', {context: 'alternative'}),
+			// ]
+			// const descriptionVariation = [
+			// 	i18next.t('message:description'),
+			// 	'',
+			// ]
 
 			// messageTitle.textContent = titleVariation[messageTitle.dataset.variation ?? 0]
 			// messageDescription.textContent = descriptionVariation[messageDescription.dataset.variation ?? 0]
@@ -170,25 +174,21 @@
 			}
 
 			function contacts() {
-				const changeTextInLine = (line_id, textName, textPlaceholder) => {
-					line_id.querySelector('.form__contacts-item-text').textContent = textName
-					line_id.querySelector('input').placeholder = textPlaceholder
-				}
-				changeTextInLine(window.contactCompany, i18next.t(`form:contacts.text`, { context: 'company' }), i18next.t(`form:contacts.text`, { context: 'company' }))
-				changeTextInLine(window.contactPhone, i18next.t(`form:contacts.text`, { context: 'phone' }), i18next.t(`form:contacts.text`, { context: 'phone' }))
-				changeTextInLine(window.contactEmail, i18next.t(`form:contacts.text`, { context: 'email' }), i18next.t(`form:contacts.text`, { context: 'email' }))
+				contactsData.company.name = i18next.t(`form:contacts.text`, { context: 'company' })
+				contactsData.company.placeholder = i18next.t(`form:contacts.text`, { context: 'company' })
 
-				let itemDescription = window.contactDescription
-				itemDescription.querySelector('.form__contacts-item-text').textContent = i18next.t(`form:contacts.text`, { context: 'description' })
-				itemDescription.querySelector('textarea').placeholder = i18next.t(`form:contacts.text`, { context: 'description' })
+				contactsData.description.name = i18next.t(`form:contacts.text`, { context: 'description' })
+				contactsData.description.placeholder = i18next.t(`form:contacts.text`, { context: 'description' })
 
-				let itemAddress = window.contactAddress
-				itemAddress.querySelector('.form__contacts-item-text').textContent = i18next.t(`form:contacts.input_address.title`)
-				itemAddress.querySelectorAll('input').forEach((input, i) => {
-					input.placeholder = !i
-					? i18next.t(`form:contacts.input_address.placeholder.0`)
-					: i18next.t(`form:contacts.input_address.placeholder.1`)
-				})
+				contactsData.address.name = i18next.t(`form:contacts.input_address.title`)
+				contactsData.address.placeholder[0] = i18next.t(`form:contacts.input_address.placeholder.0`)
+				contactsData.address.placeholder[1] = i18next.t(`form:contacts.input_address.placeholder.1`)
+
+				contactsData.phone.name = i18next.t(`form:contacts.text`, { context: 'phone' })
+				contactsData.phone.placeholder = i18next.t(`form:contacts.text`, { context: 'phone' })
+
+				contactsData.email.name = i18next.t(`form:contacts.text`, { context: 'email' })
+				contactsData.email.placeholder = i18next.t(`form:contacts.text`, { context: 'email' })
 			}
 			function workLike() {
 				const container = document.getElementById('workLike');
@@ -615,7 +615,12 @@
 		let formTarget = e.target
 		let forms = document.querySelectorAll('.form-stage')
 		let index = 0
+
         forms.forEach((form, i)=> {if(form == formTarget) index = i})
+		console.log(index)
+		if(index+1) formImage.style.display = 'none'
+		else formImage.style.display = 'block'
+
 		formTarget.style.display = 'none'
 		forms[index + 1].style.display = 'flex'
 		progress[index + 1].classList.add('progress__bar--completed')
@@ -624,8 +629,9 @@
 
 <Header {langs} active={selectLangId} on:selectLang={(e) => i18next.changeLanguage(e.detail.value)}/>
 <main class="main">
-			<div class="message">
-				<input type="checkbox" id="showForm" />
+	<input type="checkbox" id="showForm" />
+	<Home />
+			<!-- <div class="message">
 				<div class="message__inner" id='messageInner'>
 					<h2 class="message__title">A platform for entrepreneurs and their customers, will be launching here soon.</h2>
 					<div class="message__description">
@@ -657,379 +663,318 @@
 						<label for="showForm" class="message__bottom-button button" id="message-button">Registration</label>
 					</div>
 				</div>
-				<div class="form" name="myForm" id="myForm">
-					<div class="form__inner">
-						<div class='form__inner-image'>
-							<img src='/img/image.webp' alt=''>
+
+			</div> -->
+			<div class="form" name="myForm" id="myForm">
+				<div class="form__inner">
+					<div class='form__inner-image' id="formImage">
+						<img src='/img/image.webp' alt=''>
+					</div>
+					<div class='form__content'>
+						<div class="form__header">
+							<h2 class="form__header-title">Регистрация</h2>
+							<ProgressBar />
+							<button type="button" class='form__btn-back button-second'>
+								<div class='form__btn-back-icon'>
+									{@html arrow}
+								</div>
+							</button>
 						</div>
-						<div class='form__content'>
-							<div class="form__header">
-								<h2 class="form__header-title">Регистрация</h2>
-								<ProgressBar />
-							</div>
-								<form class='form-stage' id="formStep1" on:submit={nextStep}>
-									<div class="form__contacts" id="formContacts">
-										<div class="form__contacts-item" id="contactCompany">
-											<div class="form__contacts-item-header input-name">
-												<p class="form__contacts-item-text">Название компании/мастера</p>
-												<span class="form__required">*</span>
-											</div>
-											<input
-												type="text"
-												class="form__contacts-item-input form__input"
-												placeholder="Company name"
-												required
-											/>
-										</div>
+						<form class='form-stage' id="formStep1" on:submit={nextStep}>
+							<Contacts data={contactsData}/>
+							<FormControls {buttonsControls}/>
+						</form>
 
-										<div class="form__contacts-item" id="contactDescription">
-											<div class="form__contacts-item-header input-name">
-												<p class="form__contacts-item-text">Название компании/мастера</p>
-											</div>
-											<textarea class="form__contacts-item-textarea form__input" name='contactDescription' maxlength="221"></textarea>
+						<form class='form-stage' id="formStep2" on:submit={nextStep}>
+							<div class='form-stage__inner'>
+								<Categories categories={categoriesFull}/>
+									<div class="form__work-like" id="workLike">
+										<div class="form__work-like-header">
+											<p class="form__work-like-text section-name">You work like:</p>
+											<span class="form__required">*</span>
 										</div>
-
-										<div class="form__contacts-items">
-											<div class="form__contacts-item" id="contactAddress">
-												<div class="form__contacts-item-header">
-													<p class="form__contacts-item-text input-name">Адрес</p>
-													<span class="form__required">*</span>
-												</div>
-												<div class='form__contacts-item-main'>
+										<div class="form__work-like-content">
+											<div class="form__work-like-items">
+												<div class="form__work-like-item">
 													<input
-														type="text"
-														class="form__contacts-item-input form__input"
-														placeholder="Address"
+														class="form__work-like-radio custom-radio"
+														type="radio"
+														name="workLike"
+														id="workLikePhysical"
 														required
 													/>
+													<label for="workLikePhysical" class="form__work-like-label">
+														<span class="form__work-like-content-text form__text"> Физ. лицо </span>
+													</label>
+													<div class="form__work-like-input-container" id="data">
+														<p class="form__work-like-input-text">PESEL</p>
+														<input
+															class="form__work-like-input form__input"
+															type="number"
+															placeholder="Enter 11 numbers"
+															disabled
+															min="10000000000"
+															max="99999999999"
+														/>
+													</div>
+												</div>
+												<div class="form__work-like-item">
 													<input
-														type="text"
-														class="form__contacts-item-input form__input"
-														placeholder="Address"
-														required
+														class="form__work-like-radio custom-radio"
+														type="radio"
+														name="workLike"
+														id="workLikeCompany"
 													/>
+													<label for="workLikeCompany" class="form__work-like-label">
+														<span class="form__work-like-content-text form__text"> Компания </span>
+													</label>
+													<div class="form__work-like-input-container" id="data">
+														<p class="form__work-like-input-text">NIP</p>
+														<input
+															class="form__work-like-input form__input"
+															type="number"
+															placeholder="Enter 10 numbers"
+															disabled
+															min="1000000000"
+															max="9999999999"
+														/>
+													</div>
 												</div>
 											</div>
-											<div class="form__contacts-item" id="contactPhone">
-												<div class="form__contacts-item-header input-name">
-													<p class="form__contacts-item-text">Телефон</p>
-													<span class="form__required">*</span>
-												</div>
+										</div>
+									</div>
+									<div class="form__network" id="formNetwork">
+										<p class="form__network-text section-name">Соц. сети</p>
+										<div class="form__network-items" id="networkContainer">
+											<div class="form__network-item">
+												<label class="form__network-item-container">
+													<input class="form__network-item-checkbox custom-checkbox" type="checkbox" />
+													<span class="form__network-item-text form__text">Instagram</span>
+												</label>
 												<input
-													type="tel"
-													class="form__contacts-item-input form__input"
-													required
+													type="text"
+													class="form__network-item-input form__input"
+													disabled
+													placeholder="ссылка"
+												/>
+											</div>
+
+											<div class="form__network-item">
+												<label class="form__network-item-container">
+													<input class="form__network-item-checkbox custom-checkbox" type="checkbox" />
+													<span class="form__network-item-text form__text">Facebook</span>
+												</label>
+												<input
+													type="text"
+													class="form__network-item-input form__input"
+													disabled
+													placeholder="ссылка"
+												/>
+											</div>
+
+											<div class="form__network-item">
+												<label class="form__network-item-container">
+													<input class="form__network-item-checkbox custom-checkbox" type="checkbox" />
+													<span class="form__network-item-text form__text">Telegram</span>
+												</label>
+												<input
+													type="text"
+													class="form__network-item-input form__input"
+													disabled
+													placeholder="ссылка"
+												/>
+											</div>
+
+											<div class="form__network-item">
+												<label class="form__network-item-container">
+													<input class="form__network-item-checkbox custom-checkbox" type="checkbox" />
+													<span class="form__network-item-text form__text">Tiktok</span>
+												</label>
+												<input
+													type="text"
+													class="form__network-item-input form__input"
+													disabled
+													placeholder="ссылка"
+												/>
+											</div>
+
+											<div class="form__network-item">
+												<label class="form__network-item-container">
+													<input class="form__network-item-checkbox custom-checkbox" type="checkbox" />
+													<span class="form__network-item-text form__text">Linkedin</span>
+												</label>
+												<input
+													type="text"
+													class="form__network-item-input form__input"
+													disabled
+													placeholder="ссылка"
+												/>
+											</div>
+										</div>
+									</div>
+							</div>
+							<FormControls {buttonsControls}/>
+						</form>
+
+							<form class='form-stage' id='formStep3' on:submit={nextStep}>
+								<div class="form__work-mode work-mode" id="formWorkMode">
+									<div class='work-mode__header'>
+										<p class='work-mode__header-name section name'>{timesData.title}</p>
+									</div>
+									<div class="form__work-mode-items">
+										{#each timesData.days as day}
+											<WorkMoreItem
+											on:select={(e) => changeTime(e.detail)}
+											day={day}
+											text={timesData.timeText}/>
+										{/each}
+									</div>
+								</div>
+								<FormControls {buttonsControls}/>
+							</form>
+
+							<form class='form-stage' id='formStep4' on:submit={sendForm}>
+								<div class='form-stage__inner'>
+									<div class="form__calendar" id="formLinkCalendar">
+										<p class="form__calendar-text section-name">Link to Google calendar</p>
+										<input
+											id="inputLinkCalendar"
+											type="url"
+											class="form__calendar-input form__input"
+											placeholder="link to Google calendar"
+											on:input={(e) => e.target.required = !!e.target.value}
+										/>
+									</div>
+									<div class="form__languages-container" id="communicationLanguages">
+										<p class="form__languages-text section-name">Языки комуникациии</p>
+										<div class="form__languages-items">
+											<label class="form__languages-item">
+												<input type="checkbox" class="form__languages-item-checkbox custom-checkbox" />
+												<span class="form__languages-item-text form__text">Polski</span>
+											</label>
+
+											<label class="form__languages-item">
+												<input type="checkbox" class="form__languages-item-checkbox custom-checkbox" />
+												<span class="form__languages-item-text form__text">Беларуская</span>
+											</label>
+
+											<label class="form__languages-item">
+												<input type="checkbox" class="form__languages-item-checkbox custom-checkbox" />
+												<span class="form__languages-item-text form__text">Українська</span>
+											</label>
+
+											<label class="form__languages-item">
+												<input type="checkbox" class="form__languages-item-checkbox custom-checkbox" />
+												<span class="form__languages-item-text form__text">Русский</span>
+											</label>
+
+											<label class="form__languages-item">
+												<input type="checkbox" class="form__languages-item-checkbox custom-checkbox" />
+												<span class="form__languages-item-text form__text">English</span>
+											</label>
+
+											<div class="form__languages-another">
+												<label class="form__languages-item-another">
+													<input
+														type="checkbox"
+														class="form__languages-item-another-checkbox form__languages-item-checkbox custom-checkbox"
+													/>
+													<span
+														class="form__languages-item-text form__text form__languages-item-another-text"
+														>Another</span
+													>
+												</label>
+												<input
+													class="form__languages-item-another-input form__input"
+													type="text"
+													disabled
+													placeholder="Enter other languages"
 												/>
 											</div>
 										</div>
 
-										<div class="form__contacts-item" id="contactEmail">
-											<div class="form__contacts-item-header input-name">
-												<p class="form__contacts-item-text input-name">Email</p>
-												<span class="form__required">*</span>
-											</div>
-											<input
-												type="email"
-												class="form__contacts-item-input form__input"
-												placeholder="Email"
-												required
-											/>
+									</div>
+									<div class="form__preferences" id="formSurvey">
+										<div class="form__preferences-header">
+											<p class="form__preferences-text form__text">
+												Select which category matches your company
+											</p>
+											<p class="form__preferences-text form__text"></p>
+										</div>
+
+										<div class="form__preferences-items">
+											<label class="form__preferences-item">
+												<input
+													class="form__preferences-item-checkbox custom-checkbox"
+													type="checkbox"
+													name="preferences"
+													value="ecofriendly"
+												/>
+												<span class="form__preferences-item-text form__text">ecofriendly</span>
+											</label>
+
+											<label class="form__preferences-item">
+												<input
+													class="form__preferences-item-checkbox custom-checkbox"
+													type="checkbox"
+													name="preferences"
+													value="ecofriendly"
+												/>
+												<span class="form__preferences-item-text form__text">petfriendly</span>
+											</label>
+
+											<label class="form__preferences-item">
+												<input
+													class="form__preferences-item-checkbox custom-checkbox"
+													type="checkbox"
+													name="preferences"
+													value="ecofriendly"
+												/>
+												<span class="form__preferences-item-text form__text">childefriendly</span>
+											</label>
+
+											<label class="form__preferences-item">
+												<input
+													class="form__preferences-item-checkbox custom-checkbox"
+													type="checkbox"
+													name="preferences"
+													value="ecofriendly"
+												/>
+												<span class="form__preferences-item-text form__text">inclusive</span>
+											</label>
 										</div>
 									</div>
-									<FormControls prev={false} {buttonsControls}/>
-								</form>
-
-								<form class='form-stage' id="formStep2" on:submit={nextStep}>
-									<div class='form-stage__inner'>
-										<Categories categories={categoriesFull}/>
-										<div class="form__work-like" id="workLike">
-											<div class="form__work-like-header">
-												<p class="form__work-like-text section-name">You work like:</p>
-												<span class="form__required">*</span>
-											</div>
-											<div class="form__work-like-content">
-												<div class="form__work-like-items">
-													<div class="form__work-like-item">
-														<input
-															class="form__work-like-radio custom-radio"
-															type="radio"
-															name="workLike"
-															id="workLikePhysical"
-															required
-														/>
-														<label for="workLikePhysical" class="form__work-like-label">
-															<span class="form__work-like-content-text form__text"> Физ. лицо </span>
-														</label>
-														<div class="form__work-like-input-container" id="data">
-															<p class="form__work-like-input-text">PESEL</p>
-															<input
-																class="form__work-like-input form__input"
-																type="number"
-																placeholder="Enter 11 numbers"
-																disabled
-																min="10000000000"
-																max="99999999999"
-															/>
-														</div>
-													</div>
-													<div class="form__work-like-item">
-														<input
-															class="form__work-like-radio custom-radio"
-															type="radio"
-															name="workLike"
-															id="workLikeCompany"
-														/>
-														<label for="workLikeCompany" class="form__work-like-label">
-															<span class="form__work-like-content-text form__text"> Компания </span>
-														</label>
-														<div class="form__work-like-input-container" id="data">
-															<p class="form__work-like-input-text">NIP</p>
-															<input
-																class="form__work-like-input form__input"
-																type="number"
-																placeholder="Enter 10 numbers"
-																disabled
-																min="1000000000"
-																max="9999999999"
-															/>
-														</div>
-													</div>
-												</div>
-											</div>
+									<label class="form__confirmation" id="formConfirmation">
+										<input
+											class="form__confirmation-checkbox custom-checkbox"
+											type="checkbox"
+											required
+										/>
+										<div class="form__confirmation-text-container">
+											<span class="form__confirmation-text">
+												I agree to the publication of the provided data on YOOHIVE.COM resources
+											</span>
+											<span class="form__required">*</span>
+											<p class="form__confirmation-text"></p>
 										</div>
-										<div class="form__network" id="formNetwork">
-											<p class="form__network-text section-name">Соц. сети</p>
-											<div class="form__network-items" id="networkContainer">
-												<div class="form__network-item">
-													<label class="form__network-item-container">
-														<input class="form__network-item-checkbox custom-checkbox" type="checkbox" />
-														<span class="form__network-item-text form__text">Instagram</span>
-													</label>
-													<input
-														type="text"
-														class="form__network-item-input form__input"
-														disabled
-														placeholder="ссылка"
-													/>
-												</div>
-
-												<div class="form__network-item">
-													<label class="form__network-item-container">
-														<input class="form__network-item-checkbox custom-checkbox" type="checkbox" />
-														<span class="form__network-item-text form__text">Facebook</span>
-													</label>
-													<input
-														type="text"
-														class="form__network-item-input form__input"
-														disabled
-														placeholder="ссылка"
-													/>
-												</div>
-
-												<div class="form__network-item">
-													<label class="form__network-item-container">
-														<input class="form__network-item-checkbox custom-checkbox" type="checkbox" />
-														<span class="form__network-item-text form__text">Telegram</span>
-													</label>
-													<input
-														type="text"
-														class="form__network-item-input form__input"
-														disabled
-														placeholder="ссылка"
-													/>
-												</div>
-
-												<div class="form__network-item">
-													<label class="form__network-item-container">
-														<input class="form__network-item-checkbox custom-checkbox" type="checkbox" />
-														<span class="form__network-item-text form__text">Tiktok</span>
-													</label>
-													<input
-														type="text"
-														class="form__network-item-input form__input"
-														disabled
-														placeholder="ссылка"
-													/>
-												</div>
-
-												<div class="form__network-item">
-													<label class="form__network-item-container">
-														<input class="form__network-item-checkbox custom-checkbox" type="checkbox" />
-														<span class="form__network-item-text form__text">Linkedin</span>
-													</label>
-													<input
-														type="text"
-														class="form__network-item-input form__input"
-														disabled
-														placeholder="ссылка"
-													/>
-												</div>
-											</div>
+									</label>
+								</div>
+								<div class='message-send' id='formCompleted'>
+									<div class='message-send__inner'>
+										<div class='message-send__image'>
+											<img src='/img/mark.webp' alt=''>
 										</div>
+										<p class='message-send__text'>{formMessage}</p>
 									</div>
-									<FormControls {buttonsControls}/>
-								</form>
-
-								<form class='form-stage' id='formStep3' on:submit={nextStep}>
-									<div class="form__work-mode work-mode" id="formWorkMode">
-										<div class='work-mode__header'>
-											<p class='work-mode__header-name section name'>{timesData.title}</p>
-										</div>
-										<div class="form__work-mode-items">
-											{#each timesData.days as day}
-												<WorkMoreItem
-												on:select={(e) => changeTime(e.detail)}
-												day={day}
-												text={timesData.timeText}/>
-											{/each}
-										</div>
-									</div>
-									<FormControls {buttonsControls}/>
-								</form>
-
-								<form class='form-stage' id='formStep4' on:submit={sendForm}>
-									<div class='form-stage__inner'>
-										<div class="form__calendar" id="formLinkCalendar">
-											<p class="form__calendar-text section-name">Link to Google calendar</p>
-											<input
-												id="inputLinkCalendar"
-												type="url"
-												class="form__calendar-input form__input"
-												placeholder="link to Google calendar"
-												on:input={(e) => e.target.required = !!e.target.value}
-											/>
-										</div>
-										<div class="form__languages-container" id="communicationLanguages">
-											<p class="form__languages-text section-name">Языки комуникациии</p>
-											<div class="form__languages-items">
-												<label class="form__languages-item">
-													<input type="checkbox" class="form__languages-item-checkbox custom-checkbox" />
-													<span class="form__languages-item-text form__text">Polski</span>
-												</label>
-
-												<label class="form__languages-item">
-													<input type="checkbox" class="form__languages-item-checkbox custom-checkbox" />
-													<span class="form__languages-item-text form__text">Беларуская</span>
-												</label>
-
-												<label class="form__languages-item">
-													<input type="checkbox" class="form__languages-item-checkbox custom-checkbox" />
-													<span class="form__languages-item-text form__text">Українська</span>
-												</label>
-
-												<label class="form__languages-item">
-													<input type="checkbox" class="form__languages-item-checkbox custom-checkbox" />
-													<span class="form__languages-item-text form__text">Русский</span>
-												</label>
-
-												<label class="form__languages-item">
-													<input type="checkbox" class="form__languages-item-checkbox custom-checkbox" />
-													<span class="form__languages-item-text form__text">English</span>
-												</label>
-
-												<div class="form__languages-another">
-													<label class="form__languages-item-another">
-														<input
-															type="checkbox"
-															class="form__languages-item-another-checkbox form__languages-item-checkbox custom-checkbox"
-														/>
-														<span
-															class="form__languages-item-text form__text form__languages-item-another-text"
-															>Another</span
-														>
-													</label>
-													<input
-														class="form__languages-item-another-input form__input"
-														type="text"
-														disabled
-														placeholder="Enter other languages"
-													/>
-												</div>
-											</div>
-
-										</div>
-										<div class="form__preferences" id="formSurvey">
-											<div class="form__preferences-header">
-												<p class="form__preferences-text form__text">
-													Select which category matches your company
-												</p>
-												<p class="form__preferences-text form__text"></p>
-											</div>
-
-											<div class="form__preferences-items">
-												<label class="form__preferences-item">
-													<input
-														class="form__preferences-item-checkbox custom-checkbox"
-														type="checkbox"
-														name="preferences"
-														value="ecofriendly"
-													/>
-													<span class="form__preferences-item-text form__text">ecofriendly</span>
-												</label>
-
-												<label class="form__preferences-item">
-													<input
-														class="form__preferences-item-checkbox custom-checkbox"
-														type="checkbox"
-														name="preferences"
-														value="ecofriendly"
-													/>
-													<span class="form__preferences-item-text form__text">petfriendly</span>
-												</label>
-
-												<label class="form__preferences-item">
-													<input
-														class="form__preferences-item-checkbox custom-checkbox"
-														type="checkbox"
-														name="preferences"
-														value="ecofriendly"
-													/>
-													<span class="form__preferences-item-text form__text">childefriendly</span>
-												</label>
-
-												<label class="form__preferences-item">
-													<input
-														class="form__preferences-item-checkbox custom-checkbox"
-														type="checkbox"
-														name="preferences"
-														value="ecofriendly"
-													/>
-													<span class="form__preferences-item-text form__text">inclusive</span>
-												</label>
-											</div>
-										</div>
-										<label class="form__confirmation" id="formConfirmation">
-											<input
-												class="form__confirmation-checkbox custom-checkbox"
-												type="checkbox"
-												required
-											/>
-											<div class="form__confirmation-text-container">
-												<span class="form__confirmation-text">
-													I agree to the publication of the provided data on YOOHIVE.COM resources
-												</span>
-												<span class="form__required">*</span>
-												<p class="form__confirmation-text"></p>
-											</div>
-										</label>
-									</div>
-									<div class='message-send' id='formCompleted'>
-										<div class='message-send__inner'>
-											<div class='message-send__image'>
-												<img src='/img/mark.webp' alt=''>
-											</div>
-											<p class='message-send__text'>{formMessage}</p>
-										</div>
-									</div>
-									<div class='form__button-container'>
-										<button class="button" type="submit" id="buttonSend" class:button__disabled={buttonIsDisabled}>Registration</button>
-										<p class='form__message' class:message-error={formMessageIsError}>{formMessage}</p>
-									</div>
-									<FormControls prev={controlsButton} next={false} {buttonsControls}/>
-								</form>
-						</div>
-
+								</div>
+								<div class='form__button-container'>
+									<button class="button" type="submit" id="buttonSend" class:button__disabled={buttonIsDisabled}>Registration</button>
+									<p class='form__message' class:message-error={formMessageIsError}>{formMessage}</p>
+								</div>
+								<FormControls next={false} {buttonsControls}/>
+							</form>
 					</div>
+
 				</div>
 			</div>
 </main>
@@ -1071,11 +1016,6 @@
 			flex-direction: column;
 			gap: 30px;
 		}
-	}
-	.main-background {
-		width: 100%;
-		display: flex;
-		flex-direction: column;
 	}
 
 	.main {
@@ -1162,7 +1102,7 @@
 
 	#showForm {
 		display: none;
-		&:checked ~ .message__inner {
+		&:checked ~ .message {
 			display: none;
 		}
 		&:checked ~ .form {
@@ -1170,15 +1110,9 @@
 		}
 	}
 
-	.form__required {
-		font-size: inherit;
-		color: var(--color-text-primary);
-	}
-
 	.form {
 		display: none;
 		justify-content: center;
-
 		&__inner {
 			width: max-content;
 			display: flex;
@@ -1187,15 +1121,28 @@
 			border-radius: 40px;
 			background: var(--color-bg-fourth);
 		}
-
+		&__content {
+		}
 		&__header {
+			position: relative;
 			display: flex;
 			flex-direction: column;
 			align-items: center;
 			justify-content: center;
 			margin-bottom: 32px;
 		}
-
+		&__btn-back {
+			position: absolute;
+			left: 0;
+			top: 0;
+			padding: 10px;
+			border-radius: 50%;
+		}
+		&__btn-back-icon {
+			color: inherit;
+			max-width: 20px;
+			max-height: 20px;
+		}
 		&__header-title {
 			font-weight: 400;
 			font-size: 32px;
@@ -1208,15 +1155,11 @@
 			font-size: 18px;
 			color: #1db11d;
 		}
-
 		&__image {
 			max-width: 471px;
 			img {
 				object-fit: cover;
 			}
-		}
-
-		&__content {
 		}
 	}
 
