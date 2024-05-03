@@ -79,12 +79,5 @@
             flex-direction: column;
             gap: 10px;
         }
-
-        // &__item-input {
-        //     box-shadow: 0 4px 8px #9AB3D54D;
-        // }
-        // &__item-textarea {
-		//     resize: none;
-        // }
     }
 </style>

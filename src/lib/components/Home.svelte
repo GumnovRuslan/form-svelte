@@ -1,12 +1,12 @@
-<div class="message">
-    <div class="message__inner" id='messageInner'>
-        <h2 class="message__title">A platform for entrepreneurs and their customers, will be launching here soon.</h2>
-        <div class="message__description">
-            <span class='message__description-text'>We're like bees</span>
-            <span class='message__description-text'>still working on the launch of our hive.</span>
-            <span class='message__description-text'>buh-buh-buh</span>
+<div class="home" id='home'>
+    <div class="home__inner">
+        <h2 class="home__title">A platform for entrepreneurs and their customers, will be launching here soon.</h2>
+        <div class="home__description">
+            <span class='home__description-text'>We're like bees</span>
+            <span class='home__description-text'>still working on the launch of our hive.</span>
+            <span class='home__description-text'>buh-buh-buh</span>
         </div>
-        <div class='message__icon'>
+        <div class='home__icon'>
             <svg  viewBox="0 0 1296 295" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M1304.5 122C1229 36.4999 1050.5 -30.5001 941 26.9999C908.322 46.7574 883.252 70.2568 865.928 94.9999C840.146 131.823 831.52 171.401 840.5 205.5C845.02 222.661 851.989 237.145 860.599 249C917.708 327.642 1046.95 290.605 1011.5 152C959.446 -51.5361 660.127 84.1699 401.5 189C214 265 73.8333 174.167 -50.5 43.9999" stroke="#C5D5E5" stroke-width="10" stroke-linejoin="round" stroke-dasharray="18 18"/>
                 <g clip-path="url(#clip0_2001_205)">
@@ -23,87 +23,204 @@
                 </defs>
                 </svg>
         </div>
-        <div class='message__bottom'>
-            <p class='message__bottom-text'>
+        <div class='home__bottom'>
+            <p class='home__bottom-text'>
                 Register now to be among the first to maximize the impact for your business.
             </p>
-            <label for="showForm" class="message__bottom-button button" id="message-button">Registration</label>
+            <label for="showForm" class="home__bottom-button button" id="message-button">Registration</label>
         </div>
     </div>
 </div>
 
 <style lang="scss">
-    .message {
+    .home {
 		&__inner {
 			position: relative;
 			display: flex;
 			flex-direction: column;
-			padding: 48px 48px 48px 72px;
-			border-radius: 60px;
+            overflow: hidden;
 			background: var(--color-bg-primary);
-			height: 686px;
+            @media (min-width: 1280px) {
+                height: 686px;
+                padding: 48px 48px 48px 72px;
+                border-radius: 60px;
+            }
+            @media (min-width: 768px) and (max-width: 1280px) {
+                height: 586px;
+                padding: 38px;
+                border-radius: 60px;
+            }
+            @media (max-width: 768px) {
+                height: 550px;
+                padding: 24px 24px 16px 16px;
+                border-radius: 30px;
+            }
 		}
 		&__title {
-			font-size: 64px;
-			line-height: 80px;
-			font-weight: 400;
+            font-weight: 400;
 			color: var(--color-text-secondary);
+            @media (min-width: 1280px) {
+                font-size: 64px;
+                line-height: 80px;
+            }
+            @media (min-width: 768px) and (max-width: 1280px) {
+                max-width: 90%;
+                font-size: 44px;
+                line-height: 56px;
+            }
+            @media (max-width: 768px) {
+                max-width: 90%;
+                font-size: 28px;
+                line-height: 35px;
+            }
 		}
 		&__description {
 			position: relative;
-			height: 200px;
+            @media (min-width: 768px) {
+                height: 200px;
+            }
+            @media (max-width: 768px) {
+                height: 105px;
+            }
 		}
 		&__description-text {
 			position: absolute;
 			z-index: 2;
-			padding: 20px 40px;
 			background: var(--color-bg-secondary);
 			border-radius: 100px;
 			font-size: 32px;
 			line-height: 40px;
 
+            @media (min-width: 1280px) {
+                padding: 20px 40px;
+                font-size: 32px;
+			    line-height: 40px;
+            }
+            @media (min-width: 768px) and (max-width: 1280px) {
+                padding: 16px 30px;
+                font-size: 26px;
+			    line-height: 40px;
+            }
+            @media (max-width: 768px) {
+                padding: 8px 20px;
+                font-size: 16px;
+                line-height: 20px;
+            }
+
 			&:last-child {
 				background: var(--color-bg-third);
 			}
 			&:nth-child(1) {
-				right: 527px;
 				top: 0;
+                @media (min-width: 1280px) {
+                    right: 527px;
+                }
+                @media (min-width: 768px) and (max-width: 1280px) {
+                    right: 310px;
+                }
+                @media (max-width: 768px) {
+                    right: 24px;
+                }
 			}
 			&:nth-child(2) {
-				right: 127px;
-				top: 60px;
+                @media (min-width: 1280px) {
+                    right: 127px;
+				    top: 60px;
+                }
+                @media (min-width: 768px) and (max-width: 1280px) {
+                    right: 0px;
+				    top: 54px;
+                }
+                @media (max-width: 768px) {
+                    text-align: right;
+                    right: 0px;
+				    top: 31px;
+                }
 			}
 			&:nth-child(3) {
-				right: 71px;
-				top: 125px;
-				transform: rotate(-5.91deg);
+                @media (min-width: 1280px) {
+                    right: 71px;
+				    top: 125px;
+                    transform: rotate(-5.91deg);
+                }
+                @media (min-width: 768px) and (max-width: 1280px) {
+                    right: 0;
+				    top: 115px;
+                    transform: rotate(-5.91deg);
+                }
+                @media (max-width: 768px) {
+                    top: 62px;
+                    right: 160px;
+                    transform: rotate(5.91deg);
+                }
 			}
 		}
 		&__icon {
 			position: absolute;
 			left: 0;
 			top: 50%;
-			transform: translate(0, -47%);
-			width: 100%;
+
+            @media (min-width: 768px) {
+                width: 100%;
+                transform: translate(0, -47%);
+            }
+            @media (max-width: 768px) {
+                width: 800px;
+                transform: translate(2%, -25%);
+            }
 		}
 		&__bottom {
 			flex: content;
 			display: flex;
 			gap: 20px;
-			justify-content: space-between;
-			align-items: end;
+
+            @media (min-width: 768px) {
+                align-items: end;
+                justify-content: space-between;
+            }
+            @media (max-width: 768px) {
+                justify-content: end;
+                flex-direction: column;
+            }
 		}
 		&__bottom-text {
-			max-width: 613px;
-			font-size: 32px;
-			line-height: 40px;
 			color: var(--color-text-secondary);
+
+            @media (min-width: 1280px) {
+                max-width: 613px;
+                font-size: 32px;
+                line-height: 40px;
+            }
+            @media (min-width: 768px) and (max-width: 1280px) {
+                max-width: 513px;
+                font-size: 24px;
+                line-height: 30px;
+            }
+            @media (max-width: 768px) {
+                max-width: 240px;
+                font-size: 16px;
+                line-height: 20px;
+            }
 		}
 		&__bottom-button {
 			height: max-content;
-			padding: 20px 40px;
-			font-size: 36px;
-			line-height: 45px;
+
+            @media (min-width: 768px) {
+                padding: 20px 40px;
+                font-size: 36px;
+                line-height: 45px;
+            }
+            @media (min-width: 768px) and (max-width: 1280px) {
+                padding: 16px 30px;
+                font-size: 26px;
+                line-height: 35px;
+            }
+            @media (max-width: 768px) {
+                align-self: flex-end;
+                padding: 12px 24px;
+                font-size: 20px;
+                line-height: 25px;
+            }
 		}
 	}
 </style>

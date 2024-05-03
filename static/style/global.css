@@ -5,6 +5,18 @@
 	background: var(--color-bg-secondary);
 }
 
+@media (min-width: 768px) {
+	.wrapper {
+		padding: 12px 72px;
+	}
+}
+@media (max-width: 768px) {
+	.wrapper {
+		padding: 18px 16px;
+	}
+}
+
+
 .button {
     border: none;
     border-radius: 100px;

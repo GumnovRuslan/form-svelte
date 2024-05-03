@@ -50,8 +50,13 @@
         width: 100%;
         display: flex;
         justify-content: center;
-        padding: 0 72px;
-        margin: 12px 0 24px 0;
+
+        @media (min-width:768px) {
+            margin-bottom: 24px;
+        }
+        @media (max-width:768px) {
+            margin-bottom: 16px;
+        }
 
         &__inner {
             flex: content;
@@ -59,20 +64,38 @@
             align-items: center;
             justify-content: space-between;
             gap: 20px;
-            padding: 12px 48px;
             border-radius: 100px;
             background: var(--color-bg-primary);
+
+            @media (min-width:768px) {
+                padding: 12px 48px;
+            }
+            @media (max-width:768px) {
+                padding: 12px 20px;
+            }
         }
 
         &__logo {
-            max-width: 91px;
-            max-height: 40px;
+            @media (min-width:768px) {
+                max-width: 91px;
+                max-height: 40px;
+            }
+            @media (max-width:768px) {
+                max-width: 73px;
+                max-height: 32px;
+            }
         }
 
         &__lang {
             position: relative;
-            width: 91px;
-            height: 42px;
+            @media (min-width:768px) {
+                width: 91px;
+                height: 42px;
+            }
+            @media (max-width:768px) {
+                width: 76px;
+                height: 37px;
+            }
         }
 
         &__lang-inner {
@@ -99,16 +122,28 @@
         }
 
         &__lang-icon {
-            max-width: 22px;
-            max-height: 22px;
             color: var(--color-bg-primary);
+            @media (min-width:768px) {
+                max-width: 22px;
+                max-height: 22px;
+            }
+            @media (max-width:768px) {
+                max-width: 20px;
+                max-height: 20px;
+            }
         }
 
         &__lang-option-item, &__lang-text {
-            font-size: 24px;
-            line-height: 30px;
-            color: var(--color-text-third);
             text-align: center;
+            color: var(--color-text-third);
+            @media (min-width:768px) {
+                font-size: 24px;
+                line-height: 30px;
+            }
+            @media (max-width:768px) {
+                font-size: 16px;
+                line-height: 25px;
+            }
         }
 
         #lang-select {
