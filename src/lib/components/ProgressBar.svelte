@@ -1,12 +1,14 @@
 <script>
+	export let active = 0
+	export let stepLength = 4
 
+	let steps = Array.from({ length: stepLength })
 </script>
 
 <div class='progress'>
-    <div class='progress__bar progress__bar--completed'></div>
-    <div class='progress__bar'></div>
-    <div class='progress__bar'></div>
-    <div class='progress__bar'></div>
+	{#each steps as step, i}
+		<div class='progress__bar' class:completed={active >= i}></div>
+	{/each}
 </div>
 
 <style lang="scss">
@@ -22,9 +24,11 @@
 			border-radius: 50px;
 			background: var(--color-bg-primary);
 
-			&--completed {
-				background: var(--color-bg-fifth);
-			}
+
 		}
+	}
+
+	.completed {
+		background: var(--color-bg-fifth);
 	}
 </style>

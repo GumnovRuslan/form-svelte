@@ -12,16 +12,21 @@
 	import { PUBLIC_URL } from '$env/static/public'
 	import categoriesFull from '../lib/db/categories'
 	import { contactsData } from '../lib/db/contacts'
+	import { networkData } from '../lib/db/network'
 	import Header from '../lib/components/Header.svelte';
 	import ProgressBar from '../lib/components/ProgressBar.svelte';
 	import Contacts from '../lib/components/Contacts.svelte';
 	import { arrow } from '../lib/icons';
 	import Home from '../lib/components/Home.svelte';
+	import WorkUs from '../lib/components/WorkUs.svelte';
+	import Network from '../lib/components/Network.svelte';
 
 	const langs = ["ru", "en", "pl", "by", "ua"]
 	let selectLangId
 	i18next.on('languageChanged', changeContent);
 
+
+	let stepLength = 4
 	let activeFormIndex
 	let formMessage = ''
 	let formMessageIsError = false
@@ -50,51 +55,12 @@
 	}
 
 	onMount(() => {
+		stepLength = document.querySelectorAll('.form-stage').length
 		const form = window.myForm;
 
 		langInit();
-		// formShow();
 		workSectionNetwork();
 		workSectionCommunication();
-		workSectionWorkLike();
-
-		function formShow() {
-			showForm.addEventListener('input', (e) => {
-				const formHeight = form.scrollHeight;
-				const message = document.querySelector('.message')
-				if (e.target.checked) {
-					form.style.height = `${formHeight}px`;
-					setTimeout(() => form.style.height = 'max-content', 500);
-					message.style.paddingTop = '10px'
-					message.style.paddingBottom = '10px'
-					document.getElementById('messageInner').style.display = 'none'
-				}
-			});
-		}
-
-		function workSectionWorkLike() {
-			const radios = workLike.querySelectorAll('input[type="radio"]');
-			const inputs = workLike.querySelectorAll('input[type="number"]');
-
-			radios.forEach((radio, i) =>
-				radio.addEventListener('input', (e) => {
-					if (radio.checked) {
-						inputs[i].setAttribute('required', true);
-						inputs[i].removeAttribute('disabled');
-
-						if (radio == radios[0]) {
-							inputs[1].removeAttribute('required');
-							inputs[1].classList.remove('invalid-input');
-							inputs[1].setAttribute('disabled', true);
-						} else {
-							inputs[0].removeAttribute('required');
-							inputs[0].classList.remove('invalid-input');
-							inputs[0].setAttribute('disabled', true);
-						}
-					}
-				})
-			);
-		}
 
 		function workSectionNetwork() {
 			let networkContainer = form.querySelector('#formNetwork');
@@ -160,8 +126,8 @@
 			document.getElementById('message-button').textContent = i18next.t('message:button');
 			document.querySelector('.form__header-title').textContent = i18next.t('form:title');
 			contacts();
-			workLike();
-			network();
+			// workLike();
+			// network();
 			workMode();
 			calendar();
 			communication();
@@ -613,34 +579,10 @@
 	function nextStep(e) {
 		e.preventDefault()
 		activeFormIndex += 1
-		// let progress = document.querySelectorAll('.progress__bar')
-		// let formTarget = e.target
-		// let forms = document.querySelectorAll('.form-stage')
-		// let index = 0
-
-        // forms.forEach((form, i)=> {if(form == formTarget) index = i})
-		// if(index+1) formImage.style.display = 'none'
-		// else formImage.style.display = 'block'
-		// forms[index].dataset.completed = true
-		// // forms[index].dataset.visible = true
-		// formTarget.style.display = 'none'
-		// forms[index + 1].style.display = 'flex'
-		// progress[index + 1].classList.add('progress__bar--completed')
 	}
 
 	function prevStep(e) {
 		activeFormIndex -= 1
-		// let target = e.target
-		// let form = target.closest('.form')
-		// let formsAll = form.querySelectorAll('.form-stage')
-		// let activeFormIndex = 0
-		// formsAll.forEach((form, i) => {
-		// 	if(form.style.display == 'flex') activeFormIndex = i
-		// })
-		// if(activeFormIndex >= 1) {
-		// 	formsAll[activeFormIndex].style.display = 'none'
-		// 	formsAll[activeFormIndex - 1].style.display = 'flex'
-		// }
 	}
 
 	function showForm() {
@@ -655,14 +597,19 @@
 	<input type="checkbox" id="showForm" on:input={showForm}/>
 	<Home />
 			<div class="form" name="myForm" id="myForm">
-				<div class="form__inner">
+				<div class="form__inner"
+				style:max-width='{activeFormIndex == 0
+				? 1071
+				: activeFormIndex == 1
+				? 800
+				: 1400}px'>
 					<div class='form__inner-image' id="formImage" style='display: {activeFormIndex ? 'none' : 'block'}'>
 						<img src='/img/image.webp' alt=''>
 					</div>
 					<div class='form__content'>
 						<div class="form__header">
 							<h2 class="form__header-title">Регистрация</h2>
-							<ProgressBar />
+							<ProgressBar active={activeFormIndex} {stepLength}/>
 							<button type="button"
 								class='form__btn-back button-second'
 								style='display: {activeFormIndex ? 'block' : 'none'}'
@@ -673,6 +620,7 @@
 								</div>
 							</button>
 						</div>
+
 						<form class='form-stage' id="formStep1" style='display: {activeFormIndex == 0 ? 'flex' : 'none'}' on:submit={nextStep}>
 							<Contacts data={contactsData}/>
 							<FormControls {buttonsControls}/>
@@ -681,152 +629,30 @@
 						<form class='form-stage' id="formStep2" style='display: {activeFormIndex == 1 ? 'flex' : 'none'}' on:submit={nextStep}>
 							<div class='form-stage__inner'>
 								<Categories categories={categoriesFull}/>
-									<div class="form__work-like" id="workLike">
-										<div class="form__work-like-header">
-											<p class="form__work-like-text section-name">You work like:</p>
-											<span class="form__required">*</span>
-										</div>
-										<div class="form__work-like-content">
-											<div class="form__work-like-items">
-												<div class="form__work-like-item">
-													<input
-														class="form__work-like-radio custom-radio"
-														type="radio"
-														name="workLike"
-														id="workLikePhysical"
-														required
-													/>
-													<label for="workLikePhysical" class="form__work-like-label">
-														<span class="form__work-like-content-text form__text"> Физ. лицо </span>
-													</label>
-													<div class="form__work-like-input-container" id="data">
-														<p class="form__work-like-input-text">PESEL</p>
-														<input
-															class="form__work-like-input form__input"
-															type="number"
-															placeholder="Enter 11 numbers"
-															disabled
-															min="10000000000"
-															max="99999999999"
-														/>
-													</div>
-												</div>
-												<div class="form__work-like-item">
-													<input
-														class="form__work-like-radio custom-radio"
-														type="radio"
-														name="workLike"
-														id="workLikeCompany"
-													/>
-													<label for="workLikeCompany" class="form__work-like-label">
-														<span class="form__work-like-content-text form__text"> Компания </span>
-													</label>
-													<div class="form__work-like-input-container" id="data">
-														<p class="form__work-like-input-text">NIP</p>
-														<input
-															class="form__work-like-input form__input"
-															type="number"
-															placeholder="Enter 10 numbers"
-															disabled
-															min="1000000000"
-															max="9999999999"
-														/>
-													</div>
-												</div>
-											</div>
-										</div>
-									</div>
-									<div class="form__network" id="formNetwork">
-										<p class="form__network-text section-name">Соц. сети</p>
-										<div class="form__network-items" id="networkContainer">
-											<div class="form__network-item">
-												<label class="form__network-item-container">
-													<input class="form__network-item-checkbox custom-checkbox" type="checkbox" />
-													<span class="form__network-item-text form__text">Instagram</span>
-												</label>
-												<input
-													type="text"
-													class="form__network-item-input form__input"
-													disabled
-													placeholder="ссылка"
-												/>
-											</div>
-
-											<div class="form__network-item">
-												<label class="form__network-item-container">
-													<input class="form__network-item-checkbox custom-checkbox" type="checkbox" />
-													<span class="form__network-item-text form__text">Facebook</span>
-												</label>
-												<input
-													type="text"
-													class="form__network-item-input form__input"
-													disabled
-													placeholder="ссылка"
-												/>
-											</div>
-
-											<div class="form__network-item">
-												<label class="form__network-item-container">
-													<input class="form__network-item-checkbox custom-checkbox" type="checkbox" />
-													<span class="form__network-item-text form__text">Telegram</span>
-												</label>
-												<input
-													type="text"
-													class="form__network-item-input form__input"
-													disabled
-													placeholder="ссылка"
-												/>
-											</div>
-
-											<div class="form__network-item">
-												<label class="form__network-item-container">
-													<input class="form__network-item-checkbox custom-checkbox" type="checkbox" />
-													<span class="form__network-item-text form__text">Tiktok</span>
-												</label>
-												<input
-													type="text"
-													class="form__network-item-input form__input"
-													disabled
-													placeholder="ссылка"
-												/>
-											</div>
-
-											<div class="form__network-item">
-												<label class="form__network-item-container">
-													<input class="form__network-item-checkbox custom-checkbox" type="checkbox" />
-													<span class="form__network-item-text form__text">Linkedin</span>
-												</label>
-												<input
-													type="text"
-													class="form__network-item-input form__input"
-													disabled
-													placeholder="ссылка"
-												/>
-											</div>
-										</div>
-									</div>
+								<WorkUs />
+								<Network data={networkData}/>
 							</div>
 							<FormControls {buttonsControls}/>
 						</form>
 
-							<form class='form-stage' id='formStep3' on:submit={nextStep}>
-								<div class="form__work-mode work-mode" id="formWorkMode">
-									<div class='work-mode__header'>
-										<p class='work-mode__header-name section name'>{timesData.title}</p>
-									</div>
-									<div class="form__work-mode-items">
-										{#each timesData.days as day}
-											<WorkMoreItem
-											on:select={(e) => changeTime(e.detail)}
-											day={day}
-											text={timesData.timeText}/>
-										{/each}
-									</div>
+						<form class='form-stage' id='formStep3' style='display: {activeFormIndex == 2 ? 'flex' : 'none'}' on:submit={nextStep}>
+							<div class="form__work-mode work-mode" id="formWorkMode">
+								<div class='work-mode__header'>
+									<p class='work-mode__header-name section name'>{timesData.title}</p>
 								</div>
-								<FormControls {buttonsControls}/>
-							</form>
+								<div class="form__work-mode-items">
+									{#each timesData.days as day}
+										<WorkMoreItem
+										on:select={(e) => changeTime(e.detail)}
+										day={day}
+										text={timesData.timeText}/>
+									{/each}
+								</div>
+							</div>
+							<FormControls {buttonsControls}/>
+						</form>
 
-							<form class='form-stage' id='formStep4' on:submit={sendForm}>
+							<form class='form-stage' id='formStep4' style='display: {activeFormIndex == 3 ? 'flex' : 'none'}' on:submit={sendForm}>
 								<div class='form-stage__inner'>
 									<div class="form__calendar" id="formLinkCalendar">
 										<p class="form__calendar-text section-name">Link to Google calendar</p>
@@ -966,7 +792,6 @@
 								</div>
 								<FormControls next={false} {buttonsControls}/>
 							</form>
-							<button class='controls__button button' id='buttonControlsNext' on:click={nextStep}>{buttonsControls.next}</button>
 					</div>
 
 				</div>
@@ -1029,17 +854,11 @@
 			display: flex;
 			justify-content: center;
 			gap: 34px;
+			width: 100%;
 			padding: 24px;
 			border-radius: 40px;
 			margin: 0 auto;
 			background: var(--color-bg-fourth);
-
-			@media (min-width: 768px) {
-                width: max-content;
-            }
-            @media (max-width: 768px) {
-				width: 100%;
-            }
 		}
 		&__content {
 			width: 100%;
@@ -1089,7 +908,7 @@
                 max-width: 471px;
             }
             @media (max-width: 1280px) {
-                display: none;
+                display: none !important;
             }
 
 			img {
@@ -1117,195 +936,9 @@
 		gap: 15px;
 	}
 
-	/* contacts */
-
-	.form__contacts {
-		display: flex;
-		flex-direction: column;
-		gap: 15px;
-	}
-
-	.form__contacts-items {
-		display: flex;
-		gap: 20px;
-	}
-
-	@media (max-width: 600px) {
-		.form__contacts-items {
-			flex-direction: column;
-		}
-	}
-
-	.form__contacts-item {
-		width: 100%;
-	}
-	.form__contacts-item-header {
-		display: flex;
-		align-items: center;
-		gap: 10px;
-		margin-bottom: 8px;
-	}
-	.form__contacts-item-text {
-		color: var(--color-text-primary);
-	}
-
-	.form__contacts-item-main {
-		display: flex;
-		flex-direction: column;
-		gap: 10px;
-	}
-	.form__contacts-item-textarea {
-		resize: none;
-	}
-
-	/* work-like */
-
-	.form__work-like-content {
-		display: flex;
-		flex-direction: column;
-		justify-content: space-between;
-		gap: 20px;
-	}
-
-	.form__work-like-items {
-		display: flex;
-		gap: 10px;
-		flex-direction: column;
-	}
-
-	.form__work-like-item {
-		width: 100%;
-		display: flex;
-		align-items: center;
-		gap: 20px;
-
-		@media (max-width: 600px) {
-			flex-wrap: wrap;
-		}
-	}
-
-	.form__work-like-header {
-		display: flex;
-		align-items: center;
-		gap: 10px;
-		margin-bottom: 20px;
-	}
-
-	.form__work-like-text {
-		font-size: 20px;
-		color: var(--color-text-primary);
-	}
-
-	.form__work-like-label {
-		display: flex;
-		align-items: center;
-		gap: 8px;
-		cursor: pointer;
-		@media (max-width: 600px) {
-			flex: 1 0 auto;
-			width: 80%;
-		}
-	}
-
-
-	.form__work-like-radio {
-	}
-
-	.form__work-like-content-text {
-		font-weight: 18px;
-		color: var(--color-text-primary);
-	}
-
-	.form__work-like-input-text {
-		font-size: 20px;
-		font-weight: 700;
-		color: var(--color-text-primary);
-	}
-
-	.form__work-like-input-container {
-		flex: content;
-		display: flex;
-		gap: 15px;
-
-		@media (min-width: 600px) {
-			align-items: center;
-			justify-content: end;
-		}
-
-		@media (max-width: 600px) {
-			flex-direction: column;
-		}
-	}
-
-	.form__work-like-input {
-		width: 300px;
-	}
-
 	/* network */
 
-	.form__network-text {
-		font-size: 20px;
-		margin-bottom: 10px;
-		color: var(--color-text-primary);
-	}
 
-	.form__network-items {
-		row-gap: 10px;
-		column-gap: 10px;
-		@media (min-width: 700px) {
-			display: grid;
-			grid-template-columns: repeat(auto-fill, minmax(48%, calc(50% - 10px)));
-		}
-		@media (max-width: 700px) {
-			display: flex;
-			flex-direction: column;
-		}
-	}
-
-	.form__network-item {
-		display: flex;
-		column-gap: 15px;
-	}
-	@media (max-width: 400px) {
-		.form__network-item {
-			flex-direction: column;
-			column-gap: 20px;
-		}
-	}
-	@media (min-width: 500px) {
-		.form__network-item {
-			align-items: center;
-			justify-content: space-between;
-			row-gap: 10px;
-		}
-	}
-
-	.form__network-item-container {
-		display: flex;
-		align-items: center;
-		cursor: pointer;
-		min-height: 50px;
-	}
-
-	.form__network-item-checkbox {
-		margin-right: 15px;
-	}
-
-	.form__network-item-text {
-		font-size: 18px;
-		color: var(--color-text-primary);
-	}
-
-	.form__network-item-input {
-		@media (min-width: 500px) {
-			max-width: 65%;
-		}
-	}
-	@media (min-width: 500px) {
-		.form__network-item-input {
-			max-width: 65%;
-		}
-	}
 
 	/* calendar */
 

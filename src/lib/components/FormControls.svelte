@@ -35,7 +35,7 @@
 </script>
 
 <div class='controls'>
-    <button class='controls__button button' id='buttonControlsNext' >{buttonsControls.next}</button>
+    <button class='controls__button button' id='buttonControlsNext' style="display: {next ? 'block' : 'none'};">{buttonsControls.next}</button>
 </div>
 
 <style lang="scss">

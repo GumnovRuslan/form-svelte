@@ -4,6 +4,7 @@
     export let style = 'input'
     export let placeholder = ''
     export let required = false
+    export let input = (e) => {}
 </script>
 
 <div class='input'>
@@ -12,7 +13,9 @@
         type={type}
         class="input__input"
         placeholder={placeholder}
-        required={required}/>
+        required={required}
+        on:input={input}
+        />
     {/if}
     {#if style == 'textarea'}
         <textarea class="input__textarea"
