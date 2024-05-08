@@ -34,7 +34,13 @@
             <div class="contacts__item-header input-name">
                 <p class="contacts__item-header-text">{data.phone.name}<span>*</span></p>
             </div>
-            <Input type={'tel'} placeholder={data.phone.placeholder} required={true} input={(e) => e.target.value = e.target.value.replace(/\D/g, '')}/>
+            <Input type={'tel'} placeholder={data.phone.placeholder}
+            required={true}
+            input={(e) => e.target.value = e.target.value.replace(/\D/g, '')}
+            change={(e) => {
+                if(e.target.value.length < 7) e.target.setCustomValidity('Длина меньше 7')
+                else e.target.setCustomValidity('')
+                }}/>
         </div>
     </div>
 

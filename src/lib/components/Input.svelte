@@ -5,6 +5,7 @@
     export let placeholder = ''
     export let required = false
     export let input = (e) => {}
+    export let change = (e) => {}
 </script>
 
 <div class='input'>
@@ -15,6 +16,7 @@
         placeholder={placeholder}
         required={required}
         on:input={input}
+        on:change={change}
         />
     {/if}
     {#if style == 'textarea'}

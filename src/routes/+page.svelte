@@ -6,7 +6,7 @@
 	import ua from '$lib/locales/ua.js';
 	import by from '$lib/locales/by.js';
 	import { onMount } from 'svelte';
-	import WorkMoreItem from '$lib/components/WorkMoreItem.svelte'
+	import WorkMode from '$lib/components/WorkMode.svelte'
 	import Categories from '$lib/components/Categories.svelte';
 	import FormControls from '../lib/components/FormControls.svelte';
 	import { PUBLIC_URL } from '$env/static/public'
@@ -352,25 +352,7 @@
 			}
 		}
 
-	function changeTime(obj) {
-		let {value, time} = obj
-		const container = window.formWorkMode
-		let items = container.querySelectorAll('.item')
-		const change = (item) => {
-			const checkbox = item.querySelector('input.item__checkbox')
-			const inputsTime = item.querySelectorAll('input[type="time"]')
-			checkbox.checked = true
-			inputsTime[0].value = time[0]
-			inputsTime[1].value = time[1]
-		}
 
-		if(value == 'all day') items.forEach(item => change(item))
-		else if(value == 'weekdays') {
-			items.forEach((item, i) => {
-				if(i < 5) change(item)
-			})
-		}
-	}
 
 		async function sendForm(e) {
 			// console.log('success');
@@ -596,18 +578,18 @@
 <main class="main">
 	<input type="checkbox" id="showForm" on:input={showForm}/>
 	<Home />
-			<div class="form" name="myForm" id="myForm">
-				<div class="form__inner"
-				style:max-width='{activeFormIndex == 0
-				? 1071
-				: activeFormIndex == 1
-				? 800
-				: 1400}px'>
-					<div class='form__inner-image' id="formImage" style='display: {activeFormIndex ? 'none' : 'block'}'>
+	<div class="form" name="myForm" id="myForm">
+		<div class="form__inner"
+			style:max-width='{activeFormIndex == 0
+			? 1071
+			: activeFormIndex == 1
+			? 800
+			: 1400}px'>
+			<div class='form__inner-image' id="formImage" style='display: {activeFormIndex ? 'none' : 'block'}'>
 						<img src='/img/image.webp' alt=''>
-					</div>
-					<div class='form__content'>
-						<div class="form__header">
+			</div>
+			<div class='form__content'>
+				<div class="form__header">
 							<h2 class="form__header-title">Регистрация</h2>
 							<ProgressBar active={activeFormIndex} {stepLength}/>
 							<button type="button"
@@ -619,38 +601,26 @@
 									{@html arrow}
 								</div>
 							</button>
-						</div>
+				</div>
 
-						<form class='form-stage' id="formStep1" style='display: {activeFormIndex == 0 ? 'flex' : 'none'}' on:submit={nextStep}>
-							<Contacts data={contactsData}/>
-							<FormControls {buttonsControls}/>
-						</form>
+				<form class='form-stage' id="formStep1" style='display: {activeFormIndex == 0 ? 'flex' : 'none'}' on:submit={nextStep}>
+					<Contacts data={contactsData}/>
+					<FormControls {buttonsControls}/>
+				</form>
 
-						<form class='form-stage' id="formStep2" style='display: {activeFormIndex == 1 ? 'flex' : 'none'}' on:submit={nextStep}>
-							<div class='form-stage__inner'>
-								<Categories categories={categoriesFull}/>
-								<WorkUs />
-								<Network data={networkData}/>
-							</div>
-							<FormControls {buttonsControls}/>
-						</form>
+				<form class='form-stage' id="formStep2" style='display: {activeFormIndex == 1 ? 'flex' : 'none'}' on:submit={nextStep}>
+					<div class='form-stage__inner'>
+						<Categories categories={categoriesFull}/>
+						<WorkUs />
+						<Network data={networkData}/>
+					</div>
+					<FormControls {buttonsControls}/>
+				</form>
 
-						<form class='form-stage' id='formStep3' style='display: {activeFormIndex == 2 ? 'flex' : 'none'}' on:submit={nextStep}>
-							<div class="form__work-mode work-mode" id="formWorkMode">
-								<div class='work-mode__header'>
-									<p class='work-mode__header-name section name'>{timesData.title}</p>
-								</div>
-								<div class="form__work-mode-items">
-									{#each timesData.days as day}
-										<WorkMoreItem
-										on:select={(e) => changeTime(e.detail)}
-										day={day}
-										text={timesData.timeText}/>
-									{/each}
-								</div>
-							</div>
-							<FormControls {buttonsControls}/>
-						</form>
+				<form class='form-stage' id='formStep3' style='display: {activeFormIndex == 2 ? 'flex' : 'none'}' on:submit={nextStep}>
+					<WorkMode {timesData}/>
+					<FormControls {buttonsControls}/>
+				</form>
 
 							<form class='form-stage' id='formStep4' style='display: {activeFormIndex == 3 ? 'flex' : 'none'}' on:submit={sendForm}>
 								<div class='form-stage__inner'>
@@ -917,17 +887,6 @@
 		}
 	}
 
-	.message-error {
-		color: red;
-	}
-
-	.button__disabled {
-		pointer-events: none;
-		opacity: 0.4;
-	}
-	.form__inner {
-	}
-
 	.form__button-container {
 		display: flex;
 		flex-direction: column;
@@ -935,10 +894,6 @@
 		justify-content: center;
 		gap: 15px;
 	}
-
-	/* network */
-
-
 
 	/* calendar */
 
@@ -1033,27 +988,6 @@
 	.form__preferences-item-text {
 		font-size: 20px;
 		color: var(--color-text-primary);
-	}
-
-	/* work-mode */
-	.work-mode {
-		display: flex;
-		flex-direction: column;
-		gap: 10px;
-		&__header {
-
-		}
-
-		&__header-name {
-			font-size: 18px;
-		}
-	}
-
-	.form__work-mode-items {
-		display: flex;
-		flex-direction: column;
-		gap: 5px;
-		transition: all 0.5s;
 	}
 	/* confirmation */
 

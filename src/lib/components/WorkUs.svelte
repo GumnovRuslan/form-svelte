@@ -4,10 +4,7 @@
 
     let workUs = ''
 
-    function changeValue(e) {
-        console.log(e.target.value)
-        e.target.value = e.target.value.replace(/\D/g, '')
-    }
+    const changeValue = e => e.target.value = e.target.value.replace(/\D/g, '')
 </script>
 
 <div class="workUs" id="workLike">
@@ -21,7 +18,7 @@
                 <input
                     class="workUs__item-radio"
                     type="radio"
-                    name="workUs"
+                    name="work-us"
                     bind:group={workUs}
                     value="physical"
                     required
@@ -31,7 +28,9 @@
             <div class="workUs__item-input-container" id="data">
                 <p class="workUs__item-input-text">PESEL</p>
                 <div class='input' class:input__disabled={workUs != 'physical'} >
-                    <input type='number' class="input__input workUs__item-input" minlength="11" maxlength="11" required={workUs == 'physical'} on:input={changeValue}>
+                    <input type='number' class="input__input workUs__item-input" minlength="11" maxlength="11" disabled={workUs != 'physical'}
+                    required={workUs == 'physical'}
+                    on:input={changeValue}>
                     <div class='input__icon'>
                         {@html cross}
                     </div>
@@ -46,14 +45,16 @@
                     bind:group={workUs}
                     value="company"
                     type="radio"
-                    name="workUs"
+                    name="work-us"
                 />
                 <span class="workUs__item-text">Company</span>
             </label>
             <div class="workUs__item-input-container" id="data">
                 <p class="workUs__item-input-text">NIP</p>
                 <div class='input' class:input__disabled={workUs != 'company'} >
-                    <input type='number' class="input__input workUs__item-input" minlength="10" maxlength="10" required={workUs == 'company'} on:input={changeValue}>
+                    <input type='number' class="input__input workUs__item-input" minlength="10" maxlength="10" disabled={workUs != 'company'}
+                    required={workUs == 'company'}
+                    on:input={changeValue}>
                     <div class='input__icon'>
                         {@html cross}
                     </div>
@@ -145,6 +146,10 @@
 
         .input {
             position: relative;
+
+            &:disabled {
+                background: #000;
+            }
 
             &__disabled {
                 opacity: 0.7;
