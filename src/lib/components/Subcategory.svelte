@@ -119,6 +119,7 @@
             flex-direction: column;
             gap: 8px;
             padding: 8px 0 20px;
+            width: 100%;
         }
         &__item {
             display: inline-flex;
