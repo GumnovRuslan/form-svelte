@@ -7,11 +7,11 @@ let categories = {
             value: 'beauty',
             subcategories: [
                     {
-                        name:'Волосы',
-                        value: 'hair'
+                        name:'Парикмахер',
+                        value: "HAIRDRESSER'S"
                     },
                     {
-                        name:'Парикмахер',
+                        name:'Барбершоп',
                         value: 'barber'
                     },
                     {

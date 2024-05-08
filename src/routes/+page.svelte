@@ -13,6 +13,7 @@
 	import categoriesFull from '../lib/db/categories'
 	import { contactsData } from '../lib/db/contacts'
 	import { networkData } from '../lib/db/network'
+	import workModeDate from '../lib/db/workMode'
 	import Header from '../lib/components/Header.svelte';
 	import ProgressBar from '../lib/components/ProgressBar.svelte';
 	import Contacts from '../lib/components/Contacts.svelte';
@@ -618,7 +619,7 @@
 				</form>
 
 				<form class='form-stage' id='formStep3' style='display: {activeFormIndex == 2 ? 'flex' : 'none'}' on:submit={nextStep}>
-					<WorkMode {timesData}/>
+					<WorkMode data={workModeDate}/>
 					<FormControls {buttonsControls}/>
 				</form>
 

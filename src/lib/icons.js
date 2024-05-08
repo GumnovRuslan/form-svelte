@@ -38,6 +38,12 @@ export let arrowCompleted = `
         <path d="M1 6L5.5 11L13 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
     </svg>
 `
+export let time = `
+    <svg viewBox="0 0 20 20" fill="none">
+        <circle cx="10" cy="10" r="8" stroke="currentColor" stroke-width="1.5"/>
+        <path d="M10 5V11L12.5 13.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+`
 export let categoriesIcon = {
      beauty: `
         <svg viewBox="0 0 24 24" fill="none">
