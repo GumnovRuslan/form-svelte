@@ -35,7 +35,7 @@
                         {@html cross}
                     </div>
                 </div>
-             </div>
+            </div>
         </div>
         <div class="workUs__item">
             <label class="workUs__item-label">
@@ -160,7 +160,7 @@
                 font-family: 'Geologica', sans-serif;
                 display: block;
                 width: 100%;
-                padding: 2px 44px 2px 20px;
+                padding: 8px 44px 8px 20px;
                 border: none;
                 border-radius: 20px;
                 font-weight: 400;

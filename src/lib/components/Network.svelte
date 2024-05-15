@@ -3,7 +3,7 @@
     import Checkbox from './Checkbox.svelte';
     export let data = {}
 
-    let networks = []
+    let networks = [];
 </script>
 
 <div class="network" id="formNetwork">
@@ -97,7 +97,7 @@
                 font-family: 'Geologica', sans-serif;
                 display: block;
                 width: 100%;
-                padding: 2px 44px 2px 20px;
+                padding: 8px 44px 8px 20px;
                 border: none;
                 border-radius: 20px;
                 font-weight: 400;

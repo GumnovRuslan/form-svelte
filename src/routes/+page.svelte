@@ -9,7 +9,7 @@
 	import WorkMode from '$lib/components/WorkMode.svelte'
 	import Categories from '$lib/components/Categories.svelte';
 	import FormControls from '../lib/components/FormControls.svelte';
-	import { PUBLIC_URL } from '$env/static/public'
+	// import { PUBLIC_URL } from '$env/static/public'
 	import categoriesFull from '../lib/db/categories'
 	import { contactsData } from '../lib/db/contacts'
 	import { networkData } from '../lib/db/network'
@@ -21,6 +21,8 @@
 	import Home from '../lib/components/Home.svelte';
 	import WorkUs from '../lib/components/WorkUs.svelte';
 	import Network from '../lib/components/Network.svelte';
+
+	const PUBLIC_URL = ''
 
 	const langs = ["ru", "en", "pl", "by", "ua"]
 	let selectLangId
@@ -353,8 +355,6 @@
 			}
 		}
 
-
-
 		async function sendForm(e) {
 			// console.log('success');
 			e.preventDefault();
@@ -587,21 +587,21 @@
 			? 800
 			: 1400}px'>
 			<div class='form__inner-image' id="formImage" style='display: {activeFormIndex ? 'none' : 'block'}'>
-						<img src='/img/image.webp' alt=''>
+				<img src='/img/image.webp' alt=''>
 			</div>
 			<div class='form__content'>
 				<div class="form__header">
-							<h2 class="form__header-title">Регистрация</h2>
-							<ProgressBar active={activeFormIndex} {stepLength}/>
-							<button type="button"
-								class='form__btn-back button-second'
-								style='display: {activeFormIndex ? 'block' : 'none'}'
-								on:click={() => activeFormIndex -= 1}
-							>
-								<div class='form__btn-back-icon'>
-									{@html arrow}
-								</div>
-							</button>
+					<h2 class="form__header-title">Регистрация</h2>
+					<ProgressBar active={activeFormIndex} {stepLength}/>
+					<button type="button"
+						class='form__btn-back button-second'
+						style='display: {activeFormIndex ? 'block' : 'none'}'
+						on:click={() => activeFormIndex -= 1}
+					>
+						<div class='form__btn-back-icon'>
+							{@html arrow}
+						</div>
+					</button>
 				</div>
 
 				<form class='form-stage' id="formStep1" style='display: {activeFormIndex == 0 ? 'flex' : 'none'}' on:submit={nextStep}>

@@ -5,7 +5,7 @@
     export let placeholder = ''
     export let required = false
     export let input = (e) => {}
-    export let change = (e) => {}
+    export let change = (e) => {};
 </script>
 
 <div class='input'>
@@ -40,11 +40,12 @@
             font-family: 'Geologica', sans-serif;
             display: block;
             width: 100%;
-            padding: 2px 44px 2px 20px;
+            padding: 8px 44px 8px 20px;
             border: none;
             border-radius: 20px;
             font-weight: 400;
             font-size: 16px;
+            line-height: 20px;
             box-shadow: 0 4px 8px #9AB3D54D;
 
             &::placeholder {

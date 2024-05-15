@@ -1,7 +1,7 @@
 <script>
     import { arrowCompleted } from "../icons";
     export let checked = false
-    export let type = 'checkbox'
+    export let type = 'checkbox';
 </script>
 
 {#if type == 'checkbox'}
