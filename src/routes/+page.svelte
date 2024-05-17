@@ -17,6 +17,7 @@
 	import languagesData from '../lib/db/languages'
 	import preferencesData from '../lib/db/preferences'
 	import agreementData from '../lib/db/agreement'
+	import workUsData from '../lib/db/workUs'
 	import Header from '../lib/components/Header.svelte';
 	import ProgressBar from '../lib/components/ProgressBar.svelte';
 	import Contacts from '../lib/components/Contacts.svelte';
@@ -43,24 +44,25 @@
 	let buttonIsDisabled = false
 	let controlsButton = true
 	let timesData = {
-					title: i18next.t('form:workMode.title'),
-					days: [
-						i18next.t(`form:workMode.day`, { context: 'monday' }),
-						i18next.t(`form:workMode.day`, { context: 'tuesday' }),
-						i18next.t(`form:workMode.day`, { context: 'wednesday' }),
-						i18next.t(`form:workMode.day`, { context: 'thursday' }),
-						i18next.t(`form:workMode.day`, { context: 'friday' }),
-						i18next.t(`form:workMode.day`, { context: 'saturday' }),
-						i18next.t(`form:workMode.day`, { context: 'sunday' }),
-					],
-					timeText: [
-						i18next.t(`form:workMode.time`, { context: 'open' }),
-						i18next.t(`form:workMode.time`, { context: 'close' })
-					]
-				}
+		title: i18next.t('form:workMode.title'),
+		days: [
+			i18next.t(`form:workMode.day`, { context: 'monday' }),
+			i18next.t(`form:workMode.day`, { context: 'tuesday' }),
+			i18next.t(`form:workMode.day`, { context: 'wednesday' }),
+			i18next.t(`form:workMode.day`, { context: 'thursday' }),
+			i18next.t(`form:workMode.day`, { context: 'friday' }),
+			i18next.t(`form:workMode.day`, { context: 'saturday' }),
+			i18next.t(`form:workMode.day`, { context: 'sunday' }),
+		],
+			timeText: [
+			i18next.t(`form:workMode.time`, { context: 'open' }),
+			i18next.t(`form:workMode.time`, { context: 'close' })
+		]
+	}
 	let categoryValidate = true
 	let subcategoryValidate = true
 	let workUsRadiosValidate = true
+	let agreementCheckboxValidate = true
 
 	let buttonsControls = {
 		prev: 'prev',
@@ -69,11 +71,7 @@
 
 	onMount(() => {
 		stepLength = document.querySelectorAll('.form-stage').length
-		const form = window.myForm;
-
 		langInit();
-
-
 	});
 
 	function langInit() {
@@ -112,14 +110,14 @@
 			document.getElementById('message-button').textContent = i18next.t('message:button');
 			document.querySelector('.form__header-title').textContent = i18next.t('form:title');
 			contacts();
-			// workLike();
+			categories()
+			workUs();
 			// network();
 			workMode();
 			// calendar();
 			// communication();
 			// preference();
 			// formConfirmation();
-			categories()
 			document.getElementById('buttonSend').textContent = i18next.t('form:button.text');
 			buttonsControls = {
 				prev: i18next.t('form:button.button', {context: 'prev'}),
@@ -143,18 +141,12 @@
 				contactsData.email.name = i18next.t(`form:contacts.text`, { context: 'email' })
 				contactsData.email.placeholder = i18next.t(`form:contacts.text`, { context: 'email' })
 			}
-			function workLike() {
-				const container = document.getElementById('workLike');
-				let items = container.querySelectorAll('.form__work-like-label');
-				let inputs = container.querySelectorAll('.form__work-like-input');
-
-				container.querySelector('.form__work-like-text').textContent = i18next.t('form:work.title');
-
-				items[0].textContent = i18next.t(`form:work.text`, { context: 'physical' });
-				items[1].textContent = i18next.t(`form:work.text`, { context: 'company' });
-
-				inputs[0].placeholder = i18next.t(`form:work.input`, { context: 'physical' });
-				inputs[1].placeholder = i18next.t(`form:work.input`, { context: 'company' });
+			function workUs() {
+				workUsData.title = i18next.t('form:work.title')
+				workUsData.text[0] = i18next.t(`form:work.text`, { context: 'physical' })
+				workUsData.text[1] = i18next.t(`form:work.text`, { context: 'company' })
+				workUsData.placeholder[0] = i18next.t(`form:work.input`, { context: 'physical' })
+				workUsData.placeholder[1] = i18next.t(`form:work.input`, { context: 'company' })
 			}
 			function network() {
 				const container = document.getElementById('formNetwork');
@@ -336,7 +328,7 @@
 				categoriesFull.categories[10].subcategories[4].name = i18next.t(`form:category.categories.10.subcategories.4`)
 
 			}
-		}
+	}
 
 		async function sendForm(e) {
 			// console.log('success');
@@ -547,35 +539,39 @@
 		activeFormIndex += 1
 	}
 
+	function validateFormStep4(e) {
+		e.preventDefault()
+		const section = window.agreement
+		const checkbox = section.querySelector('input[type="checkbox"]')
+		agreementCheckboxValidate = checkbox.checked
+
+		console.log('step 4 completed')
+		if(checkbox.checked) sendForm(e)
+	}
+
 	function validateFormStep2 (e) {
 		e.preventDefault()
 		const category = ValidateCategories()
 		const radio = ValidateWorkUs()
 
 		if(category && radio) nextStep(e)
-		// console.log(category)
-	}
 
-	function ValidateCategories() {
-		const categorySelect = window.categorySelect.dataset.selectValue
-		const subcategorySelect = window.subcategorySelect.dataset.subcategoriesSelect
-		categoryValidate = categorySelect
-		if(categoryValidate) subcategoryValidate = !!subcategorySelect
-		return !!categoryValidate && !!subcategoryValidate
-	}
+		function ValidateCategories() {
+			const categorySelect = window.categorySelect.dataset.selectValue
+			const subcategorySelect = window.subcategorySelect.dataset.subcategoriesSelect
+			categoryValidate = categorySelect
+			if(categoryValidate) subcategoryValidate = !!subcategorySelect
+			return !!categoryValidate && !!subcategoryValidate
+		}
 
-	function ValidateWorkUs() {
-		const section = window.workUs 
-		const radios = section.querySelectorAll('.workUs__item-radio')
-		let radioIsChecked = false
-		radios.forEach(radio => radioIsChecked = radio.checked ? true : radioIsChecked)
-		// console.log(radioIsChecked)
-		workUsRadiosValidate = radioIsChecked
-		return workUsRadiosValidate
-	}
-
-	function prevStep(e) {
-		activeFormIndex -= 1
+		function ValidateWorkUs() {
+			const section = window.workUs 
+			const radios = section.querySelectorAll('.workUs__item-radio')
+			let radioIsChecked = false
+			radios.forEach(radio => radioIsChecked = radio.checked ? true : radioIsChecked)
+			workUsRadiosValidate = radioIsChecked
+			return workUsRadiosValidate
+		}
 	}
 
 	function showForm() {
@@ -606,8 +602,7 @@
 					<button type="button"
 						class='form__btn-back button-second'
 						style='display: {activeFormIndex ? 'block' : 'none'}'
-						on:click={() => activeFormIndex -= 1}
-					>
+						on:click={() => activeFormIndex -= 1}>
 						<div class='form__btn-back-icon'>
 							{@html arrow}
 						</div>
@@ -622,23 +617,25 @@
 				<form class='form-stage' id="formStep2" style='display: {activeFormIndex == 1 ? 'flex' : 'none'}' on:submit={validateFormStep2}>
 					<div class='form-stage__inner'>
 						<Categories data={categoriesFull} {categoryValidate} {subcategoryValidate}/>
-						<WorkUs radioValidate={workUsRadiosValidate}/>
+						<WorkUs data={workUsData} radioValidate={workUsRadiosValidate}/>
 						<Network data={networkData}/>
 					</div>
 					<FormControls {buttonsControls}/>
 				</form>
 
 				<form class='form-stage' id='formStep3' style='display: {activeFormIndex == 2 ? 'flex' : 'none'}' on:submit={nextStep}>
-					<WorkMode data={workModeDate}/>
+					<div class='form-stage__inner'>
+						<WorkMode data={workModeDate}/>
+					</div>
 					<FormControls {buttonsControls}/>
 				</form>
 
-				<form class='form-stage' id='formStep4' style='display: {activeFormIndex == 3 ? 'flex' : 'none'}' on:submit={sendForm}>
+				<form class='form-stage' id='formStep4' style='display: {activeFormIndex == 3 ? 'flex' : 'none'}' on:submit={validateFormStep4}>
 					<div class='form-stage__inner'>
 						<Calendar />
 						<Languages data={languagesData}/>
 						<Preferences data={preferencesData}/>
-						<Agreement data={agreementData}/>
+						<Agreement data={agreementData} valid={agreementCheckboxValidate}/>
 					</div>
 
 					<div class='message-send' id='formCompleted'>

@@ -7,7 +7,7 @@
 
 {#if type == 'checkbox'}
     <div class='checkbox'>
-        <div class='checkbox__inner' class:checkbox__checked={checked}>
+        <div class='checkbox__inner' class:checkbox__checked={checked} class:checkbox__invalid={!valid}>
             {#if checked}
                 <div class='checkbox__icon'>
                     {@html arrowCompleted}
@@ -34,6 +34,9 @@
             height: 20px;
             border: 2px solid var(--color-bg-primary);
             border-radius: 5px;
+        }
+        &__invalid {
+            border: 2px solid var(--color-invalid);
         }
         &__checked {
             background: var(--color-bg-primary);

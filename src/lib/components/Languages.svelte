@@ -28,7 +28,9 @@
             <Input 
                 placeholder={"Enter other languages"} 
                 disabled={!checked.find(el => el == 'another')} 
-                required={checked.find(el => el == 'another')}/>
+                required={checked.find(el => el == 'another')}
+                invalid={e => e.currentTarget.classList.add('invalid')}
+                />
         </div>
     </div>
 

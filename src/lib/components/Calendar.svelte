@@ -7,7 +7,10 @@
         <p class="calendar__header-title">Link to Google calendar</p>
     </div>
     <div class="calendar__content">
-        <Input type='url' placeholder='link to Google calendar' input={(e) => e.target.required = !!e.target.value}/>
+        <Input type='url' 
+        placeholder='link to Google calendar' 
+        input={(e) => e.target.required = !!e.target.value} 
+        invalid={e => e.currentTarget.classList.add('invalid')}/>
     </div>
 </div>
 

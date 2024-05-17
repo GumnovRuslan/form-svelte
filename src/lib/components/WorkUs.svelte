@@ -3,6 +3,7 @@
     import Checkbox from './Checkbox.svelte';
 
     export let radioValidate
+    export let data
 
     let workUs = ''
 
@@ -28,7 +29,7 @@
 
 <div class="workUs" id="workUs">
     <div class="workUs__header">
-        <p class="workUs__header-text">You work us<span>*</span></p>
+        <p class="workUs__header-text">{data.title}<span>*</span></p>
     </div>
     <div class="workUs__content">
         <div class="workUs__item">
@@ -42,7 +43,7 @@
                     value="physical"
                     on:change={() => radioValidate = true}
                 />
-                <span class="workUs__item-text">Physical person</span>
+                <span class="workUs__item-text">{data.text[0]}</span>
             </label>
             <div class="workUs__item-input-container" id="data">
                 <p class="workUs__item-input-text">PESEL</p>
@@ -69,7 +70,7 @@
                     name="work-us"
                     on:change={() => radioValidate = true}
                 />
-                <span class="workUs__item-text">Company</span>
+                <span class="workUs__item-text">{data.text[1]}</span>
             </label>
             <div class="workUs__item-input-container" id="data">
                 <p class="workUs__item-input-text">NIP</p>

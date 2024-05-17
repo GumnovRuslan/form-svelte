@@ -5,16 +5,18 @@
     export let data
 
 	let checked = [];
-
-	let dataHours = Array.from({length: 24}).map((_, i) => i < 10 ? `0${i}` : i)
-	let dataMinutes = Array.from({length: 12}).map((_, i) => {
-		let minute = `${i * 5}`
-		return minute <= 9 ? 0 + minute : minute
-	})
+	let dataHours = [];
+	let dataMinutes = [];
 
 	let list1 = false
 	onMount(() => {
 		window.addEventListener('click', closeList)
+
+		dataHours = Array.from({length: 24}).map((_, i) => i < 10 ? `0${i}` : i)
+		dataMinutes = Array.from({length: 12}).map((_, i) => {
+			let minute = `${i * 5}`
+			return minute <= 9 ? 0 + minute : minute
+		})
 	})
 
 	function closeList(e) {
@@ -50,13 +52,19 @@
 	function changeHour(e) {
 		let el = e.currentTarget
 		if(+el.value > 24) el.value = '24'
-		if(el.value.length < 2) el.value = '0'+el.value
+		if(el.value && el.value.length < 2) el.value = '0'+el.value
 	}
 
 	function changeMinute(e) {
 		let el = e.currentTarget
 		if(+el.value > 59) el.value = '59'
-		if(el.value.length < 2) el.value = '0'+el.value
+		if(el.value && el.value.length < 2) el.value = '0'+el.value
+	}
+
+	function changeValueTime(e, type) {
+		let el = e.currentTarget
+		if(+el.value > 59) el.value = type == 'minute' ? '59' : type == 'hour' ? '24' : '00'
+		if(el.value && el.value.length < 2) el.value = '0'+el.value
 	}
 
 	function showList(e) {
@@ -159,9 +167,17 @@
 						<p class="work-mode__times-text">Time:</p>
 						<div class='work-mode__times-inner'>
 							<button type="button" class='work-mode__time' on:click={showList}>
-								<input type='number' class="work-mode__time-input work-mode__time-hour" placeholder="00" on:input={inputTime} on:change={changeHour}>
+								<input type='number' class="work-mode__time-input work-mode__time-hour" 
+								placeholder="00" 
+								on:input={inputTime} 
+								on:change={e => changeValueTime(e, 'hour')} 
+								required={checked.find(el => el == day.value)}>
 								<span class="work-mode__time-delimiter">:</span>
-								<input type='number' class="work-mode__time-input work-mode__time-minute" placeholder="00" on:input={inputTime} on:change={changeMinute}>
+								<input type='number' class="work-mode__time-input work-mode__time-minute" 
+								placeholder="00" 
+								on:input={inputTime} 
+								on:change={e => changeValueTime(e, 'minute')} 
+								required={checked.find(el => el == day.value)}>
 								<div class='work-mode__time-list' style:display={list1 ? 'flex': 'none'}>
 									<div class='work-mode__time-list-hours work-mode__time-list-items'>
 										{#each dataHours as hour}
@@ -177,9 +193,17 @@
 							</button>
 							<span class='work-mode__times-delimiter'>-</span>
 							<button type="button" class='work-mode__time' on:click={showList}>
-								<input type='number' class="work-mode__time-input work-mode__time-hour" placeholder="00" on:input={inputTime} on:change={changeHour}>
+								<input type='number' class="work-mode__time-input work-mode__time-hour" 
+								placeholder="00" 
+								on:input={inputTime} 
+								on:change={e => changeValueTime(e, 'hour')} 
+								required={checked.find(el => el == day.value)}>
 								<span class="work-mode__time-delimiter">:</span>
-								<input type='number' class="work-mode__time-input work-mode__time-minute" placeholder="00" on:input={inputTime} on:change={changeMinute}>
+								<input type='number' class="work-mode__time-input work-mode__time-minute" 
+								placeholder="00" 
+								on:input={inputTime} 
+								on:change={e => changeValueTime(e, 'minute')} 
+								required={checked.find(el => el == day.value)}>
 								<div class='work-mode__time-list' style:display={list1 ? 'flex': 'none'}>
 									<div class='work-mode__time-list-hours work-mode__time-list-items'>
 										{#each dataHours as hour}
@@ -371,13 +395,12 @@
 			position: relative;
 			display: flex;
 			align-items: center;
-			// gap: 4px;
 			border-radius: 30px;
-			// padding: 4px 16px;
 			border: none;
 			background: var(--color-bg-fourth);
 		}
 		&__time-list {
+			display: none;
 			position: absolute;
 			top: calc(100% + 5px);
 			z-index: 1;

@@ -2,18 +2,21 @@
     import Checkbox from "./Checkbox.svelte";
 
     export let data
+    export let valid = true
 
     let isChecked = false;
 </script>
 
-<div class="agreement" id="formConfirmation">
+<div class="agreement" id="agreement">
     <label class="agreement__inner">
-        <Checkbox checked={isChecked}/>
+        <Checkbox checked={isChecked} {valid}/>
         <input
             class="agreement__checkbox"
             type="checkbox"
-            required
-            on:input={() => isChecked = !isChecked}
+            on:input={() => {
+                valid = true
+                isChecked = !isChecked
+                }}
         />
         <div class="agreement__content">
             <span class="agreement__text">{data.title}</span>
