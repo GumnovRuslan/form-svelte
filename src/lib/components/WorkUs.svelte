@@ -2,36 +2,57 @@
     import { cross } from '../icons'
     import Checkbox from './Checkbox.svelte';
 
+    export let radioValidate
+
     let workUs = ''
 
-    const changeValue = e => e.target.value = e.target.value.replace(/\D/g, '')
+    const changeValue = (e, num) => {
+        e.currentTarget.classList.remove('invalid')
+        e.currentTarget.value = e.currentTarget.value.replace(/\D/g, '')
+        if(e.currentTarget.value.length == num) {e.currentTarget.setCustomValidity('')}
+        else {e.currentTarget.setCustomValidity(`поле должно содержать ${num} цифр`)}
+    }
+
+    function invalid(e, num) {
+        e.currentTarget.classList.add('invalid')
+        e.currentTarget.setCustomValidity(`поле должно содержать ${num} цифр`)
+    }
+
+    function clear(e) {
+        const target = e.currentTarget
+        const container = target.closest('.input')
+        const input = container.querySelector('[data-target]')
+        input.value = ''
+    }
 </script>
 
-<div class="workUs" id="workLike">
+<div class="workUs" id="workUs">
     <div class="workUs__header">
         <p class="workUs__header-text">You work us<span>*</span></p>
     </div>
     <div class="workUs__content">
         <div class="workUs__item">
             <label class="workUs__item-label">
-                <Checkbox type='radio' checked={workUs == 'physical'}/>
+                <Checkbox type='radio' checked={workUs == 'physical'} valid={radioValidate}/>
                 <input
                     class="workUs__item-radio"
                     type="radio"
                     name="work-us"
                     bind:group={workUs}
                     value="physical"
-                    required
+                    on:change={() => radioValidate = true}
                 />
                 <span class="workUs__item-text">Physical person</span>
             </label>
             <div class="workUs__item-input-container" id="data">
                 <p class="workUs__item-input-text">PESEL</p>
                 <div class='input' class:input__disabled={workUs != 'physical'} >
-                    <input type='number' class="input__input workUs__item-input" minlength="11" maxlength="11" disabled={workUs != 'physical'}
+                    <input type='text' data-target class="input__input workUs__item-input" minlength="11" maxlength="11" 
+                    disabled={workUs != 'physical'}
                     required={workUs == 'physical'}
-                    on:input={changeValue}>
-                    <div class='input__icon'>
+                    on:input={(e) => changeValue(e, 11)}
+                    on:invalid={(e) => invalid(e, 11)}>
+                    <div class='input__icon' on:mousedown={clear}>
                         {@html cross}
                     </div>
                 </div>
@@ -39,23 +60,25 @@
         </div>
         <div class="workUs__item">
             <label class="workUs__item-label">
-                <Checkbox type='radio' checked={workUs == 'company'}/>
+                <Checkbox type='radio' checked={workUs == 'company'} valid={radioValidate}/>
                 <input
                     class="workUs__item-radio"
                     bind:group={workUs}
                     value="company"
                     type="radio"
                     name="work-us"
+                    on:change={() => radioValidate = true}
                 />
                 <span class="workUs__item-text">Company</span>
             </label>
             <div class="workUs__item-input-container" id="data">
                 <p class="workUs__item-input-text">NIP</p>
                 <div class='input' class:input__disabled={workUs != 'company'} >
-                    <input type='number' class="input__input workUs__item-input" minlength="10" maxlength="10" disabled={workUs != 'company'}
+                    <input type='text' data-target class="input__input workUs__item-input" minlength="10" maxlength="10" disabled={workUs != 'company'}
                     required={workUs == 'company'}
-                    on:input={changeValue}>
-                    <div class='input__icon'>
+                    on:input={(e) => changeValue(e, 10)}
+                    on:invalid={(e) => invalid(e, 10)}>
+                    <div class='input__icon' on:mousedown={clear}>
                         {@html cross}
                     </div>
                 </div>
@@ -66,6 +89,7 @@
 
 
 <style lang="scss">
+    
     .workUs {
         width: 100%;
         &__header {

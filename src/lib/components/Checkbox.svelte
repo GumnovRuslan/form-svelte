@@ -2,6 +2,7 @@
     import { arrowCompleted } from "../icons";
     export let checked = false
     export let type = 'checkbox';
+    export let valid = true;
 </script>
 
 {#if type == 'checkbox'}
@@ -18,7 +19,7 @@
 
 {#if type == 'radio'}
     <div class='radio'>
-        <div class='radio__inner' class:radio__checked={checked}>
+        <div class='radio__inner' class:radio__checked={checked} class:radio__invalid={!valid}>
         </div>
     </div>
 {/if}
@@ -37,6 +38,7 @@
         &__checked {
             background: var(--color-bg-primary);
         }
+        
         &__icon {
             transform: translateY(-3px);
             max-width: 12px;
@@ -51,7 +53,9 @@
             border-radius: 50%;
             background: var(--color-bg-secondary);
         }
-
+        &__invalid {
+            outline: 2px solid var(--color-invalid);
+        }
         &__checked {
             position: relative;
             border: 1px solid var(--color-bg-primary);

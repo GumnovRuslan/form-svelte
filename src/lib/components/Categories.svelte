@@ -1,10 +1,13 @@
 <script>
     import Category from "./Category.svelte";
 	import Subcategory from "./Subcategory.svelte";
-    export let categories
 
-    let categorySelect = ''
-    $:categorySelected = categorySelect
+    export let data
+    export let categoryValidate
+    export let subcategoryValidate
+
+    let categorySelect = '';
+    $:categorySelected = categorySelect;
 </script>
 
 <div class='categories' id="formCategories">
@@ -14,11 +17,11 @@
     <div class='categories__content'>
         <div class='categories__item'>
             <p class='categories__item-text'>Category</p>
-            <Category {categories} on:selectCategory={(e) => categorySelect = +e.detail.index}/>
+            <Category {data} on:selectCategory={(e) => categorySelect = +e.detail.index} valid={categoryValidate}/>
         </div>
         <div class='categories__item'>
             <p class='categories__item-text' class:categories__item-text--disabled={!Number.isInteger(categorySelected)}>Subcategory</p>
-            <Subcategory {categories} categoryId={categorySelected}/>
+            <Subcategory {data} categoryId={categorySelected} valid={subcategoryValidate}/>
         </div>
     </div>
 </div>

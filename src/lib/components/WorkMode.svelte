@@ -5,9 +5,8 @@
     export let data
 
 	let checked = [];
-	// $:checkedDay = checked
 
-	let dataHours = Array.from({length: 12}).map((_, i) => i < 10 ? `0${i}` : i)
+	let dataHours = Array.from({length: 24}).map((_, i) => i < 10 ? `0${i}` : i)
 	let dataMinutes = Array.from({length: 12}).map((_, i) => {
 		let minute = `${i * 5}`
 		return minute <= 9 ? 0 + minute : minute
@@ -39,9 +38,7 @@
 				list.dataset.listShow = '0'
 				list.style.display = 'none'
 			}
-			
 		})
-		
 	}
 
 	function inputTime(e) {
@@ -60,7 +57,6 @@
 		let el = e.currentTarget
 		if(+el.value > 59) el.value = '59'
 		if(el.value.length < 2) el.value = '0'+el.value
-		window.editCansel.click
 	}
 
 	function showList(e) {
@@ -155,7 +151,7 @@
 							<div class='work-mode__item-time-show-icon'>
 								{@html time}
 							</div>
-							<p class='work-mode__item-time-show-text'>10:00 - 19:00</p>
+							<p class='work-mode__item-time-show-text'>00:00 - 00:00</p>
 						</div>
 						<label for={day.value} type="button" class='work-mode__item-time-show-button button-second'>Edit</label>
 					</div>
@@ -385,17 +381,22 @@
 			position: absolute;
 			top: calc(100% + 5px);
 			z-index: 1;
-			left: 0;
-			width: 100%;
+			left: 50%;
+			transform: translate(-50%, 0);
 			max-height: calc(130px + 20px);
 			overflow: hidden;
 			display: flex;
-			// align-items: center;
 			justify-content: center;
-			// gap: 6px;
 			padding: 10px 6px;
 			border-radius: 20px;
 			background: var(--color-bg-primary);
+
+			@media (min-width: 600px) {
+				width: 100%;
+			}
+			@media (max-width: 600px) {
+				width: 200%;
+			}
 		}
 		&__time-list-items {
 			flex: 100%;
@@ -410,16 +411,24 @@
 			}
 		}
 		&__time-list-item {
+			width: 100%;
 			padding: 3px 5px;
 			border-radius: 10px;
 			cursor: pointer;
 			border: none;
 			background: transparent;
-			font-size: 16px;
 			font-weight: 400;
-			line-height: 20px;
+			
 			&:hover {
 				background: var(--color-bg-secondary);
+			}
+			@media (min-width: 600px) {
+				font-size: 16px;
+				line-height: 20px;
+			}
+			@media (max-width: 600px) {
+				font-size: 18px;
+				line-height: 25px;
 			}
 		}
 		&__time-delimiter {

@@ -2,34 +2,35 @@
     import { arrowSelect, categoriesIcon } from "../icons";
     import { onMount } from "svelte";
     import { createEventDispatcher } from "svelte";
-    export let categories
+    export let data
+    export let valid
 
-    let dispatch = createEventDispatcher()
-    $: headerText = selectCategoryIndex ? categories.categories[selectCategoryIndex].name : categories.subcategory_default
-    let categoryShow = false
-    let selectCategoryValue
-    let selectCategoryIndex
+    let dispatch = createEventDispatcher();
+    $: headerText = selectCategoryIndex ? data.categories[selectCategoryIndex].name : data.subcategory_default;
+    let categoryShow = false;
+    let selectCategoryValue = '';
+    let selectCategoryIndex;
 
     onMount(() => {
         window.addEventListener('click', (e) => {
             if(!e.target.closest('.category__inner')) categoryShow = false
         })
-    })
+    });
 
     function selectCategory(e) {
         categoryShow = false
         const value = e.currentTarget.dataset.value
         const index = e.currentTarget.dataset.index
-        headerText = categories.categories[index].name
+        headerText = data.categories[index].name
         selectCategoryValue = value
         selectCategoryIndex = index
         dispatch('selectCategory', {index: index})
-    }
+    };
 </script>
 
 <div class='category' id="categorySelect" data-select-value={selectCategoryValue} data-select-index={selectCategoryIndex}>
     <input type='checkbox' id="category" bind:checked={categoryShow}>
-    <div class='category__inner'>
+    <div class='category__inner' class:category__inner-validate={!valid}>
         <label for="category" class='category__header'>
             <p class='category__header-text'>{headerText}</p>
             <div class='category__header-icon'>
@@ -38,7 +39,7 @@
         </label>
         <div class='category__content'>
             <div class='category__list'>
-                {#each categories.categories as category, i}
+                {#each data.categories as category, i}
                     <div class='category__item'
                     data-value={category.value}
                     data-index={i}
@@ -93,6 +94,9 @@
 
             &:hover {
                 outline: 2px solid var(--color-bg-primary);
+            }
+            &-validate {
+                outline: 2px solid var(--color-invalid);
             }
         }
         &__header {

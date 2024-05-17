@@ -14,6 +14,9 @@
 	import { contactsData } from '../lib/db/contacts'
 	import { networkData } from '../lib/db/network'
 	import workModeDate from '../lib/db/workMode'
+	import languagesData from '../lib/db/languages'
+	import preferencesData from '../lib/db/preferences'
+	import agreementData from '../lib/db/agreement'
 	import Header from '../lib/components/Header.svelte';
 	import ProgressBar from '../lib/components/ProgressBar.svelte';
 	import Contacts from '../lib/components/Contacts.svelte';
@@ -21,6 +24,10 @@
 	import Home from '../lib/components/Home.svelte';
 	import WorkUs from '../lib/components/WorkUs.svelte';
 	import Network from '../lib/components/Network.svelte';
+	import Calendar from '../lib/components/Calendar.svelte';
+	import Languages from '../lib/components/Languages.svelte';
+	import Preferences from '../lib/components/Preferences.svelte';
+	import Agreement from '../lib/components/Agreement.svelte';
 
 	const PUBLIC_URL = ''
 
@@ -51,6 +58,9 @@
 						i18next.t(`form:workMode.time`, { context: 'close' })
 					]
 				}
+	let categoryValidate = true
+	let subcategoryValidate = true
+	let workUsRadiosValidate = true
 
 	let buttonsControls = {
 		prev: 'prev',
@@ -62,33 +72,6 @@
 		const form = window.myForm;
 
 		langInit();
-		workSectionNetwork();
-		workSectionCommunication();
-
-		function workSectionNetwork() {
-			let networkContainer = form.querySelector('#formNetwork');
-			let networkItems = networkContainer.querySelectorAll('.form__network-item-checkbox');
-			networkItems.forEach((item) =>
-				item.addEventListener('input', (e) => {
-					const checkbox = e.target;
-					const item = checkbox.closest('.form__network-item');
-					const input = item.querySelector('.form__network-item-input');
-					input.disabled = !checkbox.checked;
-				})
-			);
-		}
-
-		function workSectionCommunication() {
-			const checkboxLangAnother = window.communicationLanguages.querySelector(
-				'.form__languages-item-another-checkbox'
-			);
-			checkboxLangAnother.addEventListener('input', (e) => {
-				const checkbox = e.target;
-				const item = checkbox.closest('.form__languages-another');
-				const input = item.querySelector('.form__input');
-				input.disabled = !checkbox.checked;
-			});
-		}
 
 
 	});
@@ -132,10 +115,10 @@
 			// workLike();
 			// network();
 			workMode();
-			calendar();
-			communication();
-			preference();
-			formConfirmation();
+			// calendar();
+			// communication();
+			// preference();
+			// formConfirmation();
 			categories()
 			document.getElementById('buttonSend').textContent = i18next.t('form:button.text');
 			buttonsControls = {
@@ -564,6 +547,33 @@
 		activeFormIndex += 1
 	}
 
+	function validateFormStep2 (e) {
+		e.preventDefault()
+		const category = ValidateCategories()
+		const radio = ValidateWorkUs()
+
+		if(category && radio) nextStep(e)
+		// console.log(category)
+	}
+
+	function ValidateCategories() {
+		const categorySelect = window.categorySelect.dataset.selectValue
+		const subcategorySelect = window.subcategorySelect.dataset.subcategoriesSelect
+		categoryValidate = categorySelect
+		if(categoryValidate) subcategoryValidate = !!subcategorySelect
+		return !!categoryValidate && !!subcategoryValidate
+	}
+
+	function ValidateWorkUs() {
+		const section = window.workUs 
+		const radios = section.querySelectorAll('.workUs__item-radio')
+		let radioIsChecked = false
+		radios.forEach(radio => radioIsChecked = radio.checked ? true : radioIsChecked)
+		// console.log(radioIsChecked)
+		workUsRadiosValidate = radioIsChecked
+		return workUsRadiosValidate
+	}
+
 	function prevStep(e) {
 		activeFormIndex -= 1
 	}
@@ -581,11 +591,11 @@
 	<Home />
 	<div class="form" name="myForm" id="myForm">
 		<div class="form__inner"
-			style:max-width='{activeFormIndex == 0
-			? 1071
-			: activeFormIndex == 1
-			? 800
-			: 1400}px'>
+			style:max-width='{
+			activeFormIndex == 0 ? 1071
+			: activeFormIndex == 1 ? 800
+			: activeFormIndex == 2 ? 1150 
+			: activeFormIndex == 3 ? 800 : 1400}px'>
 			<div class='form__inner-image' id="formImage" style='display: {activeFormIndex ? 'none' : 'block'}'>
 				<img src='/img/image.webp' alt=''>
 			</div>
@@ -609,10 +619,10 @@
 					<FormControls {buttonsControls}/>
 				</form>
 
-				<form class='form-stage' id="formStep2" style='display: {activeFormIndex == 1 ? 'flex' : 'none'}' on:submit={nextStep}>
+				<form class='form-stage' id="formStep2" style='display: {activeFormIndex == 1 ? 'flex' : 'none'}' on:submit={validateFormStep2}>
 					<div class='form-stage__inner'>
-						<Categories categories={categoriesFull}/>
-						<WorkUs />
+						<Categories data={categoriesFull} {categoryValidate} {subcategoryValidate}/>
+						<WorkUs radioValidate={workUsRadiosValidate}/>
 						<Network data={networkData}/>
 					</div>
 					<FormControls {buttonsControls}/>
@@ -623,150 +633,31 @@
 					<FormControls {buttonsControls}/>
 				</form>
 
-							<form class='form-stage' id='formStep4' style='display: {activeFormIndex == 3 ? 'flex' : 'none'}' on:submit={sendForm}>
-								<div class='form-stage__inner'>
-									<div class="form__calendar" id="formLinkCalendar">
-										<p class="form__calendar-text section-name">Link to Google calendar</p>
-										<input
-											id="inputLinkCalendar"
-											type="url"
-											class="form__calendar-input form__input"
-											placeholder="link to Google calendar"
-											on:input={(e) => e.target.required = !!e.target.value}
-										/>
-									</div>
-									<div class="form__languages-container" id="communicationLanguages">
-										<p class="form__languages-text section-name">Языки комуникациии</p>
-										<div class="form__languages-items">
-											<label class="form__languages-item">
-												<input type="checkbox" class="form__languages-item-checkbox custom-checkbox" />
-												<span class="form__languages-item-text form__text">Polski</span>
-											</label>
-
-											<label class="form__languages-item">
-												<input type="checkbox" class="form__languages-item-checkbox custom-checkbox" />
-												<span class="form__languages-item-text form__text">Беларуская</span>
-											</label>
-
-											<label class="form__languages-item">
-												<input type="checkbox" class="form__languages-item-checkbox custom-checkbox" />
-												<span class="form__languages-item-text form__text">Українська</span>
-											</label>
-
-											<label class="form__languages-item">
-												<input type="checkbox" class="form__languages-item-checkbox custom-checkbox" />
-												<span class="form__languages-item-text form__text">Русский</span>
-											</label>
-
-											<label class="form__languages-item">
-												<input type="checkbox" class="form__languages-item-checkbox custom-checkbox" />
-												<span class="form__languages-item-text form__text">English</span>
-											</label>
-
-											<div class="form__languages-another">
-												<label class="form__languages-item-another">
-													<input
-														type="checkbox"
-														class="form__languages-item-another-checkbox form__languages-item-checkbox custom-checkbox"
-													/>
-													<span
-														class="form__languages-item-text form__text form__languages-item-another-text"
-														>Another</span
-													>
-												</label>
-												<input
-													class="form__languages-item-another-input form__input"
-													type="text"
-													disabled
-													placeholder="Enter other languages"
-												/>
-											</div>
-										</div>
-
-									</div>
-									<div class="form__preferences" id="formSurvey">
-										<div class="form__preferences-header">
-											<p class="form__preferences-text form__text">
-												Select which category matches your company
-											</p>
-											<p class="form__preferences-text form__text"></p>
-										</div>
-
-										<div class="form__preferences-items">
-											<label class="form__preferences-item">
-												<input
-													class="form__preferences-item-checkbox custom-checkbox"
-													type="checkbox"
-													name="preferences"
-													value="ecofriendly"
-												/>
-												<span class="form__preferences-item-text form__text">ecofriendly</span>
-											</label>
-
-											<label class="form__preferences-item">
-												<input
-													class="form__preferences-item-checkbox custom-checkbox"
-													type="checkbox"
-													name="preferences"
-													value="ecofriendly"
-												/>
-												<span class="form__preferences-item-text form__text">petfriendly</span>
-											</label>
-
-											<label class="form__preferences-item">
-												<input
-													class="form__preferences-item-checkbox custom-checkbox"
-													type="checkbox"
-													name="preferences"
-													value="ecofriendly"
-												/>
-												<span class="form__preferences-item-text form__text">childefriendly</span>
-											</label>
-
-											<label class="form__preferences-item">
-												<input
-													class="form__preferences-item-checkbox custom-checkbox"
-													type="checkbox"
-													name="preferences"
-													value="ecofriendly"
-												/>
-												<span class="form__preferences-item-text form__text">inclusive</span>
-											</label>
-										</div>
-									</div>
-									<label class="form__confirmation" id="formConfirmation">
-										<input
-											class="form__confirmation-checkbox custom-checkbox"
-											type="checkbox"
-											required
-										/>
-										<div class="form__confirmation-text-container">
-											<span class="form__confirmation-text">
-												I agree to the publication of the provided data on YOOHIVE.COM resources
-											</span>
-											<span class="form__required">*</span>
-											<p class="form__confirmation-text"></p>
-										</div>
-									</label>
-								</div>
-								<div class='message-send' id='formCompleted'>
-									<div class='message-send__inner'>
-										<div class='message-send__image'>
-											<img src='/img/mark.webp' alt=''>
-										</div>
-										<p class='message-send__text'>{formMessage}</p>
-									</div>
-								</div>
-								<div class='form__button-container'>
-									<button class="button" type="submit" id="buttonSend" class:button__disabled={buttonIsDisabled}>Registration</button>
-									<p class='form__message' class:message-error={formMessageIsError}>{formMessage}</p>
-								</div>
-								<FormControls next={false} {buttonsControls}/>
-							</form>
+				<form class='form-stage' id='formStep4' style='display: {activeFormIndex == 3 ? 'flex' : 'none'}' on:submit={sendForm}>
+					<div class='form-stage__inner'>
+						<Calendar />
+						<Languages data={languagesData}/>
+						<Preferences data={preferencesData}/>
+						<Agreement data={agreementData}/>
 					</div>
 
-				</div>
+					<div class='message-send' id='formCompleted'>
+						<div class='message-send__inner'>
+							<div class='message-send__image'>
+								<img src='/img/mark.webp' alt=''>
+							</div>
+							<p class='message-send__text'>{formMessage}</p>
+						</div>
+					</div>
+
+					<div class='form__bottom'>
+						<button class="button form__bottom-btn" type="submit" id="buttonSend" class:button__disabled={buttonIsDisabled}>Registration</button>
+						<p class='form__bottom-message' class:form__bottom-message-error={formMessageIsError}>{formMessage}</p>
+					</div>
+				</form>
 			</div>
+		</div>
+	</div>
 </main>
 
 <style lang="scss">
@@ -886,120 +777,23 @@
 				object-fit: cover;
 			}
 		}
-	}
-
-	.form__button-container {
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		justify-content: center;
-		gap: 15px;
-	}
-
-	/* calendar */
-
-	.form__calendar {
-	}
-
-	.form__calendar-text {
-		font-size: 20px;
-		margin-bottom: 8px;
-		color: var(--color-text-primary);
-	}
-
-	/* languages */
-
-	.form__languages-text {
-		font-size: 20px;
-		margin-bottom: 20px;
-		color: var(--color-text-primary);
-	}
-
-	.form__languages-items {
-		display: grid;
-		gap: 15px;
-		margin-bottom: 15px;
-		@media (min-width: 600px) {
-			grid-template-columns: repeat(2, 1fr);
+		&__bottom {
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			justify-content: center;
+			gap: 15px;
 		}
-		@media (max-width: 600px) {
-			grid-template-columns: repeat(1, 1fr);
+		&__bottom-btn {
+			font-size: 20px;
+			line-height: 25px;
+			padding: 8px 24px;
 		}
-	}
+		&__bottom-message {
 
-	.form__languages-item {
-		width: 50%;
-		display: flex;
-		align-items: start;
-		cursor: pointer;
-	}
-
-	.form__languages-item-checkbox {
-		margin: 0 15px 0 0;
-	}
-
-	.form__languages-item-text {
-		color: var(--color-text-primary);
-	}
-
-	.form__languages-another {
-		display: flex;
-		flex-direction: column;
-		gap: 10px;
-	}
-
-	.form__languages-item-another {
-		display: flex;
-		align-items: center;
-		cursor: pointer;
-	}
-
-	/* preferences */
-
-	.form__preferences {
-	}
-
-	.form__preferences-header {
-		margin-bottom: 20px;
-	}
-	.form__preferences-text {
-		font-size: 18px;
-		color: var(--color-text-primary);
-	}
-
-	.form__preferences-items {
-		display: grid;
-		gap: 10px;
-		@media (min-width: 400px) {
-			grid-template-columns: repeat(2, 1fr);
 		}
-		@media (max-width: 400px) {
-			grid-template-columns: repeat(1, 1fr);
+		&__bottom-message-error {
+
 		}
-	}
-
-	.form__preferences-item {
-		width: 50%;
-		display: flex;
-		align-items: center;
-		gap: 10px;
-		cursor: pointer;
-	}
-
-	.form__preferences-item-text {
-		font-size: 20px;
-		color: var(--color-text-primary);
-	}
-	/* confirmation */
-
-	.form__confirmation {
-		display: flex;
-		align-items: center;
-		gap: 10px;
-		cursor: pointer;
-	}
-
-	.form__confirmation-text {
-		color: var(--color-text-primary);
 	}
 </style>

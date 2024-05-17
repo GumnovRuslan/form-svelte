@@ -1,34 +1,53 @@
 <script>
     import { cross } from "../icons";
+
     export let type = 'text'
     export let style = 'input'
     export let placeholder = ''
     export let required = false
     export let input = (e) => {}
     export let change = (e) => {};
+    export let invalid = (e) => {}
+    export let disabled = false;
+
+    function clear(e) {
+        const target = e.currentTarget
+        const container = target.closest('.input')
+        const input = container.querySelector('[data-target]')
+        input.value = ''
+    }
 </script>
 
 <div class='input'>
     {#if style == 'input'}
         <input
-        type={type}
-        class="input__input"
-        placeholder={placeholder}
-        required={required}
-        on:input={input}
-        on:change={change}
+            data-target
+            type={type}
+            class="input__input"
+            class:input__input-disabled={disabled}
+            placeholder={placeholder}
+            required={required}
+            on:input={(e) => {
+                    e.currentTarget.classList.remove('invalid')
+                    input(e)
+                }
+            }
+            on:change={change} 
+            on:invalid={invalid}
         />
     {/if}
     {#if style == 'textarea'}
         <textarea class="input__textarea"
+            data-target
             maxlength="221"
             placeholder={placeholder}
             required={required}
+            on:invalid={invalid}
         ></textarea>
     {/if}
-    <div class='input__icon'>
+    <button type="button" class='input__icon' on:mousedown={clear}>
         {@html cross}
-    </div>
+    </button>
 </div>
 
 
@@ -57,7 +76,13 @@
             }
 
             &:focus ~ .input__icon {
-                display: block;
+                // display: block;
+                visibility: visible;
+            }
+
+            &-disabled {
+                pointer-events: none;
+                opacity: 0.7;
             }
         }
 
@@ -66,10 +91,14 @@
         }
 
         &__icon {
-            display: none;
+            // display: none;
+            visibility: hidden;
             position: absolute;
             right: 20px;
             top: 50%;
+            padding: 0;
+            border: none;
+            background: transparent;
             transform: translate(0, -50%);
             max-width: 24px;
             max-height: 24px;

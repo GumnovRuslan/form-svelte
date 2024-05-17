@@ -3,30 +3,31 @@
     import { arrowSelect } from "../icons";
     import Checkbox from "./Checkbox.svelte";
 
-    export let categories
+    export let data
     export let categoryId
+    export let valid
 
     let subcategoryShow = false
     let defaultText = 'select'
     let subcategories = []
 
-    $: isDisabled = Number.isInteger(categoryId)
+    $: isDisabled = Number.isInteger(categoryId);
     $: {
         if(categoryId) {
             subcategories = []
         }
-    }
+    };
 
     onMount(() => {
         window.addEventListener('click', (e) => {
             if(!e.target.closest('.subcategory__inner')) subcategoryShow = false
         })
-    })
+    });
 </script>
 
-<div class='subcategory' data-subcategories-select={subcategories} class:disabled={!isDisabled}>
+<div class='subcategory' data-subcategories-select={subcategories} class:disabled={!isDisabled} id=subcategorySelect>
     <input type='checkbox' id="subcategory" bind:checked={subcategoryShow}>
-    <div class='subcategory__inner'>
+    <div class='subcategory__inner' class:subcategory__inner-validate={!valid}>
         <label for="subcategory" class='subcategory__header' class:subcategory__header--disabled={!isDisabled}>
             <p class='subcategory__header-text'>{defaultText}</p>
             <div class='subcategory__header-icon'>
@@ -36,7 +37,7 @@
         <div class='subcategory__content'>
             <div class='subcategory__list'>
                 {#if isDisabled}
-                    {#each categories.categories[categoryId].subcategories as subcategory}
+                    {#each data.categories[categoryId].subcategories as subcategory}
                         <label class='subcategory__item'>
                             <Checkbox checked={subcategories.find(el => el==subcategory.value)}/>
                             <input type='checkbox' class="subcategory__item-checkbox" bind:group={subcategories} value={subcategory.value}>
@@ -87,6 +88,10 @@
 
             &:hover {
                 outline: 2px solid var(--color-bg-primary);
+            }
+
+            &-validate {
+                outline: 2px solid var(--color-invalid);
             }
         }
         &__header {

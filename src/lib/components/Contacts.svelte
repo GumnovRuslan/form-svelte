@@ -1,6 +1,6 @@
 <script>
     import Input from './Input.svelte'
-    export let data = {}
+    export let data = {};
 </script>
 
 
@@ -9,14 +9,15 @@
         <div class="contacts__item-header input-name">
             <p class="contacts__item-header-text">{data.company.name}<span>*</span></p>
         </div>
-        <Input placeholder={data.company.placeholder} required={true}/>
+        <Input placeholder={data.company.placeholder} required={true} 
+        invalid={(e) => e.currentTarget.classList.add('invalid')}/>
     </div>
 
     <div class="contacts__item" id="contactDescription">
         <div class="contacts__item-header input-name">
             <p class="contacts__item-header-text">{data.description.name}</p>
         </div>
-        <Input style={'textarea'} placeholder={data.description.placeholder}/>
+        <Input style={'textarea'} placeholder={data.description.placeholder} />
     </div>
 
     <div class="contacts__items">
@@ -25,8 +26,8 @@
                 <p class="contacts__item-header-text">{data.address.name}<span>*</span></p>
             </div>
             <div class='contacts__item-inputs'>
-                <Input placeholder={data.address.placeholder[0]} required={true}/>
-                <Input placeholder={data.address.placeholder[1]} required={true}/>
+                <Input placeholder={data.address.placeholder[0]} required={true} invalid={(e) => e.currentTarget.classList.add('invalid')}/>
+                <Input placeholder={data.address.placeholder[1]} required={true} invalid={(e) => e.currentTarget.classList.add('invalid')}/>
             </div>
         </div>
 
@@ -36,11 +37,11 @@
             </div>
             <Input type={'tel'} placeholder={data.phone.placeholder}
             required={true}
-            input={(e) => e.target.value = e.target.value.replace(/\D/g, '')}
-            change={(e) => {
-                if(e.target.value.length < 7) e.target.setCustomValidity('Длина меньше 7')
-                else e.target.setCustomValidity('')
-                }}/>
+            invalid={(e) => {
+                e.preventDefault()
+                e.currentTarget.classList.add('invalid')
+            }}
+            input={(e) => e.target.value = e.target.value.replace(/\D/g, '')}/>
         </div>
     </div>
 
@@ -48,7 +49,8 @@
         <div class="contacts__item-header input-name">
             <p class="contacts__item-header-text">{data.email.name}<span>*</span></p>
         </div>
-        <Input type={'email'} placeholder={data.email.placeholder} required={true}/>
+        <Input type={'email'} placeholder={data.email.placeholder} required={true} 
+        invalid={(e) => e.currentTarget.classList.add('invalid')}/>
     </div>
 </div>
 

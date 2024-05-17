@@ -4,6 +4,13 @@
     export let data = {}
 
     let networks = [];
+
+    function clear(e) {
+        const target = e.currentTarget
+        const container = target.closest('.input')
+        const input = container.querySelector('[data-target]')
+        input.value = ''
+    }
 </script>
 
 <div class="network" id="formNetwork">
@@ -20,12 +27,16 @@
                 </label>
                 <div class='input'>
                     <input
+                        data-target
                         type="text"
                         class="network__item-input input__input"
                         placeholder={network.placeholder}
                         class:input__disabled={!networks.find(el => el == network.name)}
+                        required={networks.find(el => el == network.name)}
+                        on:invalid={e => e.currentTarget.classList.add('invalid')}
+                        on:input={e => e.currentTarget.classList.remove('invalid')}
                     />
-                    <div class='input__icon'>
+                    <div class='input__icon' on:mousedown={clear}>
                         {@html cross}
                     </div>
                 </div>
