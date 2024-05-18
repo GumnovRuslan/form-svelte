@@ -1,14 +1,16 @@
 <script>
     import Input from "./Input.svelte";
+
+    export let data
 </script>
 
 <div class="calendar" id="formLinkCalendar">
     <div class="calendar__header">
-        <p class="calendar__header-title">Link to Google calendar</p>
+        <p class="calendar__header-title">{data.title}</p>
     </div>
     <div class="calendar__content">
         <Input type='url' 
-        placeholder='link to Google calendar' 
+        placeholder={data.placeholder} 
         input={(e) => e.target.required = !!e.target.value} 
         invalid={e => e.currentTarget.classList.add('invalid')}/>
     </div>

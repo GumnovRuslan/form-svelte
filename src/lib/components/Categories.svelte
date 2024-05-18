@@ -12,15 +12,15 @@
 
 <div class='categories' id="formCategories">
     <div class='categories__header'>
-        <h3 class='categories__title'>Sphere of activity</h3>
+        <h3 class='categories__title'>{data.title}</h3>
     </div>
     <div class='categories__content'>
         <div class='categories__item'>
-            <p class='categories__item-text'>Category</p>
+            <p class='categories__item-text'>{data['title-category']}</p>
             <Category {data} on:selectCategory={(e) => categorySelect = +e.detail.index} valid={categoryValidate}/>
         </div>
         <div class='categories__item'>
-            <p class='categories__item-text' class:categories__item-text--disabled={!Number.isInteger(categorySelected)}>Subcategory</p>
+            <p class='categories__item-text' class:categories__item-text--disabled={!Number.isInteger(categorySelected)}>{data['title-subcategory']}</p>
             <Subcategory {data} categoryId={categorySelected} valid={subcategoryValidate}/>
         </div>
     </div>

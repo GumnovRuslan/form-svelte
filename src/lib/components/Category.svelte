@@ -6,7 +6,7 @@
     export let valid
 
     let dispatch = createEventDispatcher();
-    $: headerText = selectCategoryIndex ? data.categories[selectCategoryIndex].name : data.subcategory_default;
+    $: headerText = selectCategoryIndex ? data.categories[selectCategoryIndex].name : data.category_default;
     let categoryShow = false;
     let selectCategoryValue = '';
     let selectCategoryIndex;

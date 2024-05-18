@@ -8,7 +8,6 @@
     export let valid
 
     let subcategoryShow = false
-    let defaultText = 'select'
     let subcategories = []
 
     $: isDisabled = Number.isInteger(categoryId);
@@ -29,7 +28,7 @@
     <input type='checkbox' id="subcategory" bind:checked={subcategoryShow}>
     <div class='subcategory__inner' class:subcategory__inner-validate={!valid}>
         <label for="subcategory" class='subcategory__header' class:subcategory__header--disabled={!isDisabled}>
-            <p class='subcategory__header-text'>{defaultText}</p>
+            <p class='subcategory__header-text'>{data.subcategory_default}</p>
             <div class='subcategory__header-icon'>
                 {@html arrowSelect}
             </div>

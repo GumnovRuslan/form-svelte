@@ -49,18 +49,6 @@
 		if(el.value.length > 2) el.value = el.value.slice(0,2)
 	}
 
-	function changeHour(e) {
-		let el = e.currentTarget
-		if(+el.value > 24) el.value = '24'
-		if(el.value && el.value.length < 2) el.value = '0'+el.value
-	}
-
-	function changeMinute(e) {
-		let el = e.currentTarget
-		if(+el.value > 59) el.value = '59'
-		if(el.value && el.value.length < 2) el.value = '0'+el.value
-	}
-
 	function changeValueTime(e, type) {
 		let el = e.currentTarget
 		if(+el.value > 59) el.value = type == 'minute' ? '59' : type == 'hour' ? '24' : '00'
@@ -161,10 +149,10 @@
 							</div>
 							<p class='work-mode__item-time-show-text'>00:00 - 00:00</p>
 						</div>
-						<label for={day.value} type="button" class='work-mode__item-time-show-button button-second'>Edit</label>
+						<label for={day.value} type="button" class='work-mode__item-time-show-button button-second'>{data.button_edit}</label>
 					</div>
 					<div class='work-mode__times'>
-						<p class="work-mode__times-text">Time:</p>
+						<p class="work-mode__times-text">{data.text_time}:</p>
 						<div class='work-mode__times-inner'>
 							<button type="button" class='work-mode__time' on:click={showList}>
 								<input type='number' class="work-mode__time-input work-mode__time-hour" 
@@ -220,14 +208,14 @@
 						</div>
 					</div>
 					<div class='work-mode__range-buttons'>
-						<p class="work-mode__range-text">Apply to:</p>
+						<p class="work-mode__range-text">{data.text_buttons}:</p>
 						<div class='work-mode__range-buttons-inner'>
-							<button type="button" class='work-mode__range-button' data-days="all" on:click={selectDays}>All days</button>
-							<button type="button" class='work-mode__range-button' data-days="weekdays" on:click={selectDays}>Weekdays</button>
+							<button type="button" class='work-mode__range-button' data-days="all" on:click={selectDays}>{data.button_all}</button>
+							<button type="button" class='work-mode__range-button' data-days="weekdays" on:click={selectDays}>{data.button_weekdays}</button>
 						</div>
 					</div>
 					<div class='work-mode__controls-buttons'>
-						<label for={day.value} type="button" class='work-mode__controls-button' id="editCansel" on:click={saveDate}>Cancel</label>
+						<label for={day.value} type="button" class='work-mode__controls-button' id="editCansel" on:click={saveDate}>{data.button_cancel}</label>
 						<!-- <label for={day.value} type="button" class='work-mode__controls-button' on:click={saveDate}>Save</label> -->
 					</div>
 				</div>

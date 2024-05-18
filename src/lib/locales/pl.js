@@ -1,10 +1,9 @@
 let pl = {
-	message: {
-		title:
-			'YOOHIVE, nowa platforma dla przedsiębiorców i ich klientów, wkrótce wystartuje na tej stronie.',
-		description:
-			'Jesteśmy jak pszczoły, które jeszcze pracują nad uruchomieniem naszego ula, bzzzzzzz. Ale już teraz możesz zarejestrować się na naszej stronie internetowej, aby być jednym z pierwszych, którzy będą mogli zmaksymalizować korzyści dla swojej firmy.',
-		button: 'Rejestr'
+	home: {
+		title: 'Już wkrótce zostanie tu otwarta platforma dla przedsiębiorców i ich klientów.',
+		subtitle: ["Jesteśmy jak pszczoły", 'wciąż pracujemy nad tym, żeby nasz ul zaczął działać.', 'buh-buh-buh'],
+		description: 'Zarejestruj się już teraz, aby być jednym z pierwszych, którzy zmaksymalizują wpływ na Twój biznes.',
+		button: 'Rejestracja'
 	},
 	form: {
 		title: 'Rejestracja',
@@ -19,8 +18,11 @@ let pl = {
 			}
 		},
 		category: {
-			title: 'Kategorie',
-			default : 'Wybierz podkategorię',
+			title: 'Pole aktywności',
+			default_category: 'Wybierz kategorię',
+			default_subcategory: 'Wybierz podkategorię',
+			'title-category': 'Kategorie',
+			'title-subcategory': 'Podkategorie',
 			categories: [
 				{
 					name: 'Uroda',
@@ -172,16 +174,14 @@ let pl = {
 			placeholder_linkedin: 'Połączyć'
 		},
 		workMode: {
-			title: 'Sposób działania',
-			time_open: 'Czas otwarcia',
-			time_close: 'Czas zamknięcia',
-			day_monday: 'Poniedziałek',
-			day_tuesday: 'Wtorek',
-			day_wednesday: 'Środa',
-			day_thursday: 'Czwartek',
-			day_friday: 'Piątek',
-			day_saturday: 'Sobota',
-			day_sunday: 'Niedziela'
+			title: 'Tryb pracy',
+			text_time: 'Godziny pracy',
+			text_buttons: 'Zastosuj do',
+			button_all: 'Wszystkie dni',
+			button_weekdays: 'Życie codzienne',
+			button_edit: 'Redagowanie',
+			button_cancel: 'Zamknąć',
+			days: ['Poniedziałek', 'Wtorek', 'Środa', 'Czwartek', 'Piątek', 'Sobota', 'Niedziela']
 		},
 		calendar: {
 			text: 'Link do kalendarza (Google, Yandex, Outlook)',

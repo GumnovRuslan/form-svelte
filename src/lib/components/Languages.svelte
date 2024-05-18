@@ -23,10 +23,10 @@
             <label class="languages__item">
                 <Checkbox checked={checked.find(el => el == 'another')}/>
                 <input type="checkbox" class="languages__item-checkbox" bind:group={checked} value='another'/>
-                <span class="languages__item-text">Another</span>
+                <span class="languages__item-text">{data.another}</span>
             </label>
             <Input 
-                placeholder={"Enter other languages"} 
+                placeholder={data.another_placeholder} 
                 disabled={!checked.find(el => el == 'another')} 
                 required={checked.find(el => el == 'another')}
                 invalid={e => e.currentTarget.classList.add('invalid')}

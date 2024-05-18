@@ -1,5 +1,11 @@
 let workModeData = {
     title: 'Mode of operation',
+    text_time: 'Time',
+    text_buttons: 'Apply to',
+    button_all: 'All',
+    button_weekdays: 'Weekdays',
+    button_edit: 'Edit',
+    button_cancel: 'Cancel',
     days: [
         {
             name: 'Monday',

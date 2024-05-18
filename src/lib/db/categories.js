@@ -2,6 +2,8 @@ let categories = {
     title: 'Категории',
     category_default: 'Выберите категорию',
     subcategory_default: 'Выберите подкатегории',
+    'title-category': 'Категории',
+	'title-subcategory': 'Подкатегории',
     categories: [
         {
             name: 'Красота',

@@ -18,6 +18,8 @@
 	import preferencesData from '../lib/db/preferences'
 	import agreementData from '../lib/db/agreement'
 	import workUsData from '../lib/db/workUs'
+	import calendarData from '../lib/db/calendar'
+	import homeData from '../lib/db/home'
 	import Header from '../lib/components/Header.svelte';
 	import ProgressBar from '../lib/components/ProgressBar.svelte';
 	import Contacts from '../lib/components/Contacts.svelte';
@@ -36,33 +38,17 @@
 	let selectLangId
 	i18next.on('languageChanged', changeContent);
 
-
 	let stepLength = 4
 	let activeFormIndex
 	let formMessage = ''
 	let formMessageIsError = false
 	let buttonIsDisabled = false
 	let controlsButton = true
-	let timesData = {
-		title: i18next.t('form:workMode.title'),
-		days: [
-			i18next.t(`form:workMode.day`, { context: 'monday' }),
-			i18next.t(`form:workMode.day`, { context: 'tuesday' }),
-			i18next.t(`form:workMode.day`, { context: 'wednesday' }),
-			i18next.t(`form:workMode.day`, { context: 'thursday' }),
-			i18next.t(`form:workMode.day`, { context: 'friday' }),
-			i18next.t(`form:workMode.day`, { context: 'saturday' }),
-			i18next.t(`form:workMode.day`, { context: 'sunday' }),
-		],
-			timeText: [
-			i18next.t(`form:workMode.time`, { context: 'open' }),
-			i18next.t(`form:workMode.time`, { context: 'close' })
-		]
-	}
 	let categoryValidate = true
 	let subcategoryValidate = true
 	let workUsRadiosValidate = true
 	let agreementCheckboxValidate = true
+	let formTitle = 'Registration'
 
 	let buttonsControls = {
 		prev: 'prev',
@@ -93,37 +79,31 @@
 	}
 
 	function changeContent() {
-			// let messageTitle = document.getElementById('title')
-			// let messageDescription = document.getElementById('description')
-			// const titleVariation = [
-			// 	i18next.t('message:title'),
-			// 	i18next.t('message:title', {context: 'alternative'}),
-			// ]
-			// const descriptionVariation = [
-			// 	i18next.t('message:description'),
-			// 	'',
-			// ]
-
-			// messageTitle.textContent = titleVariation[messageTitle.dataset.variation ?? 0]
-			// messageDescription.textContent = descriptionVariation[messageDescription.dataset.variation ?? 0]
-
-			document.getElementById('message-button').textContent = i18next.t('message:button');
-			document.querySelector('.form__header-title').textContent = i18next.t('form:title');
+			formTitle = i18next.t('form:title');
+			home()
 			contacts();
 			categories()
 			workUs();
-			// network();
+			network();
 			workMode();
-			// calendar();
-			// communication();
-			// preference();
-			// formConfirmation();
+			calendar();
+			communication();
+			preference();
+			formConfirmation();
 			document.getElementById('buttonSend').textContent = i18next.t('form:button.text');
 			buttonsControls = {
 				prev: i18next.t('form:button.button', {context: 'prev'}),
 				next: i18next.t('form:button.button', {context: 'next'}),
 			}
+			function home() {
+				homeData.title = i18next.t('home:title');
+				homeData.subtitle[0] = i18next.t('home:subtitle.0');
+				homeData.subtitle[1] = i18next.t('home:subtitle.1');
+				homeData.subtitle[2] = i18next.t('home:subtitle.2');
+				homeData.description = i18next.t('home:description');
+				homeData.button = i18next.t('home:button');
 
+			}
 			function contacts() {
 				contactsData.company.name = i18next.t(`form:contacts.text`, { context: 'company' })
 				contactsData.company.placeholder = i18next.t(`form:contacts.text`, { context: 'company' })
@@ -149,89 +129,47 @@
 				workUsData.placeholder[1] = i18next.t(`form:work.input`, { context: 'company' })
 			}
 			function network() {
-				const container = document.getElementById('formNetwork');
-				let items = container.querySelectorAll('.form__network-item-text');
-				let inputs = container.querySelectorAll('.form__network-item-input');
-
-				container.querySelector('.form__network-text').textContent =
-					i18next.t('form:network.title');
-
-				items[0].textContent = i18next.t(`form:network.text`, { context: 'instagram' });
-				items[1].textContent = i18next.t(`form:network.text`, { context: 'facebook' });
-				items[2].textContent = i18next.t(`form:network.text`, { context: 'telegram' });
-				items[3].textContent = i18next.t(`form:network.text`, { context: 'tiktok' });
-				items[4].textContent = i18next.t(`form:network.text`, { context: 'linkedin' });
-
-				inputs[0].placeholder = i18next.t(`form:network.placeholder`, { context: 'instagram' });
-				inputs[1].placeholder = i18next.t(`form:network.placeholder`, { context: 'facebook' });
-				inputs[2].placeholder = i18next.t(`form:network.placeholder`, { context: 'telegram' });
-				inputs[3].placeholder = i18next.t(`form:network.placeholder`, { context: 'tiktok' });
-				inputs[4].placeholder = i18next.t(`form:network.placeholder`, { context: 'linkedin' });
+				networkData.title = i18next.t('form:network.title');
 			}
 			function workMode() {
-				timesData = {
-					title: i18next.t('form:workMode.title'),
-					days: [
-						i18next.t(`form:workMode.day`, { context: 'monday' }),
-						i18next.t(`form:workMode.day`, { context: 'tuesday' }),
-						i18next.t(`form:workMode.day`, { context: 'wednesday' }),
-						i18next.t(`form:workMode.day`, { context: 'thursday' }),
-						i18next.t(`form:workMode.day`, { context: 'friday' }),
-						i18next.t(`form:workMode.day`, { context: 'saturday' }),
-						i18next.t(`form:workMode.day`, { context: 'sunday' }),
-					],
-					timeText: [
-						i18next.t(`form:workMode.time`, { context: 'open' }),
-						i18next.t(`form:workMode.time`, { context: 'close' })
-					]
-				}
+				workModeDate.title = i18next.t('form:workMode.title')
+				workModeDate.text_time = i18next.t('form:workMode.text_time')
+				workModeDate.text_buttons = i18next.t('form:workMode.text_buttons')
+				workModeDate.button_all = i18next.t('form:workMode.button_all')
+				workModeDate.button_weekdays = i18next.t('form:workMode.button_weekdays')
+				workModeDate.button_edit = i18next.t('form:workMode.button_edit')
+				workModeDate.button_cancel = i18next.t('form:workMode.button_cancel')
+				workModeDate.days[0].name = i18next.t('form:workMode.days.0')
+				workModeDate.days[1].name = i18next.t('form:workMode.days.1')
+				workModeDate.days[2].name = i18next.t('form:workMode.days.2')
+				workModeDate.days[3].name = i18next.t('form:workMode.days.3')
+				workModeDate.days[4].name = i18next.t('form:workMode.days.4')
+				workModeDate.days[5].name = i18next.t('form:workMode.days.5')
+				workModeDate.days[6].name = i18next.t('form:workMode.days.6')
 			}
 			function calendar() {
-				const container = document.getElementById('formLinkCalendar');
-				let text = container.querySelector('.form__calendar-text');
-				let input = container.querySelector('.form__calendar-input');
-
-				text.textContent = i18next.t(`form:calendar.text`);
-				input.placeholder = i18next.t(`form:calendar.placeholder`);
+				calendarData.title = i18next.t(`form:calendar.text`);
+				calendarData.placeholder = i18next.t(`form:calendar.placeholder`);
 			}
 			function communication() {
-				const container = document.getElementById('communicationLanguages');
-
-				container.querySelector('.form__languages-text').textContent =
-					i18next.t(`form:communication.title`);
-
-				container.querySelector('.form__languages-item-another-text').textContent = i18next.t(
-					`form:communication.another`,
-					{ context: 'text' }
-				);
-
-				container.querySelector('.form__languages-item-another-input').placeholder = i18next.t(
-					`form:communication.another`,
-					{ context: 'placeholder' }
-				);
+				languagesData.title = i18next.t(`form:communication.title`);
+				languagesData.another = i18next.t(`form:communication.another`, {context: 'text'});
+				languagesData.another_placeholder = i18next.t(`form:communication.another`, {context: 'placeholder'});
 			}
 			function preference() {
-				const container = document.getElementById('formSurvey');
-				const texts = container.querySelectorAll('.form__preferences-text');
-				const companies = container.querySelectorAll('.form__preferences-item-text');
-
-				texts[0].textContent = i18next.t(`form:preference.text`);
-				texts[1].textContent = i18next.t(`form:preference.text`, { context: 'description' });
-
-				companies.forEach(
-					(company, i) => (company.textContent = i18next.t(`form:preference.companies.${i}`))
-				);
+				preferencesData.title = i18next.t(`form:preference.text`);
 			}
 			function formConfirmation() {
-				const container = document.getElementById('formConfirmation');
-				const texts = container.querySelectorAll('.form__confirmation-text');
-
-				texts[0].textContent = i18next.t(`form:confirmation.text`);
-				texts[1].textContent = i18next.t(`form:confirmation.text`, { context: 'description' });
+				agreementData.title = i18next.t(`form:confirmation.text`);
+				agreementData.subtitle = i18next.t(`form:confirmation.text`, { context: 'description' });
 			}
 			function categories() {
 				categoriesFull.title = i18next.t(`form:category.title`)
-				categoriesFull.subcategory_default = i18next.t(`form:category.default`)
+				categoriesFull.category_default = i18next.t(`form:category.default`, { context: 'category' })
+				categoriesFull.subcategory_default = i18next.t(`form:category.default`, { context: 'subcategory' })
+
+				categoriesFull['title-category'] = i18next.t(`form:category.title-category`)
+				categoriesFull['title-subcategory'] = i18next.t(`form:category.title-subcategory`)
 
 				categoriesFull.categories[0].name = i18next.t(`form:category.categories.0.name`)
 				categoriesFull.categories[0].subcategories[0].name = i18next.t(`form:category.categories.0.subcategories.0`)
@@ -584,7 +522,7 @@
 <Header {langs} active={selectLangId} on:selectLang={(e) => i18next.changeLanguage(e.detail.value)}/>
 <main class="main">
 	<input type="checkbox" id="showForm" on:input={showForm}/>
-	<Home />
+	<Home data={homeData}/>
 	<div class="form" name="myForm" id="myForm">
 		<div class="form__inner"
 			style:max-width='{
@@ -597,7 +535,7 @@
 			</div>
 			<div class='form__content'>
 				<div class="form__header">
-					<h2 class="form__header-title">Регистрация</h2>
+					<h2 class="form__header-title">{formTitle}</h2>
 					<ProgressBar active={activeFormIndex} {stepLength}/>
 					<button type="button"
 						class='form__btn-back button-second'
@@ -632,7 +570,7 @@
 
 				<form class='form-stage' id='formStep4' style='display: {activeFormIndex == 3 ? 'flex' : 'none'}' on:submit={validateFormStep4}>
 					<div class='form-stage__inner'>
-						<Calendar />
+						<Calendar data={calendarData}/>
 						<Languages data={languagesData}/>
 						<Preferences data={preferencesData}/>
 						<Agreement data={agreementData} valid={agreementCheckboxValidate}/>

@@ -1,10 +1,14 @@
+<script>
+    export let data
+</script>
+
 <div class="home" id='home'>
     <div class="home__inner">
-        <h2 class="home__title">A platform for entrepreneurs and their customers, will be launching here soon.</h2>
+        <h2 class="home__title">{data.title}</h2>
         <div class="home__description">
-            <span class='home__description-text'>We're like bees</span>
-            <span class='home__description-text'>still working on the launch of our hive.</span>
-            <span class='home__description-text'>buh-buh-buh</span>
+            <span class='home__description-text'>{data.subtitle[0]}</span>
+            <span class='home__description-text'>{data.subtitle[1]}</span>
+            <span class='home__description-text'>{data.subtitle[2]}</span>
         </div>
         <div class='home__icon'>
             <svg  viewBox="0 0 1296 295" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -24,10 +28,8 @@
                 </svg>
         </div>
         <div class='home__bottom'>
-            <p class='home__bottom-text'>
-                Register now to be among the first to maximize the impact for your business.
-            </p>
-            <label for="showForm" class="home__bottom-button button" id="message-button">Registration</label>
+            <p class='home__bottom-text'>{data.description}</p>
+            <label for="showForm" class="home__bottom-button button" id="message-button">{data.button}</label>
         </div>
     </div>
 </div>
