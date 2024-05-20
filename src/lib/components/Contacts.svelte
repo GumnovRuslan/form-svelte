@@ -1,75 +1,91 @@
 <script>
-
+    import Input from './Input.svelte'
+    export let data = {};
 </script>
 
 
-<div class="form__contacts" id="formContacts">
-    <div class="form__contacts-item" id="contactCompany">
-        <div class="form__contacts-item-header input-name">
-            <p class="form__contacts-item-text">Название компании/мастера</p>
-            <span class="form__required">*</span>
+<div class="contacts" id="formContacts">
+    <div class="contacts__item" id="contactCompany">
+        <div class="contacts__item-header input-name">
+            <p class="contacts__item-header-text">{data.company.name}<span>*</span></p>
         </div>
-
-        <input
-            type="text"
-            class="form__contacts-item-input form__input"
-            placeholder="Company name"
-            required
-        />
+        <Input placeholder={data.company.placeholder} required={true} 
+        invalid={(e) => e.currentTarget.classList.add('invalid')}/>
     </div>
 
-    <div class="form__contacts-item" id="contactDescription">
-        <div class="form__contacts-item-header input-name">
-            <p class="form__contacts-item-text">Название компании/мастера</p>
-            <span class="form__required">*</span>
+    <div class="contacts__item" id="contactDescription">
+        <div class="contacts__item-header input-name">
+            <p class="contacts__item-header-text">{data.description.name}</p>
         </div>
-        <textarea class="form__input" name='contactDescription' maxlength="221"></textarea>
+        <Input style={'textarea'} placeholder={data.description.placeholder} />
     </div>
 
-    <div class="form__contacts-items">
-        <div class="form__contacts-item" id="contactAddress">
-            <div class="form__contacts-item-header">
-                <p class="form__contacts-item-text input-name">Адрес</p>
-                <span class="form__required">*</span>
+    <div class="contacts__items">
+        <div class="contacts__item" id="contactAddress">
+            <div class="contacts__item-header input-name">
+                <p class="contacts__item-header-text">{data.address.name}<span>*</span></p>
             </div>
-            <div class='form__contacts-item-main'>
-                <input
-                    type="text"
-                    class="form__contacts-item-input form__input"
-                    placeholder="Address"
-                    required
-                />
-                <input
-                    type="text"
-                    class="form__contacts-item-input form__input"
-                    placeholder="Address"
-                    required
-                />
+            <div class='contacts__item-inputs'>
+                <Input placeholder={data.address.placeholder[0]} required={true} invalid={(e) => e.currentTarget.classList.add('invalid')}/>
+                <Input placeholder={data.address.placeholder[1]} required={true} invalid={(e) => e.currentTarget.classList.add('invalid')}/>
             </div>
         </div>
-        <div class="form__contacts-item" id="contactPhone">
-            <div class="form__contacts-item-header input-name">
-                <p class="form__contacts-item-text">Телефон</p>
-                <span class="form__required">*</span>
+
+        <div class="contacts__item" id="contactPhone">
+            <div class="contacts__item-header input-name">
+                <p class="contacts__item-header-text">{data.phone.name}<span>*</span></p>
             </div>
-            <input
-                type="tel"
-                class="form__contacts-item-input form__input"
-                required
-            />
+            <Input type={'tel'} placeholder={data.phone.placeholder}
+            required={true}
+            invalid={(e) => {
+                e.preventDefault()
+                e.currentTarget.classList.add('invalid')
+            }}
+            input={(e) => e.target.value = e.target.value.replace(/\D/g, '')}/>
         </div>
     </div>
 
-    <div class="form__contacts-item" id="contactEmail">
-        <div class="form__contacts-item-header input-name">
-            <p class="form__contacts-item-text input-name">Email</p>
-            <span class="form__required">*</span>
+    <div class="contacts__item" id="contactEmail">
+        <div class="contacts__item-header input-name">
+            <p class="contacts__item-header-text">{data.email.name}<span>*</span></p>
         </div>
-        <input
-            type="email"
-            class="form__contacts-item-input form__input"
-            placeholder="Email"
-            required
-        />
+        <Input type={'email'} placeholder={data.email.placeholder} required={true} 
+        invalid={(e) => e.currentTarget.classList.add('invalid')}/>
     </div>
 </div>
+
+<style lang="scss">
+    .contacts {
+        display: flex;
+		flex-direction: column;
+		gap: 16px;
+        &__item {
+            width: 100%;
+        }
+        &__items {
+            display: flex;
+            gap: 12px;
+            @media (max-width: 600px) {
+                flex-direction: column;
+            }
+        }
+        &__item-header {
+            margin: 0 0 12px 24px;
+
+            span {
+                margin-left: 4px;
+            }
+        }
+
+        &__item-header-text {
+            color: var(--color-text-primary);
+            font-weight: 400;
+        }
+
+        &__item-inputs {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+    }
+</style>

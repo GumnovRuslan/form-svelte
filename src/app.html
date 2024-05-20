@@ -5,16 +5,25 @@
 		<link rel="icon" href="%sveltekit.assets%/favicon.png" />
 		<link rel="stylesheet" href="%sveltekit.assets%/style/reset.css" />
 		<link rel="stylesheet" href="%sveltekit.assets%/style/root.css" />
-		<link rel="stylesheet" href="%sveltekit.assets%/style/header.css" />
-		<link rel="stylesheet" href="%sveltekit.assets%/style/footer.css" />
+		<link rel="stylesheet" href="%sveltekit.assets%/style/global.css" />
+		<link href="https://fonts.googleapis.com/css?family=Geologica:100,200,300,regular,500,600,700,800,900" rel="stylesheet" />
 		<link
 			href="https://fonts.googleapis.com/css?family=Mukta:200,300,regular,500,600,700,800"
 			rel="stylesheet"
 		/>
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<!-- Google tag (gtag.js) -->
+		<script async src="https://www.googletagmanager.com/gtag/js?id=G-BJ62FDKTTH"></script>
+		<script>
+		window.dataLayer = window.dataLayer || [];
+		function gtag(){dataLayer.push(arguments);}
+		gtag('js', new Date());
+
+		gtag('config', 'G-BJ62FDKTTH');
+		</script>
 		%sveltekit.head%
 	</head>
 	<body data-sveltekit-preload-data="hover">
-		<div style="display: flex; flex: content">%sveltekit.body%</div>
+		<div class="wrapper">%sveltekit.body%</div>
 	</body>
 </html>

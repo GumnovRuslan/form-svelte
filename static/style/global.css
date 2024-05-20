@@ -1,0 +1,67 @@
+.wrapper {
+	flex: content;
+	display: flex;
+	flex-direction: column;
+	background: var(--color-bg-secondary);
+}
+
+@media (min-width: 768px) {
+	.wrapper {
+		padding: 12px 72px;
+	}
+}
+@media (max-width: 768px) {
+	.wrapper {
+		padding: 18px 16px;
+	}
+}
+
+
+.button {
+    border: none;
+    border-radius: 100px;
+    transition: 0.2s;
+	cursor: pointer;
+	color: var(--color-btn-secondary);
+	background: var(--color-btn-primary);
+}
+
+.button:hover {
+    color: var(--color-btn-primary);
+    background: var(--color-btn-secondary);
+}
+
+.button-second {
+	transition: 0.2s;
+	border: none;
+	cursor: pointer;
+	background: var(--color-btn-third);
+	color: var(--color-btn-secondary);
+}
+
+.button-second:hover {
+	background: var(--color-btn-secondary);
+	color: var(--color-btn-third);
+}
+
+.form__input {
+	font-family: 'Geologica', sans-serif;
+	display: block;
+	width: 100%;
+	padding: 2px 44px 2px 20px;
+	border: var(--input-border);
+	border-radius: 20px;
+    font-weight: 400;
+    font-size: 16px;
+}
+
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.invalid {
+	outline: 2px solid var(--color-invalid);
+}
+

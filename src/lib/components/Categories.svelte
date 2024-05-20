@@ -1,43 +1,65 @@
 <script>
-    import CategoriesItem from "./CategoriesItem.svelte";
-    export let categories
+    import Category from "./Category.svelte";
+	import Subcategory from "./Subcategory.svelte";
+
+    export let data
+    export let categoryValidate
+    export let subcategoryValidate
+
+    let categorySelect = '';
+    $:categorySelected = categorySelect;
 </script>
 
 <div class='categories' id="formCategories">
-    <div class='categories__inner'>
-        <div class='categories__header'>
-            <p class='categories__title section-name'>{categories.title}</p>
-            <span class='categories__required'>*</span>
+    <div class='categories__header'>
+        <h3 class='categories__title'>{data.title} <span>*</span></h3>
+    </div>
+    <div class='categories__content'>
+        <div class='categories__item'>
+            <p class='categories__item-text'>{data['title-category']}</p>
+            <Category {data} on:selectCategory={(e) => categorySelect = +e.detail.index} valid={categoryValidate}/>
         </div>
-        <div class='categories__content'>
-            <div class='categories__items'>
-                {#each categories.categories as category}
-                    <CategoriesItem category={category} subcategoryDefault={categories.subcategory_default}/>
-                {/each}
-            </div>
+        <div class='categories__item'>
+            <p class='categories__item-text' class:categories__item-text--disabled={!Number.isInteger(categorySelected)}>{data['title-subcategory']}</p>
+            <Subcategory {data} categoryId={categorySelected} valid={subcategoryValidate}/>
         </div>
     </div>
 </div>
 
 <style lang="scss">
+
     .categories {
-        &__header {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-bottom: 15px;
-        }
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
 
-        &__required {
+        &__title {
             font-size: 20px;
-            color: red;
+            font-weight: 500;
+            line-height: 25px;
+            color: var(--color-text-primary);
         }
-
-        &__items {
+        &__content {
             display: flex;
-            flex-direction: column;
-            gap: 10px;
+            gap: 20px;
+            @media (max-width: 990px) {
+                flex-direction: column;
+            }
         }
 
+        &__item {
+            flex: 100%;
+        }
+
+        &__item-text {
+            font-size: 16px;
+            line-height: 20px;
+            margin-bottom: 12px;
+            color: var(--color-text-primary);
+
+            &--disabled {
+                opacity: 0.5;
+            }
+        }
     }
 </style>

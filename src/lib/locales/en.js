@@ -1,9 +1,8 @@
 let en = {
-	message: {
-		title:
-			'YOOHIVE, a platform for entrepreneurs and their customers, will be launching here soon.',
-		title_alternative: 'Become a part of YOOHIVE',
-		description: `We're like bees still working on the launch of our hive, buh buh buh buh buh. But already now you can register on our website to be among the first to maximize the impact for your business.`,
+	home: {
+		title: 'A platform for entrepreneurs and their customers, will be launching here soon.',
+		subtitle: ["We're like bees", 'still working on the launch of our hive.', 'buh-buh-buh'],
+		description: 'Register now to be among the first to maximize the impact for your business.',
 		button: 'Registration'
 	},
 	form: {
@@ -19,8 +18,11 @@ let en = {
 			}
 		},
 		category: {
-			title: 'Categories',
-			default : 'Select subcategory',
+			title: 'Sphere of activity',
+			default_category: 'Select category',
+			default_subcategory: 'Select subcategory',
+			'title-category': 'Categories',
+			'title-subcategory': 'Subcategories',
 			categories: [
 				{
 					name: 'Beauty',
@@ -172,16 +174,14 @@ let en = {
 			placeholder_linkedin: 'Link'
 		},
 		workMode: {
-			title: 'Mode of operation',
-			time_open: 'Open Time',
-			time_close: 'Close Time',
-			day_monday: 'Monday',
-			day_tuesday: 'Tuesday',
-			day_wednesday: 'Wednesday',
-			day_thursday: 'Thursday',
-			day_friday: 'Friday',
-			day_saturday: 'Saturday',
-			day_sunday: 'Sunday'
+			title: 'Operating mode',
+			text_time: 'Working hours',
+			text_buttons: 'Apply to',
+			button_all: 'All days',
+			button_weekdays: 'Weekdays',
+			button_edit: 'Edit',
+			button_cancel: 'Close',
+			days: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
 		},
 		calendar: {
 			text: 'Link to calendar (Google, Yandex, Outlook)',
@@ -207,8 +207,9 @@ let en = {
 			message_error_server: 'Error sending data: ',
 			message_completed: 'Data sent successfully',
 			button_prev: 'Back',
-			button_next: 'Forward'
-		}
+			button_next: 'Next'
+		},
+		message_successful: 'Successful registration'
 	}
 };
 
