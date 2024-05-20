@@ -37,8 +37,9 @@
             </div>
             <Input type={'tel'} placeholder={data.phone.placeholder}
             required={true}
+            minLength={9}
+            maxLength={13}
             invalid={(e) => {
-                e.preventDefault()
                 e.currentTarget.classList.add('invalid')
             }}
             input={(e) => e.target.value = e.target.value.replace(/\D/g, '')}/>

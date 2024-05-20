@@ -51,7 +51,8 @@
 
 	function changeValueTime(e, type) {
 		let el = e.currentTarget
-		if(+el.value > 59) el.value = type == 'minute' ? '59' : type == 'hour' ? '24' : '00'
+		let time = type == 'minute' ? '59' : type == 'hour' ? '23' : '00'
+		if(+el.value > time) el.value = time
 		if(el.value && el.value.length < 2) el.value = '0'+el.value
 	}
 
@@ -325,6 +326,7 @@
 			}
 			@media (max-width: 600px) {
 				display: flex;
+				flex-wrap: wrap;
 				align-items: center;
 				justify-content: space-between;
 				gap: 10px;
@@ -356,6 +358,7 @@
 		}
 		&__times {
 			display: flex;
+			flex-wrap: wrap;
 			align-items: center;
 			gap: 16px;
 			@media (max-width: 600px) {
@@ -464,6 +467,7 @@
 		}
 		&__range-buttons {
 			display: flex;
+			flex-wrap: wrap;
 			align-items: center;
 			gap: 16px;
 

@@ -9,12 +9,21 @@
     export let change = (e) => {};
     export let invalid = (e) => {}
     export let disabled = false;
+    export let maxLength = 1000
+    export let minLength = 0
 
     function clear(e) {
         const target = e.currentTarget
         const container = target.closest('.input')
         const input = container.querySelector('[data-target]')
         input.value = ''
+    }
+
+    function length(e, min, max) {
+        const target = e.currentTarget
+        if(target.value.length < min) target.setCustomValidity(`number less than ${min} characters`)
+        else target.setCustomValidity('')
+        if(target.value.length > max) target.value = target.value.slice(0, max+1)
     }
 </script>
 
@@ -29,6 +38,7 @@
             required={required}
             on:input={(e) => {
                     e.currentTarget.classList.remove('invalid')
+                    length(e, minLength, maxLength)
                     input(e)
                 }
             }
