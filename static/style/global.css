@@ -2,17 +2,21 @@
 	flex: content;
 	display: flex;
 	flex-direction: column;
-	background: var(--color-bg-secondary);
+	background-color: var(--color-bg-secondary);
+	/* background-repeat: no-repeat; */
+	background-size: cover;
 }
 
 @media (min-width: 768px) {
 	.wrapper {
 		padding: 12px 72px;
+		background-image: url(/img/background-desktop.webp);
 	}
 }
 @media (max-width: 768px) {
 	.wrapper {
 		padding: 18px 16px;
+		background-image: url(/img/background-mobile.webp);
 	}
 }
 

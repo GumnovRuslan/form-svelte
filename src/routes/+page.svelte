@@ -648,7 +648,7 @@
 			padding: 24px;
 			border-radius: 40px;
 			margin: 0 auto;
-			background: var(--color-bg-fourth);
+			background-color: var(--color-bg-fourth);
 		}
 		&__content {
 			width: 100%;
