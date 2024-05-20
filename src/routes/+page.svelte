@@ -9,7 +9,7 @@
 	import WorkMode from '$lib/components/WorkMode.svelte'
 	import Categories from '$lib/components/Categories.svelte';
 	import FormControls from '../lib/components/FormControls.svelte';
-	// import { PUBLIC_URL } from '$env/static/public'
+	import { PUBLIC_URL } from '$env/static/public'
 	import categoriesFull from '../lib/db/categories'
 	import { contactsData } from '../lib/db/contacts'
 	import { networkData } from '../lib/db/network'
@@ -31,8 +31,9 @@
 	import Languages from '../lib/components/Languages.svelte';
 	import Preferences from '../lib/components/Preferences.svelte';
 	import Agreement from '../lib/components/Agreement.svelte';
+	import Successful from '../lib/components/Successful.svelte'
 
-	const PUBLIC_URL = ''
+	// const PUBLIC_URL = ''
 
 	const langs = ["ru", "en", "pl", "by", "ua"]
 	let selectLangId
@@ -291,31 +292,26 @@
 
 				if (response.ok) {
 					formMessageIsError = false
-					formMessage = i18next.t(`form:button.message`, { context: 'completed' });
-					// console.log('Данные успешно отправлены на сервер');
-					window.formStep4.querySelector('.form-stage__inner').style.display = 'none'
-					window.formStep4.querySelector('.form__button-container').style.display = 'none'
-					window.formCompleted.style.display = 'block'
+					formMessage = i18next.t(`form:message`, { context: 'successful' });
+					activeFormIndex = 4
 					controlsButton = false
 				} else {
 					formMessageIsError = true
 					formMessage = i18next.t(`form:button.message`, { context: 'error_server' }) + response.status
-					// console.error('Ошибка при отправке данных на сервер:', response.status);
 					buttonIsDisabled = false
 				}
 			} catch (error) {
 				formMessageIsError = true
 				formMessage = i18next.t(`form:button.message`, { context: 'error' }) + error
-				// console.error('Произошла ошибка:', error);
 				buttonIsDisabled = false
 			}
 
 		function getFormData() {
 				const contents = getDataFromContents('formContacts');
-				const workLike = getWorkLike('workLike');
+				const workLike = getWorkLike('workUs');
 				const networkLinks = getLinkForNetwork('formNetwork');
 				const workDays = getWorkMode('formWorkMode');
-				const calendar = window.inputLinkCalendar.value;
+				const calendar = getCalendarLink('formLinkCalendar')
 				const languages = getCommunicationLanguages('communicationLanguages');
 				const survey = getPollResponse('formSurvey');
 				const confirmation = window.formConfirmation.checked;
@@ -332,6 +328,11 @@
 					confirmation,
 					category
 				};
+				function getCalendarLink(id) {
+					const container = document.querySelector(`#${id}`);
+					const input = container.querySelector('input')
+					return input.value
+				}
 
 				function getDataFromContents(id) {
 					const container = document.querySelector(`#${id}`);
@@ -349,15 +350,11 @@
 
 				function getWorkLike(id) {
 					const container = document.querySelector(`#${id}`);
-					const inputs = container.querySelectorAll('input');
+					const radios = container.querySelectorAll('input[type="radio"]');
+					const inputs = container.querySelectorAll('input[data-target]');
 
-					return inputs[0].checked
-					? inputs[1].value
-						: inputs[2].checked
-					? inputs[3].value
-						: null
-
-
+					return radios[0].checked ? inputs[0].value
+						: radios[1].checked ? inputs[1].value : null
 				}
 
 				function getLinkForNetwork(id) {
@@ -375,30 +372,31 @@
 
 				function getWorkMode(id) {
 					const container = document.querySelector(`#${id}`);
-					const inputs = container.querySelectorAll('input');
-					const getData = (id) =>
-						inputs[id].checked ? [inputs[id + 1].value, inputs[id + 2].value] : '';
+					const items = container.querySelectorAll('.work-mode__item');
+
+					const getTime = (num) => {
+						const item = items[num]
+						let times = item.querySelectorAll('input.work-mode__time-input')
+						return `${times[0].value || '-'}:${times[1].value || '-'} - ${times[2].value || '-'}:${times[3].value || '-'}`
+					}
 
 					return {
-						monday: getData(1),
-						Tuesday: getData(4),
-						Wednesday: getData(7),
-						Thursday: getData(10),
-						Friday: getData(13),
-						Saturday: getData(16),
-						Sunday: getData(19)
+						Monday: getTime(0),
+						Tuesday: getTime(1),
+						Wednesday: getTime(2),
+						Thursday: getTime(3),
+						Friday: getTime(4),
+						Saturday: getTime(5),
+						Sunday: getTime(6)
 					};
 				}
 
 				function getCommunicationLanguages(id) {
 					const container = document.querySelector(`#${id}`);
 					const inputs = container.querySelectorAll('input');
-					const getData = (id) =>
-						inputs[id].checked
-							? inputs[id]
-									.closest('.form__languages-item')
-									.querySelector('.form__languages-item-text').textContent
-							: '';
+					const getData = (id) => inputs[id].checked ? inputs[id]
+									.closest('.languages__item')
+									.querySelector('.languages__item-text').textContent : '';
 
 					return {
 						polski: getData(0),
@@ -408,8 +406,8 @@
 						english: getData(4),
 						another: inputs[5].checked
 							? inputs[5]
-									.closest('.form__languages-another')
-									.querySelector('.form__languages-item-another-input').value
+									.closest('.languages__item-another')
+									.querySelector('input[type="text"]').value
 							: ''
 					};
 				}
@@ -428,12 +426,12 @@
 
 				function getCategory(id) {
 					const container = document.querySelector(`#${id}`);
-					const categories = container.querySelectorAll('input[type="radio"][name="category"]')
-					let categoryChecked
-					categories.forEach(category => {if(category.checked) categoryChecked = category})
+					let category = container.querySelector('#categorySelect').dataset.selectValue
+					let subcategories = container.querySelector('#subcategorySelect').dataset.subcategoriesSelect
+					
 					return {
-						name: categoryChecked.dataset.name,
-						subcategories: categoryChecked.dataset.select.split(',')}
+						name: category,
+						subcategories: subcategories.split(',')}
 				}
 			}
 		}
@@ -529,7 +527,9 @@
 			activeFormIndex == 0 ? 1071
 			: activeFormIndex == 1 ? 800
 			: activeFormIndex == 2 ? 1150 
-			: activeFormIndex == 3 ? 800 : 1400}px'>
+			: activeFormIndex == 3 ? 800 : 1400}px'
+			style='display: {activeFormIndex != 4 ? 'flex' : 'none'}'
+			>
 			<div class='form__inner-image' id="formImage" style='display: {activeFormIndex ? 'none' : 'block'}'>
 				<img src='/img/image.webp' alt=''>
 			</div>
@@ -576,26 +576,19 @@
 						<Agreement data={agreementData} valid={agreementCheckboxValidate}/>
 					</div>
 
-					<div class='message-send' id='formCompleted'>
-						<div class='message-send__inner'>
-							<div class='message-send__image'>
-								<img src='/img/mark.webp' alt=''>
-							</div>
-							<p class='message-send__text'>{formMessage}</p>
-						</div>
-					</div>
-
 					<div class='form__bottom'>
-						<button class="button form__bottom-btn" type="submit" id="buttonSend" class:button__disabled={buttonIsDisabled}>Registration</button>
+						<button class="button form__bottom-btn" type="submit" id="buttonSend" class:form__bottom-btn--disabled={buttonIsDisabled}>Registration</button>
 						<p class='form__bottom-message' class:form__bottom-message-error={formMessageIsError}>{formMessage}</p>
 					</div>
 				</form>
 			</div>
 		</div>
+		<Successful {activeFormIndex} message={formMessage}/>
 	</div>
 </main>
 
 <style lang="scss">
+	.successful
 
 	.message-send {
 		display: none;
@@ -699,12 +692,14 @@
 			color: #1db11d;
 		}
 		&__inner-image {
-			flex: 1 0 auto;
+			flex: 100%;
+			border-radius: 40px;
+			overflow: hidden;
 			max-width: 471px;
-			@media (min-width: 1280px) {
+			@media (min-width: 950px) {
                 max-width: 471px;
             }
-            @media (max-width: 1280px) {
+            @media (max-width: 950px) {
                 display: none !important;
             }
 
@@ -723,6 +718,11 @@
 			font-size: 20px;
 			line-height: 25px;
 			padding: 8px 24px;
+
+			&--disabled {
+				opacity: 0.5;
+				pointer-events: none;
+			}
 		}
 		&__bottom-message {
 

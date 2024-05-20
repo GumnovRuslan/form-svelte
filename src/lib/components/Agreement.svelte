@@ -12,6 +12,7 @@
         <Checkbox checked={isChecked} {valid}/>
         <input
             class="agreement__checkbox"
+            id="formConfirmation"
             type="checkbox"
             on:input={() => {
                 valid = true

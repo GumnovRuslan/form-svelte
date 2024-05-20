@@ -18,7 +18,7 @@
 
 <header class='header'>
     <div class='header__inner'>
-        <a href="/" class='header__logo'>
+        <a href="/" class='header__logo' on:click={() => location.reload()}>
             <img src='/img/logo.webp' alt='' class='header__logo-img'>
         </a>
         <div class='header__lang' >

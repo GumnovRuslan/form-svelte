@@ -208,7 +208,8 @@ let pl = {
 			message_completed: 'Dane przesłane pomyślnie',
 			button_prev: 'Z powrotem',
 			button_next: 'Do przodu'
-		}
+		},
+		message_successful: 'Rejestracja zakończona'
 	}
 };
 

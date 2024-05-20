@@ -11,6 +11,13 @@
         const input = container.querySelector('[data-target]')
         input.value = ''
     }
+
+    function changeInput(e) {
+        const target = e.currentTarget
+        const item = target.closest('.network__item')
+        const input = item.querySelector('input[data-target]')
+        if(!target.checked) input.classList.remove('invalid')
+    }
 </script>
 
 <div class="network" id="formNetwork">
@@ -22,7 +29,7 @@
             <div class="network__item">
                 <label class="network__item-container">
                     <Checkbox checked={networks.find(el => el == network.name)}/>
-                    <input class="network__item-checkbox" type="checkbox" bind:group={networks} value='{network.name}'/>
+                    <input class="network__item-checkbox" type="checkbox" bind:group={networks} value='{network.name}' on:change={changeInput}/>
                     <span class="network__item-text">{network.name}</span>
                 </label>
                 <div class='input'>
@@ -100,7 +107,7 @@
             position: relative;
 
             &__disabled {
-                opacity: 0.7;
+                opacity: 0.6;
                 pointer-events: none;
             }
 

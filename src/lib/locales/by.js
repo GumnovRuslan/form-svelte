@@ -208,7 +208,8 @@ let by = {
 			message_completed: 'Дадзеныя паспяхова адпраўлены',
 			button_prev: 'Назад',
 			button_next: 'Наперад'
-		}
+		},
+		message_successful: 'Рэгістрацыя выканана'
 	}
 };
 

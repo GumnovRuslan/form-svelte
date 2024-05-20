@@ -209,7 +209,8 @@ let ru = {
 			message_completed: 'Данные успешно отправлены',
 			button_prev: 'Назад',
 			button_next: 'Вперед'
-		}
+		},
+		message_successful: 'Регистрация выполнена'
 	}
 };
 

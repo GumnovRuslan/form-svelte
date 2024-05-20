@@ -43,17 +43,17 @@
             overflow: hidden;
 			background: var(--color-bg-primary);
             @media (min-width: 1280px) {
-                height: 686px;
+                min-height: 686px;
                 padding: 48px 48px 48px 72px;
                 border-radius: 60px;
             }
             @media (min-width: 768px) and (max-width: 1280px) {
-                height: 586px;
+                min-height: 586px;
                 padding: 38px;
                 border-radius: 60px;
             }
             @media (max-width: 768px) {
-                height: 550px;
+                min-height: 550px;
                 padding: 24px 24px 16px 16px;
                 border-radius: 30px;
             }
@@ -77,6 +77,7 @@
             }
 		}
 		&__description {
+            flex: 1 0 auto;
 			position: relative;
             @media (min-width: 768px) {
                 height: 200px;

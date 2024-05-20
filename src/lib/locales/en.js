@@ -208,7 +208,8 @@ let en = {
 			message_completed: 'Data sent successfully',
 			button_prev: 'Back',
 			button_next: 'Next'
-		}
+		},
+		message_successful: 'Successful registration'
 	}
 };
 

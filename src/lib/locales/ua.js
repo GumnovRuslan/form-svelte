@@ -208,7 +208,8 @@ let ua = {
 			message_completed: 'Дані успішно надіслані:',
 			button_prev: 'Назад',
 			button_next: 'Вперед'
-		}
+		},
+		message_successful: 'Реєстрація виконана'
 	}
 };
 

@@ -13,8 +13,8 @@
     <div class="languages__items">
         {#each data.languages as lang, i}
             <label class="languages__item">
-                <Checkbox checked={checked.find(el => el == ++i)}/>
-                <input type="checkbox" class="languages__item-checkbox" bind:group={checked} value={++i}/>
+                <Checkbox checked={checked.find(el => el == lang)}/>
+                <input type="checkbox" class="languages__item-checkbox" bind:group={checked} value={lang}/>
                 <span class="languages__item-text">{lang}</span>
             </label>
         {/each}

@@ -12,7 +12,7 @@
 
 <div class='categories' id="formCategories">
     <div class='categories__header'>
-        <h3 class='categories__title'>{data.title}</h3>
+        <h3 class='categories__title'>{data.title} <span>*</span></h3>
     </div>
     <div class='categories__content'>
         <div class='categories__item'>
